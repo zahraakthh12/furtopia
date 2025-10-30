@@ -6,6 +6,7 @@ class AppColors{
   static const Color bg1 = Color(0xFFC1A586);
   static const Color bg2 = Color(0xFFDBC5B1);
   static const Color bg3 = Color(0xFFEEE4DC);
+  static const Color bg4 = Color(0xFFE0D2C3);
   static const Color shape1 = Color(0xFFCDE1D5);
   static const Color shape2 = Color(0xFFE2D6E8);
   static const Color shape3 = Color(0xFFF2D2EB);

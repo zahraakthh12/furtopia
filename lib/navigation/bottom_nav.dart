@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/home_page.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -11,13 +13,16 @@ class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
   static const List<Widget> _widgetOptions = [
     // Center(child: Text("Home")),
+    HomePage(),
+   Center(child: Text("Home")),
+
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(title: Text("Bottom Navigation")),
       body: _widgetOptions[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar( backgroundColor: AppColors.shape6.withOpacity(0.2),
         currentIndex: _selectedIndex,
         onTap: (index) {
           print(index);
@@ -27,7 +32,7 @@ class _BottomNavState extends State<BottomNav> {
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil")
         ],
       ),
     );

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:furtopia/navigation/bottom_nav.dart';
+import 'package:furtopia/navigation/curved_nav.dart';
+import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/login_page.dart';
 
 void main() {
@@ -7,6 +11,7 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  final customFont = 'Poppins';
 
   // This widget is the root of your application.
   @override
@@ -29,9 +34,9 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.shape6.withOpacity(0.92)),
       ),
-      home: LoginPage(),
+      home: BottomNav(),
     );
   }
 }
