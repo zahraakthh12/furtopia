@@ -1,3 +1,54 @@
+import 'package:flutter/material.dart';
+import 'package:furtopia/style/app_colors.dart';
+
+class BuildWidget1 extends StatelessWidget {
+  final String imagePath;
+  final String text;
+  final String customFont;
+
+  const BuildWidget1({
+    super.key,
+    required this.imagePath,
+    required this.text,
+    required this.customFont,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            offset: const Offset(2, 2),
+            blurRadius: 2,
+          )
+        ],
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(imagePath, height: 20),
+          const SizedBox(width: 12),
+          Text(
+            text,
+            style: TextStyle(
+              fontFamily: customFont,
+              fontWeight: FontWeight.bold,
+              color: AppColors.shape4.withOpacity(0.75),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+
 // import 'package:flutter/material.dart';
 // import 'package:furtopia/style/app_colors.dart';
 

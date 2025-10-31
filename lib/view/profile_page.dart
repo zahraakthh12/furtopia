@@ -13,7 +13,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final customFont = 'Poppins';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(appBar: AppBar(title: Text("Profil Saya", style: TextStyle(color: AppColors.white, fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),), backgroundColor: AppColors.shape5.withOpacity(0.75),),
+      
+      body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   SafeArea buildLayer(){
@@ -22,9 +24,166 @@ class _ProfilePageState extends State<ProfilePage> {
       SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
-          children: [],
+          children: [
+
+          height(5),
+          Container(height: 160,
+           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+           decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
+           boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+           offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+          child: 
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    height: 75,
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(100),
+                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                  child: 
+                  Image.asset(AppImages.shop, height: 60,)),
+                  width(15),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Zahra Khotimah", style: TextStyle(fontFamily: customFont, fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),),
+                      Row(
+                        children: [
+                          Icon(Icons.email_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
+                          width(5),
+                          Text("zahraa.khotimah@gmail.com", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.call_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
+                          width(5),
+                          Text("0857-1054-6602", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              height(10),
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: AppColors.shape4.withOpacity(0.75), minimumSize: const Size(300, 40),
+                  elevation: 6, shadowColor: AppColors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))),
+                  onPressed: (){
+                  print("Menekan Edit");
+                  }, child: Text("Edit Profil", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.white),)),
+              )
+                ],)),
+
+            height(30),
+            Container(height: 280, width: 500,
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
+            boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+            offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Menu", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
+                
+                height(20),
+                Row(
+                children: [
+                  Container(
+                    height: 50, 
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.75), borderRadius: BorderRadius.circular(15), 
+                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                  child: 
+                  Image.asset(AppImages.box, height: 50,)),
+                  width(20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Pesanan Berlangsung", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w300),),
+                    ],
+                  ),
+                ],
+              ),
+
+                
+                height(20),
+                Row(
+                children: [
+                  Container(
+                    height: 50, 
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.75), borderRadius: BorderRadius.circular(15), 
+                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                  child: 
+                  Image.asset(AppImages.history, height: 50,)),
+                  width(20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Riwayat Pesanan", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w300),),
+                    ],
+                  ),
+                ],
+              ),
 
 
+                height(20),
+                Row(
+                children: [
+                  Container(
+                    height: 50, 
+                    padding: EdgeInsets.all(5.0),
+                    decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.75), borderRadius: BorderRadius.circular(15), 
+                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                  child: 
+                  Image.asset(AppImages.setting, height: 50,)),
+                  width(20),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Pengaturan", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.black, fontWeight: FontWeight.w300),),
+                    ],
+                  ),
+                ],
+              ),
+                
+                
+                ],
+                )),
+
+                height(20),
+                Container(
+                  height: 50, 
+                  padding: EdgeInsets.symmetric(horizontal: 90),
+                  decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
+                  boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                  offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                  child:
+                  Row(
+                    children: [
+                    Image.asset(AppImages.logout, height: 20,),
+                    width(10),
+                    Text("Keluar dari akun", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold),)
+                  ],)
+                ),
+
+                height(20),
+                Column(children: [
+                  Text("FurTopia", style: TextStyle(fontFamily: customFont, fontSize: 14, color: AppColors.black.withOpacity(0.4))),
+                  Text("Versi 1.0.0", style: TextStyle(fontFamily: customFont, fontSize: 14, color: AppColors.black.withOpacity(0.4))),
+                  Image.asset(AppImages.pet, height: 40, color: AppColors.black.withOpacity(0.5),),
+                ],)
+          ],
         ),
       ),
       );
@@ -36,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppImages.background3),
+          image: AssetImage(AppImages.background4),
           fit: BoxFit.cover,
         ),
       ),

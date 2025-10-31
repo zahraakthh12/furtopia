@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
+import 'package:furtopia/style/text_style.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -126,29 +127,9 @@ class _HomePageState extends State<HomePage> {
                       Text("Booking perawatan hewan", style: TextStyle(fontFamily: customFont),),
 
                       height(5),
-                      Container(
-                        height: 30,
-                        padding: EdgeInsets.all(4),
-                        color: AppColors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Image.asset(AppImages.homeservice, height: 20),
-                          width(10),
-                          Text("Home Service")
-                        ],),
-                      ),
-                      height(5),
-                      Container( 
-                        color: AppColors.white,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Image.asset(AppImages.offlinevisit, height: 20),
-                          width(10),
-                          Text("Offline Visit")
-                        ],),
-                      )
+                      BuildWidget1(imagePath: AppImages.homeservice, text: "Home Service", customFont: customFont,),
+                      height(8),
+                      BuildWidget1(imagePath: AppImages.offlinevisit, text: "Offline Visit", customFont: customFont),
                     ],
                   ),
                 ],
@@ -187,6 +168,27 @@ class _HomePageState extends State<HomePage> {
                 ],
               )
             ],)),
+
+            height(30),
+            Text("Penawaran Spesial", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
+            height(20),
+            GridView.count(
+              crossAxisCount: 2,
+              mainAxisSpacing: 5,
+              crossAxisSpacing: 5,
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              children:
+              List.generate(10, (index){
+                return Container(alignment: Alignment.center,
+                color: AppColors.white,
+
+                // Menambahkan teks di dalam kotak
+                child: Stack(
+                  children: [Text("Penawaran ${index + 1}",
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),],
+                ),);
+              }),)         
 
 
         ],

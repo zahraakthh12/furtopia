@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/create_pet.dart';
 import 'package:furtopia/view/home_page.dart';
+import 'package:furtopia/view/pet_profile2.dart';
+import 'package:furtopia/view/profile_page.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});
@@ -14,7 +17,8 @@ class _BottomNavState extends State<BottomNav> {
   static const List<Widget> _widgetOptions = [
     // Center(child: Text("Home")),
     HomePage(),
-   Center(child: Text("Home")),
+    AddPetScreen(),
+    ProfilePage()
 
   ];
   @override
@@ -32,7 +36,8 @@ class _BottomNavState extends State<BottomNav> {
         },
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profil")
+          BottomNavigationBarItem(icon: Icon(Icons.pets_outlined), label: "Pet"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
     );

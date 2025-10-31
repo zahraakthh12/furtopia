@@ -5,6 +5,7 @@ class AppImages{
   static const background = "$assetImage/bg.png";
   static const background2 = "$assetImage/bg2.png";
   static const background3 = "$assetImage/bg3.png";
+  static const background4 = "$assetImage/bg4.png";
   static const google = "$assetImage/google.png";
   static const whatsapp = "$assetImage/wa.png";
   static const pet = "$assetImage/pet.png";
@@ -13,6 +14,10 @@ class AppImages{
   static const homeservice = "$assetImage/homeservice.png";
   static const offlinevisit = "$assetImage/offlinevisit.png";
   static const clinic = "$assetImage/clinic.png";
+  static const history = "$assetImage/history.png";
+  static const setting = "$assetImage/setting.png";
+  static const box = "$assetImage/box.png";
+  static const logout = "$assetImage/logout.png";
 }
 
 class CustomImage extends StatelessWidget {

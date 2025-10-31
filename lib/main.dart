@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/navigation/curved_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/create_pet.dart';
 import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/login_page.dart';
 
