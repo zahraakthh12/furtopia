@@ -182,6 +182,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 2,
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
+              scrollDirection: Axis.horizontal,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children:
