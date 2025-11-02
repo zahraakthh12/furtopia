@@ -3,6 +3,7 @@ import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/create_pet.dart';
 import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/pet_profile2.dart';
+import 'package:furtopia/view/petlist_screen.dart';
 import 'package:furtopia/view/profile_page.dart';
 
 class BottomNav extends StatefulWidget {
@@ -17,7 +18,7 @@ class _BottomNavState extends State<BottomNav> {
   static const List<Widget> _widgetOptions = [
     // Center(child: Text("Home")),
     HomePage(),
-    AddPetScreen(),
+    PetListScreen(),
     ProfilePage()
 
   ];

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:furtopia/database/db_helper.dart';
+import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
@@ -12,7 +15,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final customFont = 'Poppins';
+
   @override
+
+  
   Widget build(BuildContext context) {
     return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
   }

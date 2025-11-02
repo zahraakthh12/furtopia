@@ -10,6 +10,7 @@ class PetModel {
   String color;
   String weight;
   String length;
+  String icon;
   PetModel({
     this.id,
     required this.name,
@@ -19,6 +20,7 @@ class PetModel {
     required this.color,
     required this.weight,
     required this.length,
+    required this.icon,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,6 +33,7 @@ class PetModel {
       'color': color,
       'weight': weight,
       'length': length,
+      'icon': icon,
     };
   }
 
@@ -44,6 +47,7 @@ class PetModel {
       color: map['color'] as String,
       weight: map['weight'] as String,
       length: map['length'] as String,
+      icon: map['icon'] as String,
     );
   }
 

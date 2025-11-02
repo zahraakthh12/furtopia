@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class AddPetScreen extends StatefulWidget {
-  const AddPetScreen({super.key});
+class AddPetPage extends StatefulWidget {
+  const AddPetPage({super.key});
 
   @override
-  State<AddPetScreen> createState() => _AddPetScreenState();
+  State<AddPetPage> createState() => _AddPetPageState();
 }
 
-class _AddPetScreenState extends State<AddPetScreen> {
+class _AddPetPageState extends State<AddPetPage> {
   int currentStep = 1;
 
   final Map<String, dynamic> formData = {

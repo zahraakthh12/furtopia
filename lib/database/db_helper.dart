@@ -20,7 +20,7 @@ class DBHelper {
       onUpgrade: (db, oldVersion, newVersion) async {
         if (newVersion == 2) {
           await db.execute(
-            "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT)",
+            "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT, icon TEXT)",
           );
         }
       },
