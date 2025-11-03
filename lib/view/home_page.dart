@@ -5,6 +5,7 @@ import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
+import 'package:furtopia/view/petclinic_booking.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +16,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final customFont = 'Poppins';
+  UserModel? dataUser;
+
+  void initState(){
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    var id = await PreferenceHandler.getID();
+    if(id != null){
+      UserModel? result = await DBHelper.getUser(id);
+      setState(() {
+        dataUser = result;
+      });
+    }
+  }
 
   @override
 
@@ -37,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text("Halo,", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.white)),
-                  Text("Zahra Khotimah", style: TextStyle(fontFamily: customFont, fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.white)),
+                  Text("${dataUser?.fullname ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.white)),
                 ],
               ),
               const Spacer(),
@@ -117,14 +134,19 @@ class _HomePageState extends State<HomePage> {
             children: [
               Row(
                 children: [
-                  Container(
-                    height: 60, 
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child: 
-                  Image.asset(AppImages.clinic, height: 60,)),
+                  GestureDetector( onTap: (){
+                    Navigator.pushReplacement(context, 
+                    MaterialPageRoute(builder: (context) => BookingPage(),),);
+                  },
+                    child: Container(
+                      height: 60, 
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
+                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child: 
+                    Image.asset(AppImages.clinic, height: 60,)),
+                  ),
                   width(15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +204,6 @@ class _HomePageState extends State<HomePage> {
               crossAxisCount: 2,
               mainAxisSpacing: 5,
               crossAxisSpacing: 5,
-              scrollDirection: Axis.horizontal,
               physics: NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               children:

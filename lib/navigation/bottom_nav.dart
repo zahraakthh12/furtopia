@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/create_pet.dart';
 import 'package:furtopia/view/home_page.dart';
-import 'package:furtopia/view/pet_profile2.dart';
 import 'package:furtopia/view/petlist_screen.dart';
 import 'package:furtopia/view/profile_page.dart';
 

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:furtopia/database/db_helper.dart';
+import 'package:furtopia/model/user_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
+import 'package:furtopia/view/login_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -11,11 +14,13 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final customFont = 'Poppins';
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Profil Saya", style: TextStyle(color: AppColors.white, fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),), backgroundColor: AppColors.shape5.withOpacity(0.75),),
-      
-      body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(appBar: AppBar(title: Text("Profil Saya", style: TextStyle(color: AppColors.white, fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),), backgroundColor: AppColors.shape4, automaticallyImplyLeading: false,),
+            body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   SafeArea buildLayer(){
@@ -45,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
                     offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
                   child: 
-                  Image.asset(AppImages.shop, height: 60,)),
+                  Image.asset(AppImages.person, height: 60,)),
                   width(15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           Icon(Icons.call_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
                           width(5),
-                          Text("0857-1054-6602", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                          Text("085710546602", style: TextStyle(fontFamily: customFont, fontSize: 12),),
                         ],
                       ),
                     ],
@@ -95,14 +100,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 height(20),
                 Row(
                 children: [
-                  Container(
-                    height: 50, 
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.75), borderRadius: BorderRadius.circular(15), 
-                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child: 
-                  Image.asset(AppImages.box, height: 50,)),
+                  GestureDetector(
+                    child: Container(
+                      height: 50, 
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.75), borderRadius: BorderRadius.circular(15), 
+                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child: 
+                    Image.asset(AppImages.box, height: 50,)),
+                  ),
                   width(20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,25 +169,29 @@ class _ProfilePageState extends State<ProfilePage> {
                 )),
 
                 height(20),
-                Container(
-                  height: 50, 
-                  padding: EdgeInsets.symmetric(horizontal: 90),
-                  decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
-                  boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                  offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child:
-                  Row(
-                    children: [
-                    Image.asset(AppImages.logout, height: 20,),
-                    width(10),
-                    Text("Keluar dari akun", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold),)
-                  ],)
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushReplacement(context, 
+                    MaterialPageRoute(builder: (context) => LoginPage(),),);
+                  },
+                  child: Container(
+                    height: 50, 
+                    padding: EdgeInsets.symmetric(horizontal: 90),
+                    decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
+                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child:
+                    Row(
+                      children: [
+                      Image.asset(AppImages.logout, height: 20,),
+                      width(10),
+                      Text("Keluar dari akun", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold),)
+                    ],)
+                  ),
                 ),
 
                 height(20),
                 Column(children: [
-                  Text("FurTopia", style: TextStyle(fontFamily: customFont, fontSize: 14, color: AppColors.black.withOpacity(0.4))),
-                  Text("Versi 1.0.0", style: TextStyle(fontFamily: customFont, fontSize: 14, color: AppColors.black.withOpacity(0.4))),
                   Image.asset(AppImages.pet, height: 40, color: AppColors.black.withOpacity(0.5),),
                 ],)
           ],

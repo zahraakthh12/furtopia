@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppImages{
   static const assetImage = "assets/images";
+  static const logo = "$assetImage/logo.png";
   static const background = "$assetImage/bg.png";
   static const background2 = "$assetImage/bg2.png";
   static const background3 = "$assetImage/bg3.png";
@@ -18,6 +19,9 @@ class AppImages{
   static const setting = "$assetImage/setting.png";
   static const box = "$assetImage/box.png";
   static const logout = "$assetImage/logout.png";
+  static const person = "$assetImage/person.png";
+  static const bgg = "$assetImage/bgg.png";
+  static const bg1 = "$assetImage/bg1.png";
 }
 
 class CustomImage extends StatelessWidget {

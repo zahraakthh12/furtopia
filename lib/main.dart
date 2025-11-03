@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/navigation/curved_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/create_pet.dart';
 import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/login_page.dart';
+import 'package:furtopia/view/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.shape6.withOpacity(0.92)),
       ),
-      home: BottomNav(),
+      home: SplashScreenFurtopia(),
     );
   }
 }

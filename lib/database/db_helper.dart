@@ -1,5 +1,7 @@
+import 'package:furtopia/model/clinic_model.dart';
 import 'package:furtopia/model/pet_model.dart';
 import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:path/path.dart';
@@ -7,25 +9,36 @@ import 'package:path/path.dart';
 class DBHelper {
   static const tableUser = 'users';
   static const tablePet = 'pet';
+  static const tableClinic = 'clinic';
   static Future<Database> db() async {
     final dbPath = await getDatabasesPath();
     return openDatabase(
       join(dbPath, 'furtopia_user_database.db'),
-      onCreate: (db, version) async {
-        return db.execute(
-          "CREATE TABLE $tableUser (id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT, email TEXT, phone TEXT, password TEXT)",
-        );
-      },
-
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (newVersion == 2) {
+      onCreate: (db, version) async {  
           await db.execute(
             "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT, icon TEXT)",
           );
-        }
+          await db.execute(
+            "CREATE TABLE $tableClinic(id INTEGER PRIMARY KEY AUTOINCREMENT, service TEXT, servicetype TEXT, date TEXT, time TEXT, payment TEXT, petdata TEXT, address TEXT, price TEXT)",
+          );
+          await db.execute(
+            "CREATE TABLE $tableUser (id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT, email TEXT, phone TEXT, password TEXT)",
+          );
       },
 
-      version: 1,
+      // onUpgrade: (db, oldVersion, newVersion) async {
+      //   if (newVersion == 2) {
+      //     await db.execute(
+      //       "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT, icon TEXT)",
+      //     );
+      //   } else     if (newVersion == 3) {
+      //     await db.execute(
+      //       "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT, icon TEXT)",
+      //     );
+      //   }
+      // },
+
+      version: 3,
     );
   }
 
@@ -53,6 +66,8 @@ class DBHelper {
       whereArgs: [email, password],
     );
     if (results.isNotEmpty) {
+      final data = UserModel.fromMap(results.first);
+      PreferenceHandler.saveID(data.id!);
       return UserModel.fromMap(results.first);
     }
     return null;
@@ -85,6 +100,21 @@ class DBHelper {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableUser, where: "id = ?", whereArgs: [id]);
+  }
+
+  //GET USER ID
+  static Future<UserModel?> getUser(int id) async {
+    final dbInstance = await db();
+    final List<Map<String, dynamic>> results = await dbInstance.query(
+      tableUser,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    print(results);
+    if (results.isNotEmpty){
+      return UserModel.fromMap(results.first);
+    }
+    return null;
   }
 
 
@@ -126,5 +156,46 @@ class DBHelper {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tablePet, where: "id = ?", whereArgs: [id]);
+  }
+
+
+    // MENAMBAHKAN BOOKING
+  static Future<void> createBooking(ClinicModel clinic) async {
+    final dbs = await db();
+    await dbs.insert(
+      tableClinic,
+      clinic.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(clinic.toMap());
+  }
+
+  // MENDAPATKAN DATA BOOKING
+  static Future<List<ClinicModel>> getAllBooking() async {
+    final dbs = await db();
+    final List<Map<String, dynamic>> results = await dbs.query(tableClinic);
+    print(results.map((e) => ClinicModel.fromMap(e)).toList());
+    return results.map((e) => ClinicModel.fromMap(e)).toList();
+  }
+
+    //UPDATE BOOKING
+  static Future<void> updateBooking(ClinicModel clinic) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.update(
+      tableClinic,
+      clinic.toMap(),
+      where: "id = ?",
+      whereArgs: [clinic.id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(clinic.toMap());
+  }
+
+  //DELETE BOOKING
+  static Future<void> deleteBooking(int id) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.delete(tableClinic, where: "id = ?", whereArgs: [id]);
   }
 }

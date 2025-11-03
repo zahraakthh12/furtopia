@@ -242,7 +242,7 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppImages.background),
+          image: AssetImage(AppImages.bg1),
           fit: BoxFit.cover,
         ),
       ),

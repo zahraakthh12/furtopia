@@ -133,12 +133,22 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                 Expanded(
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => PetEditScreen(pet: pet),
-                        ),
-                      );
+                      Navigator.push(context,
+                      MaterialPageRoute(
+                        builder: (_) => PetEditScreen(pet: pet),)
+                        ).then((updatedPet) {
+                          if (updatedPet != null && updatedPet is PetModel) {
+                            setState(() {
+                              widget.pet.name = updatedPet.name;
+                              widget.pet.type = updatedPet.type;
+                              widget.pet.gender = updatedPet.gender;
+                              widget.pet.age = updatedPet.age;
+                              widget.pet.color = updatedPet.color;
+                              widget.pet.weight = updatedPet.weight;
+                              widget.pet.length = updatedPet.length;
+                              });
+                              }
+                              });
                     },
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: Color(0xFFB76E79)),

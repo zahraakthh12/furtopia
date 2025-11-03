@@ -222,7 +222,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     return ListView(
       children: [
         buildTextField("Nama Hewan", "name", isRequired: true),
-        buildTextField("Jenis Hewan", "type", isRequired: true),
+        buildTextField("Jenis Hewan", "type", hint: "contoh: Kucing, Anjing", isRequired: true),
         buildDropdown("Jenis Kelamin", "gender", ["Jantan", "Betina"]),
         buildTextField("Usia", "age", hint: "contoh: 2 tahun"),
       ],
@@ -233,8 +233,8 @@ class _AddPetScreenState extends State<AddPetScreen> {
   Widget buildPhysicalStep() {
     return ListView(
       children: [
-        buildTextField("Berat (kg)", "weight", hint: "contoh: 3.5"),
-        buildTextField("Panjang (cm)", "length", hint: "contoh: 25"),
+        buildTextField("Berat Badan(kg)", "weight", hint: "contoh: 3.5"),
+        buildTextField("Panjang Badan (cm)", "length", hint: "contoh: 25"),
         buildTextField("Warna", "color", hint: "contoh: Putih Abu-abu"),
       ],
     );
@@ -289,24 +289,6 @@ class _AddPetScreenState extends State<AddPetScreen> {
             onChanged: (v) => formData[key] = v,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget buildDropdown(String label, String key, List<String> items) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: DropdownButtonFormField<String>(
-        value: formData[key].isEmpty ? null : formData[key],
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-        ),
-        items: items
-            .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-            .toList(),
-        onChanged: (v) => formData[key] = v,
       ),
     );
   }
@@ -377,4 +359,37 @@ class _AddPetScreenState extends State<AddPetScreen> {
       ),
     );
   }
+
+  Widget buildDropdown(String label, String key, List<String> items) {
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 14),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "$label *",
+          style: const TextStyle(
+            color: Color(0xFFB76E79),
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 6),
+        DropdownButtonFormField<String>(
+          value: formData[key].isEmpty ? null : formData[key],
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          items: items
+              .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              .toList(),
+          onChanged: (v) => formData[key] = v,
+        ),
+      ],
+    ),
+  );
+}
+
 }
