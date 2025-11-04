@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/pet_model.dart';
+import 'package:furtopia/style/app_colors.dart';
 
 class PetEditScreen extends StatefulWidget {
   final PetModel pet;
@@ -45,9 +46,10 @@ class _PetEditScreenState extends State<PetEditScreen> {
           style: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
+            fontSize: 20,
           ),
         ),
-        backgroundColor: const Color(0xFFB76E79),
+        backgroundColor: AppColors.shape4.withOpacity(0.6),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

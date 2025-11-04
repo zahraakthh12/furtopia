@@ -4,6 +4,7 @@ import 'package:furtopia/navigation/curved_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/login_page.dart';
+import 'package:furtopia/view/peteducation_screen.dart';
 import 'package:furtopia/view/splash_screen.dart';
 
 void main() {

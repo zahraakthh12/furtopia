@@ -5,22 +5,12 @@ class ClinicModel {
   int? id;
   String service;
   String servicetype;
-  String date;
-  String time;
-  String payment;
-  String petdata;
-  String address;
-  String price;
+  String schedule;
   ClinicModel({
     this.id,
     required this.service,
     required this.servicetype,
-    required this.date,
-    required this.time,
-    required this.payment,
-    required this.petdata,
-    required this.address,
-    required this.price,
+    required this.schedule,
   });
 
   Map<String, dynamic> toMap() {
@@ -28,12 +18,7 @@ class ClinicModel {
       'id': id,
       'service': service,
       'servicetype': servicetype,
-      'date': date,
-      'time': time,
-      'payment': payment,
-      'petdata': petdata,
-      'address': address,
-      'price': price,
+      'schedule': schedule,
     };
   }
 
@@ -42,12 +27,7 @@ class ClinicModel {
       id: map['id'] as int,
       service: map['service'] as String,
       servicetype: map['servicetype'] as String,
-      date: map['date'] as String,
-      time: map['time'] as String,
-      payment: map['payment'] as String,
-      petdata: map['petdata'] as String,
-      address: map['address'] as String,
-      price: map['price'] as String,
+      schedule: map['schedule'] as String,
     );
   }
 

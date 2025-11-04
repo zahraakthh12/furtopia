@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/login_page.dart';
+import 'package:furtopia/view/profil_edit_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,12 +16,27 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final customFont = 'Poppins';
+  UserModel? dataUser;
 
+    void initState(){
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    var id = await PreferenceHandler.getID();
+    if(id != null){
+      UserModel? result = await DBHelper.getUser(id);
+      setState(() {
+        dataUser = result;
+      });
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Profil Saya", style: TextStyle(color: AppColors.white, fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),), backgroundColor: AppColors.shape4, automaticallyImplyLeading: false,),
+    return Scaffold(appBar: AppBar(title: Text("Profil Saya", style: TextStyle(fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),), backgroundColor: AppColors.shape4.withOpacity(0.75), automaticallyImplyLeading: false,),
             body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
@@ -43,31 +60,26 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Row(
                 children: [
-                  Container(
-                    height: 75,
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(100),
-                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child: 
-                  Image.asset(AppImages.person, height: 60,)),
-                  width(15),
+                  CircleAvatar( backgroundColor: AppColors.shape4.withOpacity(0.5),
+                    radius: 40,
+                    child: Image.asset(AppImages.person, height: 50,)),
+                  width(20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Zahra Khotimah", style: TextStyle(fontFamily: customFont, fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),),
+                      Text("${dataUser?.fullname ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 20, color: AppColors.black, fontWeight: FontWeight.bold),),
                       Row(
                         children: [
                           Icon(Icons.email_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
                           width(5),
-                          Text("zahraa.khotimah@gmail.com", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                          Text("${dataUser?.email ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 12),),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.call_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
                           width(5),
-                          Text("085710546602", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                          Text("${dataUser?.phone ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 12),),
                         ],
                       ),
                     ],
@@ -80,10 +92,18 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(backgroundColor: AppColors.shape4.withOpacity(0.75), minimumSize: const Size(300, 40),
                   elevation: 6, shadowColor: AppColors.black, shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(10))),
-                  onPressed: (){
-                  print("Menekan Edit");
-                  }, child: Text("Edit Profil", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.white),)),
-              )
+                  onPressed: () async {
+                    if (dataUser == null) return;
+                    final updatedUser = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UserEditProfile(user: dataUser!),),);
+                      // Jika ada data yang dikembalikan dari halaman edit
+                      if (updatedUser != null) {
+                        setState(() {
+                          dataUser = updatedUser;
+                            });
+                            }}, child: Text("Edit Profil", style: TextStyle(fontFamily: customFont, fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.white),)),)
                 ],)),
 
             height(30),
@@ -168,7 +188,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
                 )),
 
-                height(20),
+                height(30),
                 GestureDetector(
                   onTap: (){
                     Navigator.pushReplacement(context, 

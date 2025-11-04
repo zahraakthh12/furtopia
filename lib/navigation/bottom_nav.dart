@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/cart_screen.dart';
 import 'package:furtopia/view/home_page.dart';
 import 'package:furtopia/view/petlist_screen.dart';
 import 'package:furtopia/view/profile_page.dart';
@@ -17,6 +18,7 @@ class _BottomNavState extends State<BottomNav> {
     // Center(child: Text("Home")),
     HomePage(),
     PetListScreen(),
+    CartPage(),
     ProfilePage()
 
   ];
@@ -25,7 +27,7 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       // appBar: AppBar(title: Text("Bottom Navigation")),
       body: _widgetOptions[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar( backgroundColor: AppColors.shape6.withOpacity(0.2),
+      bottomNavigationBar: BottomNavigationBar( backgroundColor: AppColors.white,
         currentIndex: _selectedIndex,
         onTap: (index) {
           print(index);
@@ -36,6 +38,7 @@ class _BottomNavState extends State<BottomNav> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.pets_outlined), label: "Pet"),
+          BottomNavigationBarItem(icon: Icon(Icons.shop), label: "Keranjang"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),

@@ -14,6 +14,7 @@ class PetListScreen extends StatefulWidget {
 
 class _PetListScreenState extends State<PetListScreen> {
   List<PetModel> petList = [];
+  final customFont = 'Poppins';
 
   @override
   void initState() {
@@ -21,7 +22,6 @@ class _PetListScreenState extends State<PetListScreen> {
     fetchPet();
   }
 
-  // Ambil semua data hewan dari database
   Future<void> fetchPet() async {
     final pet = await DBHelper.getAllPet();
     setState(() {
@@ -29,149 +29,232 @@ class _PetListScreenState extends State<PetListScreen> {
     });
   }
 
-  // Hapus hewan
   Future<void> deletePet(int id) async {
     await DBHelper.deletePet(id);
     fetchPet();
   }
 
+  Future<void> showDeleteDialog(PetModel pet) async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "🐾 Hapus Hewan?",
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Color(0xFFB76E79),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  "Apakah Anda yakin ingin menghapus hewan '${pet.name}'?",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // Tombol
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Batal
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Color(0xFFB76E79)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Batal",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Color(0xFFB76E79),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+
+                    // Hapus
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          await deletePet(pet.id!);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.redAccent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Hapus",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
-      appBar: AppBar( automaticallyImplyLeading: false,
-        backgroundColor: AppColors.shape4,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: AppColors.shape4.withOpacity(0.75),
         title: const Text(
           "Profil Hewan Peliharaan",
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            fontSize: 20,
+            fontFamily: 'Poppins',
           ),
         ),
       ),
 
-      // 🔹 Konten utama
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: AppColors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 6,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              // 🔹 Tombol tambah
-              Align(
-                alignment: Alignment.topRight,
-                child: InkWell(
-                  onTap: () async {
-                    // Pindah ke halaman tambah dan tunggu hasil
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const AddPetScreen()),
-                    );
-                    // Setelah kembali, refresh daftar hewan
-                    fetchPet();
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.shape4.withOpacity(0.8),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(Icons.add, color: Colors.white),
+        child: Column(
+          children: [
+
+            // Tombol tambah hewan
+            Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AddPetScreen()),
+                  );
+                  fetchPet();
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.shape4.withOpacity(0.8),
+                    shape: BoxShape.circle,
                   ),
+                  child: const Icon(Icons.add, color: Colors.white),
                 ),
               ),
+            ),
 
-              const SizedBox(height: 10),
+            const SizedBox(height: 10),
 
-              // 🔹 Jika belum ada data
-              if (petList.isEmpty)
-                Expanded(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.pets, size: 80, color: Colors.grey),
-                        SizedBox(height: 10),
-                        Text(
-                          "Belum ada hewan peliharaan",
-                          style: TextStyle(
+            // Jika tidak ada hewan
+            if (petList.isEmpty)
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(Icons.pets, size: 80, color: Colors.grey),
+                    SizedBox(height: 10),
+                    Text(
+                      "Belum ada hewan peliharaan",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                  ],
+                ),
+              )
+
+            // Jika ada data hewan
+            else
+              Expanded(
+                child: ListView.builder(
+                  itemCount: petList.length,
+                  itemBuilder: (context, index) {
+                    final pet = petList[index];
+
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      decoration: BoxDecoration(
+                        color: AppColors.shape2.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: ListTile(
+                        leading: Text(
+                          pet.icon,
+                          style: const TextStyle(fontSize: 40),
+                        ),
+                        title: Text(
+                          pet.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
                             fontSize: 16,
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Poppins',
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                )
-              else
-                // 🔹 Tampilkan daftar hewan
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: petList.length,
-                    itemBuilder: (context, index) {
-                      final pet = petList[index];
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.shape2.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: ListTile(
-                          leading: Text(
-                            pet.icon,
-                            style: const TextStyle(fontSize: 40),
+                        subtitle: Text(
+                          "${pet.type} • ${pet.age}",
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontFamily: 'Poppins',
                           ),
-                          title: Text(
-                            pet.name,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                        ),
+
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+
+                            // Detail
+                            IconButton(
+                              icon: const Icon(Icons.info_outline, color: Colors.grey),
+                              onPressed: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => PetDetailScreen(pet: pet),
+                                  ),
+                                );
+                                fetchPet();
+                              },
                             ),
-                          ),
-                          subtitle: Text(
-                            "${pet.type} • ${pet.age}",
-                            style: const TextStyle(color: Colors.black54),
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.info_outline, color: Colors.grey),
-                                onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => PetDetailScreen(pet: pet),),
-                                      );
-                                      fetchPet();
-                                      },
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.delete_outline, color: Colors.grey),
-                                onPressed: () => deletePet(pet.id!),
-                              ),
-                            ],
-                          ),
+
+                            // Hapus
+                            IconButton(
+                              icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                              onPressed: () => showDeleteDialog(pet),
+                            ),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

@@ -29,7 +29,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     if (currentStep < 4) {
       setState(() => currentStep++);
     } else {
-      // 🧩 SIMPAN KE DATABASE
+      // Menyimpan ke database
       PetModel pet = PetModel(
         icon: formData['icon'],
         name: formData['name'],
@@ -64,7 +64,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
       backgroundColor: const Color(0xFFFAF5E9),
       body: Column(
         children: [
-          // ==== HEADER ====
+          // Membuat Header
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -93,10 +93,10 @@ class _AddPetScreenState extends State<AddPetScreen> {
             ),
           ),
 
-          // ==== STEPPER ====
+          // Membuat langkah-langkah
           buildStepper(),
 
-          // ==== KONTEN PER STEP ====
+          // Animasi langkah-langkah per step
           Expanded(
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 400),
@@ -108,7 +108,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
             ),
           ),
 
-          // ==== BUTTON NAVIGASI ====
+          // Button navigasi pendataan
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
@@ -151,7 +151,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  // ==== STEP SWITCH ====
+  // Step switch
   Widget buildStepContent() {
     switch (currentStep) {
       case 1:
@@ -167,7 +167,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     }
   }
 
-  // ==== STEP 1: PILIH ICON ====
+  // Step 1: Memilih ikon hewan
   Widget buildIconStep() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,7 +217,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  // ==== STEP 2: INFO DASAR ====
+  // Step 2: Input hewan
   Widget buildBasicInfoStep() {
     return ListView(
       children: [
@@ -229,7 +229,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  // ==== STEP 3: DETAIL FISIK ====
+  //Step 3: Input detail hewan
   Widget buildPhysicalStep() {
     return ListView(
       children: [
@@ -240,7 +240,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  // ==== STEP 4: RINGKASAN ====
+  // Step 4: Menampilkan ringkasan
   Widget buildSummaryStep() {
     return ListView(
       children: [
@@ -259,7 +259,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  // ==== REUSABLE COMPONENTS ====
+  // Komponen untuk reusable
   Widget buildTextField(String label, String key,
       {String? hint, bool isRequired = false, int maxLines = 1}) {
     return Padding(

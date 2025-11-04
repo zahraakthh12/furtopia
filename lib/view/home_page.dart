@@ -6,6 +6,8 @@ import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
 import 'package:furtopia/view/petclinic_booking.dart';
+import 'package:furtopia/view/peteducation_screen.dart';
+import 'package:furtopia/view/petshop_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -90,7 +92,46 @@ class _HomePageState extends State<HomePage> {
           Text("Layanan Kami", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
           
           height(10),
-          Container(height: 100,
+          GestureDetector(
+            onTap:(){
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PetShopScreen()),);
+            },
+            child: Container(height: 100,
+             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
+             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+            child: 
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 60, 
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
+                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child: 
+                    Image.asset(AppImages.shop, height: 60,)),
+                    width(15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Pet Shop", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
+                        Text("Belanja kebutuhan, makanan,", style: TextStyle(fontFamily: customFont),),
+                        Text("dan aksesoris hewan", style: TextStyle(fontFamily: customFont),)
+                      ],
+                    ),
+                  ],
+                )
+              ],)),
+          ),
+
+          height(20),
+          Container(height: 150,
            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
            decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
            boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
@@ -108,45 +149,7 @@ class _HomePageState extends State<HomePage> {
                     boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
                     offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
                   child: 
-                  Image.asset(AppImages.shop, height: 60,)),
-                  width(15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Pet Shop", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                      Text("Belanja kebutuhan, makanan,", style: TextStyle(fontFamily: customFont),),
-                      Text("dan aksesoris hewan", style: TextStyle(fontFamily: customFont),)
-                    ],
-                  ),
-                ],
-              )
-            ],)),
-
-          height(20),
-          Container(height: 150,
-           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-           decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-           boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-           offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-          child: 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  GestureDetector( onTap: (){
-                    Navigator.pushReplacement(context, 
-                    MaterialPageRoute(builder: (context) => BookingPage(),),);
-                  },
-                    child: Container(
-                      height: 60, 
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                    child: 
-                    Image.asset(AppImages.clinic, height: 60,)),
-                  ),
+                  Image.asset(AppImages.clinic, height: 60,)),
                   width(15),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,64 +168,66 @@ class _HomePageState extends State<HomePage> {
             ],)),
 
           height(20),
-          Container(height: 100,
-           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-           decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-           boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-           offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-          child: 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: 60, 
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child: 
-                  Image.asset(AppImages.book, height: 60,)),
-                  width(15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Pet Education", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                      Text("Artikel, tips, dan video edukasi", style: TextStyle(fontFamily: customFont),),
-                      Text("perawatan hewan", style: TextStyle(fontFamily: customFont),)
-                    ],
-                  ),
-                ],
-              )
-            ],)),
+          GestureDetector(
+            onTap: (){
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => EduScreen()));
+            },
+            child: Container(height: 100,
+             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
+             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+            child: 
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 60, 
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
+                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child: 
+                    Image.asset(AppImages.book, height: 60,)),
+                    width(15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Pet Education", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
+                        Text("Artikel, tips, dan video edukasi", style: TextStyle(fontFamily: customFont),),
+                        Text("perawatan hewan", style: TextStyle(fontFamily: customFont),)
+                      ],
+                    ),
+                  ],
+                )
+              ],)),
+          ),
 
             height(30),
-            Text("Penawaran Spesial", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
-            height(20),
-            GridView.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 5,
-              crossAxisSpacing: 5,
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              children:
-              List.generate(10, (index){
-                return Container(alignment: Alignment.center,
-                color: AppColors.white,
-
-                // Menambahkan teks di dalam kotak
-                child: Stack(
-                  children: [Text("Penawaran ${index + 1}",
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),],
-                ),);
-              }),)         
-
-
+            Text("Tips Perawatan Hewan 💡", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
+            height(10),
+            buildTipsWidget("💉 Vaksinasi rutin setiap 6 bulan"),
+            height(10),
+            buildTipsWidget("🚿 Grooming berkala untuk kesehatan bulu"),
         ],
         ),
       ),
       );
+  }
+
+  Container buildTipsWidget(String text) {
+    return Container(
+            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+            height: 45,
+            decoration: BoxDecoration(color: AppColors.shape1.withOpacity(0.4), borderRadius: BorderRadius.circular(15), ),
+            child: Column(
+              children: [
+                Text(text, style: TextStyle(fontFamily: customFont, fontSize: 12),)
+              ],
+            ),);
   }
 
   Container buildBackground() {

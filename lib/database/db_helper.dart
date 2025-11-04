@@ -1,5 +1,6 @@
 import 'package:furtopia/model/clinic_model.dart';
 import 'package:furtopia/model/pet_model.dart';
+import 'package:furtopia/model/shop_model.dart';
 import 'package:furtopia/model/user_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:sqflite/sqflite.dart';
@@ -10,6 +11,7 @@ class DBHelper {
   static const tableUser = 'users';
   static const tablePet = 'pet';
   static const tableClinic = 'clinic';
+  static const tableShop= 'shop';
   static Future<Database> db() async {
     final dbPath = await getDatabasesPath();
     return openDatabase(
@@ -19,7 +21,10 @@ class DBHelper {
             "CREATE TABLE $tablePet(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, type TEXT, gender TEXT, age TEXT, color TEXT, weight TEXT, length TEXT, icon TEXT)",
           );
           await db.execute(
-            "CREATE TABLE $tableClinic(id INTEGER PRIMARY KEY AUTOINCREMENT, service TEXT, servicetype TEXT, date TEXT, time TEXT, payment TEXT, petdata TEXT, address TEXT, price TEXT)",
+            "CREATE TABLE $tableClinic(id INTEGER PRIMARY KEY AUTOINCREMENT, service TEXT, servicetype TEXT, schedule TEXT)",
+          );
+          await db.execute(
+            "CREATE TABLE $tableShop(id INTEGER PRIMARY KEY AUTOINCREMENT, product TEXT, category TEXT, price TEXT, image TEXT)",
           );
           await db.execute(
             "CREATE TABLE $tableUser (id INTEGER PRIMARY KEY AUTOINCREMENT, fullname TEXT, email TEXT, phone TEXT, password TEXT)",
@@ -38,7 +43,7 @@ class DBHelper {
       //   }
       // },
 
-      version: 3,
+      version: 4,
     );
   }
 
@@ -197,5 +202,46 @@ class DBHelper {
     final dbs = await db();
     //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableClinic, where: "id = ?", whereArgs: [id]);
+  }
+
+
+      // MENAMBAHKAN ORDER
+  static Future<void> createOrder(ShopModel shop) async {
+    final dbs = await db();
+    await dbs.insert(
+      tableShop,
+      shop.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(shop.toMap());
+  }
+
+  // MENDAPATKAN DATA BOOKING
+  static Future<List<ShopModel>> getAllOrder() async {
+    final dbs = await db();
+    final List<Map<String, dynamic>> results = await dbs.query(tableShop);
+    print(results.map((e) => ShopModel.fromMap(e)).toList());
+    return results.map((e) => ShopModel.fromMap(e)).toList();
+  }
+
+    //UPDATE BOOKING
+  static Future<void> updateOrder(ShopModel shop) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.update(
+      tableShop,
+      shop.toMap(),
+      where: "id = ?",
+      whereArgs: [shop.id],
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+    print(shop.toMap());
+  }
+
+  //DELETE BOOKING
+  static Future<void> deleteOrder(int id) async {
+    final dbs = await db();
+    //Insert adalah fungsi untuk menambahkan data (CREATE)
+    await dbs.delete(tableShop, where: "id = ?", whereArgs: [id]);
   }
 }

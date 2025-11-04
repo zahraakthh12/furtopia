@@ -52,7 +52,6 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
             ),
           ),
 
-          // ==== CONTENT CARD ====
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -82,7 +81,7 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    // ==== TAB ====
+
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
@@ -106,7 +105,7 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
             ),
           ),
 
-          // ==== BUTTON BAWAH ====
+          // Membuat button booking dan edit
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(

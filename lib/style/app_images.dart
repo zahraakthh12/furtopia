@@ -22,6 +22,13 @@ class AppImages{
   static const person = "$assetImage/person.png";
   static const bgg = "$assetImage/bgg.png";
   static const bg1 = "$assetImage/bg1.png";
+  static const grooming = "$assetImage/grooming.jpg";
+  static const steril = "$assetImage/steril.jpg";
+  static const vaksin = "$assetImage/vaksin.jpg";
+  static const royalcanin= "$assetImage/royalcanin.jpg";
+  static const shampoo= "$assetImage/shampoo.png";
+  static const bola= "$assetImage/bola.jpg";
+  static const kasur= "$assetImage/kasur.jpg";
 }
 
 class CustomImage extends StatelessWidget {
