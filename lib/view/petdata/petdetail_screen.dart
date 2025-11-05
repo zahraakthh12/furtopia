@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/model/pet_model.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/petedit_screen.dart';
+import 'package:furtopia/view/petdata/petedit_screen.dart';
 
 class PetDetailScreen extends StatefulWidget {
   final PetModel pet;

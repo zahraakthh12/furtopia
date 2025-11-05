@@ -5,9 +5,10 @@ import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
-import 'package:furtopia/view/petclinic_booking.dart';
-import 'package:furtopia/view/peteducation_screen.dart';
-import 'package:furtopia/view/petshop_screen.dart';
+import 'package:furtopia/view/bottom/chat_page.dart';
+import 'package:furtopia/view/petclinic/petclinic_booking.dart';
+import 'package:furtopia/view/petedu/peteducation_screen.dart';
+import 'package:furtopia/view/petshop/petshop_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,7 +40,20 @@ class _HomePageState extends State<HomePage> {
 
   
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.shape6,
+        elevation: 8,
+        child: Icon(Icons.chat_bubble,
+        color: AppColors.white,
+        size: 26),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ChatSupportScreen()),
+            );},),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   SafeArea buildLayer(){
@@ -55,8 +69,8 @@ class _HomePageState extends State<HomePage> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Halo,", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.white)),
-                  Text("${dataUser?.fullname ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.white)),
+                  Text("Halo,", style: TextStyle(fontFamily: customFont, fontSize: 16)),
+                  Text("${dataUser?.fullname ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
               const Spacer(),
@@ -234,9 +248,9 @@ class _HomePageState extends State<HomePage> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppImages.background3),
+          image: AssetImage(AppImages.background4),
           fit: BoxFit.cover,
         ),
       ),

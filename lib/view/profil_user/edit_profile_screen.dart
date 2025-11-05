@@ -59,7 +59,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 fontFamily: customFont,
                 fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.shape5.withOpacity(0.75),
-      ),
+      ), backgroundColor: AppColors.bg1.withOpacity(0.1),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(

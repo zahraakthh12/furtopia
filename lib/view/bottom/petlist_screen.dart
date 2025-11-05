@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/pet_model.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/addpet_screen.dart';
-import 'package:furtopia/view/petdetail_screen.dart';
+import 'package:furtopia/view/petdata/addpet_screen.dart';
+import 'package:furtopia/view/petdata/petdetail_screen.dart';
 
 class PetListScreen extends StatefulWidget {
   const PetListScreen({super.key});
@@ -45,7 +45,7 @@ class _PetListScreenState extends State<PetListScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
+                Text(
                   "🐾 Hapus Hewan?",
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -54,17 +54,17 @@ class _PetListScreenState extends State<PetListScreen> {
                     color: Color(0xFFB76E79),
                   ),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: 10),
                 Text(
                   "Apakah Anda yakin ingin menghapus hewan '${pet.name}'?",
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 14,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Tombol
                 Row(
@@ -75,12 +75,12 @@ class _PetListScreenState extends State<PetListScreen> {
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
                         style: OutlinedButton.styleFrom(
-                          side: const BorderSide(color: Color(0xFFB76E79)),
+                          side: BorderSide(color: Color(0xFFB76E79)),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Batal",
                           style: TextStyle(
                             fontFamily: 'Poppins',
@@ -89,7 +89,7 @@ class _PetListScreenState extends State<PetListScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
 
                     // Hapus
                     Expanded(
@@ -104,7 +104,7 @@ class _PetListScreenState extends State<PetListScreen> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           "Hapus",
                           style: TextStyle(
                             fontFamily: 'Poppins',
@@ -125,11 +125,11 @@ class _PetListScreenState extends State<PetListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: AppColors.bg2.withOpacity(0.1),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.shape4.withOpacity(0.75),
-        title: const Text(
+        title: Text(
           "Profil Hewan Peliharaan",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -162,12 +162,12 @@ class _PetListScreenState extends State<PetListScreen> {
                     color: AppColors.shape4.withOpacity(0.8),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.add, color: Colors.white),
+                  child: Icon(Icons.add, color: Colors.white),
                 ),
               ),
             ),
 
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
 
             // Jika tidak ada hewan
             if (petList.isEmpty)
@@ -200,17 +200,17 @@ class _PetListScreenState extends State<PetListScreen> {
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: AppColors.shape2.withOpacity(0.1),
+                        color: AppColors.shape2.withOpacity(0.4),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ListTile(
                         leading: Text(
                           pet.icon,
-                          style: const TextStyle(fontSize: 40),
+                          style: TextStyle(fontSize: 40),
                         ),
                         title: Text(
                           pet.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                             fontFamily: 'Poppins',
@@ -218,7 +218,7 @@ class _PetListScreenState extends State<PetListScreen> {
                         ),
                         subtitle: Text(
                           "${pet.type} • ${pet.age}",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.black54,
                             fontFamily: 'Poppins',
                           ),
@@ -230,7 +230,7 @@ class _PetListScreenState extends State<PetListScreen> {
 
                             // Detail
                             IconButton(
-                              icon: const Icon(Icons.info_outline, color: Colors.grey),
+                              icon: Icon(Icons.info_outline, color: Colors.grey),
                               onPressed: () async {
                                 await Navigator.push(
                                   context,
@@ -244,7 +244,7 @@ class _PetListScreenState extends State<PetListScreen> {
 
                             // Hapus
                             IconButton(
-                              icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                              icon: Icon(Icons.delete_outline, color: Colors.grey),
                               onPressed: () => showDeleteDialog(pet),
                             ),
                           ],

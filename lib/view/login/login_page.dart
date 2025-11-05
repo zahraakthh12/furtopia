@@ -5,7 +5,7 @@ import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
-import 'package:furtopia/view/regist_page.dart';
+import 'package:furtopia/view/login/regist_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {

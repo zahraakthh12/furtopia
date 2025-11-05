@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
+import 'package:furtopia/view/petshop/checkout_page.dart';
 import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _CartPageState extends State<CartPage> {
       0, (sum, item) => (sum + ((item["price"] as int) * item["quantity"])).toInt(),);
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(automaticallyImplyLeading: false,
         title: Text(
           "Keranjang",
           style: TextStyle(
@@ -38,7 +39,7 @@ class _CartPageState extends State<CartPage> {
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      // ✅ Jika keranjang kosong
+      // Jika keranjang kosong
       body: cart.isEmpty
           ? Center(
               child: Text(
@@ -52,7 +53,7 @@ class _CartPageState extends State<CartPage> {
             )
           : Column(
               children: [
-                // ✅ List Produk
+                // List Produk
                 Expanded(
                   child: ListView.builder(
                     itemCount: cart.length,
@@ -60,6 +61,7 @@ class _CartPageState extends State<CartPage> {
                       final item = cart[index];
 
                       return Card(
+                        color: AppColors.white,
                         margin:
                             const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         shape: RoundedRectangleBorder(
@@ -78,6 +80,7 @@ class _CartPageState extends State<CartPage> {
                             item["product"],
                             style: TextStyle(
                                 fontFamily: customFont,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
@@ -89,7 +92,7 @@ class _CartPageState extends State<CartPage> {
                             ),
                           ),
 
-                          // ✅ Tambah / Kurangi / Hapus
+                          // Tambah / Kurangi / Hapus
                           trailing: Column(
                             children: [
                               // row + -
@@ -97,7 +100,7 @@ class _CartPageState extends State<CartPage> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                      icon: const Icon(Icons.remove),
+                                      icon: Icon(Icons.remove),
                                       onPressed: () {
                                         setState(() {
                                           if (item["quantity"] > 1) {
@@ -114,7 +117,7 @@ class _CartPageState extends State<CartPage> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   IconButton(
-                                      icon: const Icon(Icons.add),
+                                      icon: Icon(Icons.add),
                                       onPressed: () {
                                         setState(() {
                                           item["quantity"]++;
@@ -122,24 +125,6 @@ class _CartPageState extends State<CartPage> {
                                       }),
                                 ],
                               ),
-
-                              // Hapus item
-                              GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    cart.removeAt(index);
-                                  });
-                                },
-                                child: Text(
-                                  "Hapus",
-                                  style: TextStyle(
-                                    fontFamily: customFont,
-                                    fontSize: 12,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
@@ -148,7 +133,7 @@ class _CartPageState extends State<CartPage> {
                   ),
                 ),
 
-                // ✅ Bagian Total & Checkout
+                // Bagian Total & Checkout
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -157,7 +142,7 @@ class _CartPageState extends State<CartPage> {
                       BoxShadow(
                           blurRadius: 4,
                           color: Colors.black.withOpacity(0.15),
-                          offset: const Offset(0, -2))
+                          offset: Offset(0, -2))
                     ],
                   ),
                   child: Column(
@@ -184,18 +169,14 @@ class _CartPageState extends State<CartPage> {
                       const SizedBox(height: 14),
                       ElevatedButton(
                         onPressed: () {
-                          cart.clear();
-                          setState(() {});
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Checkout berhasil! Terima kasih ❤️"),
-                              backgroundColor: AppColors.shape4,
-                            ),
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CheckoutPage()),
                           );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.shape4.withOpacity(0.75),
-                          minimumSize: const Size(double.infinity, 45),
+                          minimumSize: Size(double.infinity, 45),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                         ),

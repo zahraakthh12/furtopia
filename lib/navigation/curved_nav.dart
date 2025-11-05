@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:furtopia/view/home_page.dart';
-import 'package:furtopia/view/profile_page.dart';
+import 'package:furtopia/view/bottom/home_page.dart';
+import 'package:furtopia/view/bottom/profile_page.dart';
 
 class CurvedBottomNav extends StatefulWidget {
   const CurvedBottomNav({super.key});

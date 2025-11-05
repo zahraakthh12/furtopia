@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/navigation/curved_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/home_page.dart';
-import 'package:furtopia/view/login_page.dart';
-import 'package:furtopia/view/peteducation_screen.dart';
+import 'package:furtopia/view/bottom/home_page.dart';
+import 'package:furtopia/view/login/login_page.dart';
+import 'package:furtopia/view/petedu/peteducation_screen.dart';
 import 'package:furtopia/view/splash_screen.dart';
 
 void main() {
@@ -14,6 +14,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   final customFont = 'Poppins';
+
 
   // This widget is the root of your application.
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/home_page.dart';
+import 'package:furtopia/view/bottom/home_page.dart';
 
 class EduScreen extends StatefulWidget {
   const EduScreen({super.key});

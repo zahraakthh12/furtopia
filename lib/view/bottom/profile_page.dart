@@ -4,8 +4,8 @@ import 'package:furtopia/model/user_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/login_page.dart';
-import 'package:furtopia/view/profil_edit_page.dart';
+import 'package:furtopia/view/login/login_page.dart';
+import 'package:furtopia/view/profil_user/profil_edit_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -224,7 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(AppImages.background4),
           fit: BoxFit.cover,
