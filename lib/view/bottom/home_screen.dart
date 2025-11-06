@@ -5,7 +5,7 @@ import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
-import 'package:furtopia/view/bottom/chat_page.dart';
+import 'package:furtopia/view/bottom/chat_screen.dart';
 import 'package:furtopia/view/petclinic/petclinic_booking.dart';
 import 'package:furtopia/view/petedu/peteducation_screen.dart';
 import 'package:furtopia/view/petshop/petshop_screen.dart';

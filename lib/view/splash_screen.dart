@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/login/login_page.dart';
+import 'package:furtopia/view/login/login_screen.dart';
 
 class SplashScreenFurtopia extends StatefulWidget {
   const SplashScreenFurtopia({super.key});

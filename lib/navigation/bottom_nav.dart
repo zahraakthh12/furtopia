@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/petshop/cart_screen.dart';
-import 'package:furtopia/view/bottom/chat_page.dart';
-import 'package:furtopia/view/bottom/home_page.dart';
+import 'package:furtopia/view/bottom/chat_screen.dart';
+import 'package:furtopia/view/bottom/home_screen.dart';
 import 'package:furtopia/view/bottom/petlist_screen.dart';
-import 'package:furtopia/view/bottom/profile_page.dart';
+import 'package:furtopia/view/bottom/profile_screen.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({super.key});

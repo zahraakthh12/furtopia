@@ -134,7 +134,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     ),
                     child: Text(
-                      currentStep == 4 ? "Tambah Hewan" : "Lanjut",
+                      currentStep == 4 ? "Tambah Hewan" : "Lanjut", // jika current step = 4 maka menampilkan tambah hewan
                       style: const TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
@@ -155,13 +155,13 @@ class _AddPetScreenState extends State<AddPetScreen> {
   Widget buildStepContent() {
     switch (currentStep) {
       case 1:
-        return buildIconStep();
+        return buildIconStep(); // Langkah menampilkan halaman memilih icon hewan
       case 2:
-        return buildBasicInfoStep();
+        return buildBasicInfoStep(); // Langkah mengisi biodata hewan halaman 1
       case 3:
-        return buildPhysicalStep();
+        return buildPhysicalStep(); // Langkah mengisi biodata halaman 2
       case 4:
-        return buildSummaryStep();
+        return buildSummaryStep(); // Menampilkan biodata
       default:
         return const SizedBox();
     }
@@ -286,7 +286,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                 borderSide: const BorderSide(color: Color(0xFFB76E79), width: 0.3),
               ),
             ),
-            onChanged: (v) => formData[key] = v,
+            onChanged: (v) => formData[key] = v, // v adalah nilai input yang diisi user
           ),
         ],
       ),

@@ -97,7 +97,7 @@ class _PetDetailScreenState extends State<PetDetailScreen> {
                     ),
                     const SizedBox(height: 20),
 
-                    if (selectedTab == 0) buildInfoSection(pet),
+                    if (selectedTab == 0) buildInfoSection(pet), //Jika selectedTab bernilai 0, maka tampilkan widget buildInfo
                     if (selectedTab == 1) buildHealthSection(),
                   ],
                 ),

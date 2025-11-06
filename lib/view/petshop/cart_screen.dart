@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/petshop/checkout_page.dart';
+import 'package:furtopia/view/petshop/checkout_screen.dart';
 import 'package:intl/intl.dart';
 
 class CartPage extends StatefulWidget {
@@ -20,12 +20,12 @@ class _CartPageState extends State<CartPage> {
       symbol: 'Rp ',
       decimalDigits: 0,
     ).format(price);
-  }
+  } // Mengubah ke format rupiah
 
   @override
   Widget build(BuildContext context) {
     int totalHarga = cart.fold(
-      0, (sum, item) => (sum + ((item["price"] as int) * item["quantity"])).toInt(),);
+      0, (sum, item) => (sum + ((item["price"] as int) * item["quantity"])).toInt(),); // harga*jumlah, dan fold() untuk menjumlahkan item dalam list
 
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false,

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/navigation/curved_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/bottom/home_page.dart';
-import 'package:furtopia/view/login/login_page.dart';
+import 'package:furtopia/view/bottom/home_screen.dart';
+import 'package:furtopia/view/login/login_screen.dart';
 import 'package:furtopia/view/petedu/peteducation_screen.dart';
 import 'package:furtopia/view/splash_screen.dart';
 
