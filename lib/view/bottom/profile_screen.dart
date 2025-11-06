@@ -7,14 +7,14 @@ import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/login/login_screen.dart';
 import 'package:furtopia/view/profil_user/profil_edit_screen.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileScreenState extends State<ProfileScreen> {
   final customFont = 'Poppins';
   UserModel? dataUser;
 
@@ -192,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 GestureDetector(
                   onTap: (){
                     Navigator.pushReplacement(context, 
-                    MaterialPageRoute(builder: (context) => LoginPage(),),);
+                    MaterialPageRoute(builder: (context) => LoginScreen(),),);
                   },
                   child: Container(
                     height: 50, 
@@ -233,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  // Container boxPage(){
+  // Container boxScreen(){
   //   String? text;
   //   Image? image;
   //   Icon? icon;

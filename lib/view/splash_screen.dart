@@ -31,7 +31,7 @@ class _SplashScreenFurtopiaState extends State<SplashScreenFurtopia> {
       } else {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => LoginScreen()),
           (route) => false,
         );
       }

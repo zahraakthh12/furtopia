@@ -36,6 +36,64 @@ class _PetEditScreenState extends State<PetEditScreen> {
     lengthC = TextEditingController(text: pet.length);
   }
 
+  void showConfirmDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text(
+            "Konfirmasi",
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            "Apakah Anda yakin ingin menyimpan perubahan data hewan ini?",
+            style: TextStyle(fontFamily: 'Poppins'),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context), // batal
+              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFB76E79),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              ),
+              onPressed: () async {
+                Navigator.pop(context); // tutup dialog
+
+                final updatedPet = PetModel(
+                  id: widget.pet.id,
+                  icon: widget.pet.icon,
+                  name: nameC.text,
+                  type: typeC.text,
+                  gender: genderC.text,
+                  age: ageC.text,
+                  color: colorC.text,
+                  weight: weightC.text,
+                  length: lengthC.text,
+                );
+
+                await DBHelper.updatePet(updatedPet);
+
+                Fluttertoast.showToast(msg: "Data hewan berhasil diperbarui");
+                Navigator.pop(context, updatedPet); // kembali ke detail
+              },
+              child: const Text(
+                "Simpan",
+                style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
+              ),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,22 +124,9 @@ class _PetEditScreenState extends State<PetEditScreen> {
               buildTextField("Panjang Badan (cm)", lengthC),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    final updatedPet = PetModel(
-                      id: widget.pet.id,
-                      icon: widget.pet.icon,
-                      name: nameC.text,
-                      type: typeC.text,
-                      gender: genderC.text,
-                      age: ageC.text,
-                      color: colorC.text,
-                      weight: weightC.text,
-                      length: lengthC.text,
-                    );
-                    await DBHelper.updatePet(updatedPet);
-                    Fluttertoast.showToast(msg: "Data hewan berhasil diperbarui");
-                    Navigator.pop(context, updatedPet);
+                    showConfirmDialog(); // memunculkan dialog konfirmasi
                   }
                 },
                 style: ElevatedButton.styleFrom(

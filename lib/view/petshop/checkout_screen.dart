@@ -3,14 +3,14 @@ import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/petshop/order_screen.dart';
 
-class CheckoutPage extends StatefulWidget {
-  const CheckoutPage({super.key});
+class CheckoutScreen extends StatefulWidget {
+  const CheckoutScreen({super.key});
 
   @override
-  State<CheckoutPage> createState() => _CheckoutPageState();
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
+class _CheckoutScreenState extends State<CheckoutScreen> {
   final customFont = "Poppins";
 
   final TextEditingController nameC = TextEditingController();
@@ -134,7 +134,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => InvoicePage(
+                    builder: (_) => InvoiceScreen(
                       buyerName: nameC.text,
                       phone: phoneC.text,
                       address: addressC.text,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
 
-class InvoicePage extends StatelessWidget {
+class InvoiceScreen extends StatelessWidget {
   final String buyerName;
   final String phone;
   final String address;
@@ -12,7 +12,7 @@ class InvoicePage extends StatelessWidget {
   final int ongkir;
   final int totalProduk;
 
-  const InvoicePage({
+  const InvoiceScreen({
     super.key,
     required this.buyerName,
     required this.phone,
@@ -95,7 +95,7 @@ class InvoicePage extends StatelessWidget {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => const OrderProgressPage()),
+                  MaterialPageRoute(builder: (_) => const OrderProgressScreen()),
                 );
               },
               child: const Text("Buat Pesanan", style: TextStyle(color: Colors.white, fontSize: 16)),
@@ -136,8 +136,8 @@ class InvoicePage extends StatelessWidget {
 }
 
 
-class OrderProgressPage extends StatelessWidget {
-  const OrderProgressPage({super.key});
+class OrderProgressScreen extends StatelessWidget {
+  const OrderProgressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

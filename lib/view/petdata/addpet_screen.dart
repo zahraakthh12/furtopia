@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/pet_model.dart';
+import 'package:furtopia/style/app_colors.dart';
 
 class AddPetScreen extends StatefulWidget {
   const AddPetScreen({super.key});
@@ -45,8 +46,8 @@ class _AddPetScreenState extends State<AddPetScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text("Hewan peliharaan berhasil ditambahkan 🎉"),
-          backgroundColor: Colors.green,
+          content: Text("Hewan peliharaan berhasil ditambahkan 🎉", style: TextStyle(color: AppColors.black),),
+          backgroundColor: AppColors.shape3,
         ),
       );
 

@@ -3,16 +3,16 @@ import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/user_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 
-class EditProfilePage extends StatefulWidget {
+class EditProfileScreen extends StatefulWidget {
   final UserModel user;
 
-  const EditProfilePage({super.key, required this.user});
+  const EditProfileScreen({super.key, required this.user});
 
   @override
-  State<EditProfilePage> createState() => _EditProfilePageState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _fullnameController;
   late TextEditingController _emailController;
@@ -44,7 +44,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         const SnackBar(content: Text('Profil berhasil diperbarui!')),
       );
 
-      Navigator.pop(context, updatedUser); // kirim data balik ke ProfilePage
+      Navigator.pop(context, updatedUser); // kirim data balik ke ProfileScreen
     }
   }
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MaintenancePage extends StatelessWidget {
-  const MaintenancePage({super.key});
+class MaintenanceScreen extends StatelessWidget {
+  const MaintenanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

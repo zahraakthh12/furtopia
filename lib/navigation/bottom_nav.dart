@@ -17,10 +17,10 @@ class _BottomNavState extends State<BottomNav> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = [
-    HomePage(),
-    CartPage(),
+    HomeScreen(),
+    CartScreen(),
     PetListScreen(),
-    ProfilePage(),
+    ProfileScreen(),
   ];
 
   @override

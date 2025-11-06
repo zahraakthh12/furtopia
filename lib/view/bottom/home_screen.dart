@@ -10,14 +10,14 @@ import 'package:furtopia/view/petclinic/petclinic_booking.dart';
 import 'package:furtopia/view/petedu/peteducation_screen.dart';
 import 'package:furtopia/view/petshop/petshop_screen.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   final customFont = 'Poppins';
   UserModel? dataUser;
 
@@ -257,7 +257,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  // Container boxPage(){
+  // Container boxScreen(){
   //   String? text;
   //   Image? image;
   //   Icon? icon;

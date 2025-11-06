@@ -6,14 +6,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furtopia/style/app_images.dart';
 
 //Bahas Shared Preference
-class RegistPage extends StatefulWidget {
-  const RegistPage({super.key});
+class RegistScreen extends StatefulWidget {
+  const RegistScreen({super.key});
   static const id = "/register";
   @override
-  State<RegistPage> createState() => _RegistPageState();
+  State<RegistScreen> createState() => _RegistScreenState();
 }
 
-class _RegistPageState extends State<RegistPage> {
+class _RegistScreenState extends State<RegistScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
@@ -44,7 +44,7 @@ class _RegistPageState extends State<RegistPage> {
   // register() async {
   //   Navigator.push(
   //     context,
-  //     MaterialPageRoute(builder: (context) => HomeScreenDay15()),
+  //     MaterialScreenRoute(builder: (context) => HomeScreenDay15()),
   //   );
   // }
 
