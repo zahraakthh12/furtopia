@@ -171,7 +171,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     Expanded(
                       child: Container(
                         margin: EdgeInsets.only(left: 8),
-            
                         height: 1,
                         color: AppColors.bg1.withOpacity(0.5),
                       ),

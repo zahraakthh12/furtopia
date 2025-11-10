@@ -1,4 +1,4 @@
-package com.example.furtopia
+package com.ppkd.furtopia
 
 import io.flutter.embedding.android.FlutterActivity
 

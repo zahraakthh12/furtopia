@@ -5,7 +5,7 @@ import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/login/login_screen.dart';
-import 'package:furtopia/view/profil_user/profil_edit_screen.dart';
+import 'package:furtopia/view/profil_user/profile_edit_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -139,8 +139,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
               ),
+              // Expanded(
+              //         child: Container(
+              //           margin: EdgeInsets.only(right: 8),
+              //           height: 0.2,
+              //           color: AppColors.bg1.withOpacity(0.5),
+              //         ),
+              //       ),
 
-                
                 height(20),
                 Row(
                 children: [
@@ -190,10 +196,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 height(30),
                 GestureDetector(
-                  onTap: (){
-                    Navigator.pushReplacement(context, 
-                    MaterialPageRoute(builder: (context) => LoginScreen(),),);
-                  },
+                  onTap: () async {
+                    bool? confirmLogout = await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                        title: Text(
+                          "Konfirmasi",
+                          style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold),),
+                          content: Text("Apakah Anda yakin ingin keluar dari akun?",
+                          style: TextStyle(fontFamily: 'Poppins'),),
+                          actions: [
+                            TextButton(
+                              child: Text(
+                                "Batal"),
+                                onPressed: () => Navigator.pop(context, false),),
+                                ElevatedButton(style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.shape4,),
+                                  child: const Text(
+                                    "Keluar",
+                                    style: TextStyle(color: Colors.white),),onPressed: () => Navigator.pop(context, true),),
+                                    ],
+                                    ),
+                                    );
+                                    
+                                    // Jika user pilih "Keluar"
+                                    if (confirmLogout == true) {
+                                      // Hapus ID user dari SharedPreferences
+                                      await PreferenceHandler.removeID();
+                                      // Arahkan ke halaman login
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                                        );
+                                        }
+                                        },
+
                   child: Container(
                     height: 50, 
                     padding: EdgeInsets.symmetric(horizontal: 90),

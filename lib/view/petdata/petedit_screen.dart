@@ -42,25 +42,25 @@ class _PetEditScreenState extends State<PetEditScreen> {
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: const Text(
+          title: Text(
             "Konfirmasi",
             style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
             ),
           ),
-          content: const Text(
+          content: Text(
             "Apakah Anda yakin ingin menyimpan perubahan data hewan ini?",
             style: TextStyle(fontFamily: 'Poppins'),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context), // batal
-              child: const Text("Batal", style: TextStyle(color: Colors.grey)),
+              child: Text("Batal"),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB76E79),
+                backgroundColor: AppColors.shape4.withOpacity(0.6),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               onPressed: () async {
@@ -83,7 +83,7 @@ class _PetEditScreenState extends State<PetEditScreen> {
                 Fluttertoast.showToast(msg: "Data hewan berhasil diperbarui");
                 Navigator.pop(context, updatedPet); // kembali ke detail
               },
-              child: const Text(
+              child: Text(
                 "Simpan",
                 style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
               ),
@@ -97,17 +97,17 @@ class _PetEditScreenState extends State<PetEditScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF5E9),
+      backgroundColor: Color(0xFFFAF5E9),
       appBar: AppBar(
-        title: const Text(
-          "Edit Hewan",
+        title: Text(
+          "Edit Data Hewan",
           style: TextStyle(
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
             fontSize: 20,
           ),
         ),
-        backgroundColor: AppColors.shape4.withOpacity(0.6),
+        backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -122,7 +122,7 @@ class _PetEditScreenState extends State<PetEditScreen> {
               buildTextField("Warna", colorC),
               buildTextField("Berat Badan (kg)", weightC),
               buildTextField("Panjang Badan (cm)", lengthC),
-              const SizedBox(height: 20),
+              SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
@@ -130,10 +130,10 @@ class _PetEditScreenState extends State<PetEditScreen> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFB76E79),
+                  backgroundColor: AppColors.shape4.withOpacity(0.4),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                child: const Text(
+                child: Text(
                   "Simpan Perubahan",
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -156,7 +156,7 @@ class _PetEditScreenState extends State<PetEditScreen> {
         controller: controller,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(fontFamily: 'Poppins', color: Color(0xFFB76E79)),
+          labelStyle: TextStyle(fontFamily: 'Poppins', color: AppColors.shape4.withOpacity(0.6)),
           filled: true,
           fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
