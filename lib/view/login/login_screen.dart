@@ -22,7 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final customFont = 'Poppins';
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground() ,buildLayer()]));
+    return Scaffold(resizeToAvoidBottomInset: false,
+      body: Stack(children: [buildBackground() ,buildLayer()]));
   }
 
    login() async {

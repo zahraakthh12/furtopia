@@ -38,7 +38,8 @@ class _RegistScreenState extends State<RegistScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(resizeToAvoidBottomInset: false,
+      body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   // register() async {

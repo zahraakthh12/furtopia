@@ -50,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
           height(5),
           Container(height: 160,
-           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+           padding: EdgeInsets.only(left: 20.0, right: 15.0, top: 10.0),
            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
            boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
            offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
@@ -72,14 +72,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Icon(Icons.email_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
                           width(5),
-                          Text("${dataUser?.email ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                          Text("${dataUser?.email ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 11),),
                         ],
                       ),
                       Row(
                         children: [
                           Icon(Icons.call_outlined, color: AppColors.black.withOpacity(0.4), size: 15),
                           width(5),
-                          Text("${dataUser?.phone ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 12),),
+                          Text("${dataUser?.phone ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 11),),
                         ],
                       ),
                     ],

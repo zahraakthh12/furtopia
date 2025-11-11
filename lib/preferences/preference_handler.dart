@@ -1,43 +1,42 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceHandler {
-  static const String isLogin = "isLogin";
-  static const String isId = "isId";
+  static const String keyIsLogin = "isLogin";
+  static const String keyUserId = "userId";
 
-  //Save data login pada saat login
-  static saveLogin(bool value) async {
+  // Simpan status login
+  static Future<void> saveLogin(bool value) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setBool(isLogin, value);
+    await prefs.setBool(keyIsLogin, value);
   }
 
-  //Ambil data login pada saat mau login / ke dashboard
-  static getLogin() async {
+  // Ambil status login
+  static Future<bool?> getLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(isLogin);
+    return prefs.getBool(keyIsLogin);
   }
 
-  //Hapus data login pada saat logout
-  static removeLogin() async {
+  // Hapus status login
+  static Future<void> removeLogin() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(isLogin);
+    await prefs.remove(keyIsLogin);
   }
 
-  //Save data ID pada saat login
-  static saveID(int value) async {
+  // Simpan ID user
+  static Future<void> saveID(int value) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setInt(isLogin, value);
+    await prefs.setInt(keyUserId, value);
   }
 
-  //Ambil data ID pada saat mau login / ke dashboard
-  static getID() async {
+  // Ambil ID user
+  static Future<int?> getID() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getInt(isLogin);
+    return prefs.getInt(keyUserId);
   }
 
-  //Hapus data ID pada saat logout
-  static removeID() async {
+  // Hapus ID user
+  static Future<void> removeID() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove(isLogin);
+    await prefs.remove(keyUserId);
   }
-
 }

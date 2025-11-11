@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/splash_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
