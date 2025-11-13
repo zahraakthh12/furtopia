@@ -6,6 +6,7 @@ import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
 import 'package:furtopia/view/bottom/chat_screen.dart';
+import 'package:furtopia/view/petclinic/petchoose_screen.dart';
 import 'package:furtopia/view/petclinic/petclinic_booking.dart';
 import 'package:furtopia/view/petedu/peteducation_screen.dart';
 import 'package:furtopia/view/petshop/petshop_screen.dart';
@@ -145,41 +146,47 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
 
           height(20),
-          Container(height: 150,
-           padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-           decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-           boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-           offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-          child: 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    height: 60, 
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                    boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                    offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                  child: 
-                  Image.asset(AppImages.clinic, height: 60,)),
-                  width(15),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Pet Clinic", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                      Text("Booking perawatan hewan", style: TextStyle(fontFamily: customFont),),
-
-                      height(5),
-                      BuildWidget1(imagePath: AppImages.homeservice, text: "Home Service", customFont: customFont,),
-                      height(8),
-                      BuildWidget1(imagePath: AppImages.offlinevisit, text: "Offline Visit", customFont: customFont),
-                    ],
-                  ),
-                ],
-              )
-            ],)),
+          GestureDetector(
+            onTap:(){
+              Navigator.push(context,
+              MaterialPageRoute(builder: (context) => PetChooseScreen()),);
+            },
+            child: Container(height: 150,
+             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
+             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+            child: 
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 60, 
+                      padding: EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
+                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
+                    child: 
+                    Image.asset(AppImages.clinic, height: 60,)),
+                    width(15),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Pet Clinic", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
+                        Text("Booking perawatan hewan", style: TextStyle(fontFamily: customFont),),
+            
+                        height(5),
+                        BuildWidget1(imagePath: AppImages.homeservice, text: "Home Service", customFont: customFont,),
+                        height(8),
+                        BuildWidget1(imagePath: AppImages.offlinevisit, text: "Offline Visit", customFont: customFont),
+                      ],
+                    ),
+                  ],
+                )
+              ],)),
+          ),
 
           height(20),
           GestureDetector(

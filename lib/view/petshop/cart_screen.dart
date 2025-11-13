@@ -42,13 +42,19 @@ class _CartScreenState extends State<CartScreen> {
       // Jika keranjang kosong
       body: cart.isEmpty
           ? Center(
-              child: Text(
-                "Keranjang kosong",
-                style: TextStyle(
-                  fontFamily: customFont,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Keranjang kosong!",
+                    style: TextStyle(
+                      fontFamily: customFont,
+                      fontSize: 16,
+                      color: AppColors.black.withOpacity(0.5),
+                    ),
+                  ),
+                  Icon(Icons.shopping_cart_outlined, size: 100, color: AppColors.black.withOpacity(0.2),)
+                ],
               ),
             )
           : Column(

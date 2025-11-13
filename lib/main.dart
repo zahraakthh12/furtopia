@@ -9,14 +9,13 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-  final customFont = 'Poppins';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FurTopia',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData( fontFamily: customFont,
+      theme: ThemeData( fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.shape6.withOpacity(0.92)),
       ),
       home: SplashScreenFurtopia(),
