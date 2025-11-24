@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:furtopia/model/user_firebase_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/user_model.dart';
@@ -142,7 +143,7 @@ class _RegistScreenState extends State<RegistScreen> {
                   text: "Daftar Sekarang",
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      final UserModel data = UserModel(
+                      final UserFirebaseModel data = UserFirebaseModel(
                         fullname: fullnameController.text,
                         phone: phoneController.text,
                         email: emailController.text,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "967165316374",
+    "project_id": "furtopia",
+    "storage_bucket": "furtopia.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:967165316374:android:9690c8f96f64c994cc9437",
+        "android_client_info": {
+          "package_name": "com.ppkd.furtopia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR-JH6irZMP-Q1jg7hIGG-KPO90t4YJWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
