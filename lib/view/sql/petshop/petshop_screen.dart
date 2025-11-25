@@ -5,7 +5,7 @@ import 'package:furtopia/model/shop_model.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/petshop/cart_screen.dart';
+import 'package:furtopia/view/sql/petshop/cart_screen.dart';
 import 'package:intl/intl.dart';
 
 class PetShopScreen extends StatefulWidget {

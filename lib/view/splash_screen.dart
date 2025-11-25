@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:furtopia/navigation/bottom_nav.dart';
+import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/login/login_screen.dart';
+import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
 
 class SplashScreenFurtopia extends StatefulWidget {
   const SplashScreenFurtopia({super.key});
@@ -25,13 +25,13 @@ class _SplashScreenFurtopiaState extends State<SplashScreenFurtopia> {
       if (isLogin != null && isLogin == true) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => BottomNav()),
+          MaterialPageRoute(builder: (context) => BottomNavFirebase()),
           (route) => false,
         );
       } else {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(builder: (context) => LoginFirebaseScreen()),
           (route) => false,
         );
       }

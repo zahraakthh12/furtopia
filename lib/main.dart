@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furtopia/firebase_options.dart';
+import 'package:furtopia/service/firebase_options.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/splash_screen.dart';
 import 'package:intl/date_symbol_data_local.dart';

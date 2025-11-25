@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/petshop/checkout_screen.dart';
+import 'package:furtopia/view/firebase/petshop/checkout_firebase_screen.dart';
 import 'package:intl/intl.dart';
 
-class CartScreen extends StatefulWidget {
-  const CartScreen({super.key});
+class CartFirebaseScreen extends StatefulWidget {
+  const CartFirebaseScreen({super.key});
 
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  State<CartFirebaseScreen> createState() => _CartFirebaseScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
   final customFont = "Poppins";
 
   String formatRupiah(int price) {
@@ -177,7 +177,7 @@ class _CartScreenState extends State<CartScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => CheckoutScreen()),
+                            MaterialPageRoute(builder: (context) => CheckoutFirebaseScreen()),
                           );
                         },
                         style: ElevatedButton.styleFrom(

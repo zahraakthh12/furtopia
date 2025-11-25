@@ -1,37 +1,53 @@
-//Bahas Shared Preference
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/database/db_helper.dart';
-import 'package:furtopia/navigation/bottom_nav.dart';
-import 'package:furtopia/preferences/preference_handler.dart';
-import 'package:furtopia/view/login/regist_screen.dart';
+import 'package:furtopia/model/user_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:furtopia/style/app_images.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-  static const id = "/login_screen18";
+//Bahas Shared Preference
+class RegistScreen extends StatefulWidget {
+  const RegistScreen({super.key});
+  static const id = "/register";
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegistScreen> createState() => _RegistScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegistScreenState extends State<RegistScreen> {
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController fullnameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isVisibility = false;
   final customFont = 'Poppins';
+  bool isVisibility = false;
+  bool isFilled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController.addListener(_checkFields);
+    passwordController.addListener(_checkFields);
+  }
+
+  void _checkFields() {
+    setState(() {
+      isFilled =
+          emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(resizeToAvoidBottomInset: false,
-      body: Stack(children: [buildBackground() ,buildLayer()]));
+      body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
-   login() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BottomNav()),
-    );
-  }
+  // register() async {
+  //   Navigator.push(
+  //     context,
+  //     MaterialScreenRoute(builder: (context) => HomeScreenDay15()),
+  //   );
+  // }
 
   final _formKey = GlobalKey<FormState>();
   SafeArea buildLayer() {
@@ -39,7 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Form(
         key: _formKey,
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 160, horizontal: 25),
+          padding: const EdgeInsets.only(left: 25, right: 25, top: 160, bottom: 70),
           child: Container(padding: EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
                   decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(30), 
                   boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25), 
@@ -50,12 +66,39 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Selamat Datang",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: customFont),
+                  "Mari Bergabung dengan FurTopia!", style: TextStyle(fontSize: 20, fontFamily: customFont, fontWeight: FontWeight.bold), textAlign: TextAlign.center,),
+                height(12),
+                buildTitle("Nama Lengkap"),
+                height(5),
+                buildTextField(
+                  hintText: "Nama Lengkap Anda",
+                  icon: Icon(Icons.person_2_outlined, color: AppColors.black.withOpacity(0.4)),
+                  controller: fullnameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Nama tidak boleh kosong";
+                    }
+                    return null;
+                  },
                 ),
-                Text(
-                  "Masuk ke Akun Anda", style:TextStyle(fontSize: 12, fontFamily: customFont)
+                        
+                height(12),
+                buildTitle("Nomor Telepon"),
+                height(5),
+                buildTextField(
+                  hintText: "08xxxxxxxxxx",
+                  icon: Icon(Icons.call_outlined, color: AppColors.black.withOpacity(0.4)),
+                  controller: phoneController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Nomor HP tidak boleh kosong';
+                      } else if (value.length < 11) {
+                        return 'Nomor HP minimal 11 angka';
+                        }
+                        return null;
+                        },
                 ),
+                        
                 height(12),
                 buildTitle("Email"),
                 height(5),
@@ -76,9 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
-            
+                        
                 height(12),
-                buildTitle("Kata Sandi"),
+                buildTitle("Password"),
                 height(5),
                 buildTextField(
                   hintText: "******",
@@ -87,137 +130,47 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Kata Sandi tidak boleh kosong";
+                      return "Password tidak boleh kosong";
                     } else if (value.length < 6) {
-                      return "Kata Sandi minimal 6 karakter";
+                      return "Password minimal 6 karakter";
                     }
                     return null;
                   },
                 ),
-
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                    },
-                    child: Text(
-                      "Lupa Kata Sandi?",
-                      style: TextStyle( color: AppColors.bg1,
-                        fontSize: 12,
-                        fontFamily: customFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
+                height(24),
                 LoginButton(
-                  text: "Masuk",
-                  onPressed: () async {
+                  text: "Daftar Sekarang",
+                  onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      PreferenceHandler.saveLogin(true);
-                      final data = await DBHelper.loginUser(
+                      final UserModel data = UserModel(
+                        fullname: fullnameController.text,
+                        phone: phoneController.text,
                         email: emailController.text,
                         password: passwordController.text,
                       );
-                      if (data != null) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BottomNav(),
-                          ),
-                        );
-                      } else {
-                        Fluttertoast.showToast(
-                          msg: "Email atau Kata Sandi salah",
-                        );
-                      }
+                      DBHelper.registerUser(data);
+                      Fluttertoast.showToast(msg: "Daftar Berhasil");
+                        
+                      Navigator.pop(context);
                     } else {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Text("Validation Error"),
-                            content: Text("Please fill all fields"),
-                            actions: [
-                              TextButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
                     }
                   },
                 ),
-            
-            
-                height(16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 8),
-                        height: 1,
-                        color: AppColors.bg1.withOpacity(0.5),
-                      ),
-                    ),
-                    Text(
-                      "atau", style: TextStyle(fontFamily: customFont, fontSize: 12),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 8),
-                        height: 1,
-                        color: AppColors.bg1.withOpacity(0.5),
-                      ),
-                    ),
-                  ],
-                ),
-            
-                height(12),
-                SizedBox(
-                  width: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/google.png",
-                        height: 40,
-                        width: 40,
-                      ),
-                      width(30),
-                      Image.asset(
-                        "assets/images/wa.png",
-                        height: 40,
-                        width: 40,
-                      ),
-                    ],
-                  ),
-                ),
+                        
                 height(5),
+                        
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Belum punya akun?", style: TextStyle(fontFamily: customFont, fontSize: 12)
+                      "Sudah punya akun?", style: TextStyle(fontFamily: customFont, fontSize: 12)
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegistScreen(),
-                          ),
-                        );
-            
+                        Navigator.of(context).pop();
                       },
                       child: Text(
-                        "Daftar Sekarang",
+                        "Masuk di sini",
                         style: TextStyle(
                           color: AppColors.bg1,
                           fontSize: 12,
@@ -242,14 +195,14 @@ class _LoginScreenState extends State<LoginScreen> {
       width: double.infinity,
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(AppImages.bg1),
+          image: AssetImage(AppImages.background2),
           fit: BoxFit.cover,
         ),
       ),
     );
   }
 
-  TextFormField buildTextField({
+ TextFormField buildTextField({
     String? hintText,
     bool isPassword = false,
     Icon? icon,

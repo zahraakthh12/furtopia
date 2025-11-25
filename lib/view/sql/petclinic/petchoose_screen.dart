@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/model/pet_model.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/petclinic/petclinic_booking.dart';
+import 'package:furtopia/view/sql/petclinic/petclinic_booking.dart';
 
 class PetChooseScreen extends StatefulWidget {
   const PetChooseScreen({super.key});

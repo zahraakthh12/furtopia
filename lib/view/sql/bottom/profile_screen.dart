@@ -4,8 +4,8 @@ import 'package:furtopia/model/user_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/view/login/login_screen.dart';
-import 'package:furtopia/view/profil_user/profile_edit_screen.dart';
+import 'package:furtopia/view/sql/login/login_screen.dart';
+import 'package:furtopia/view/sql/profil_user/profile_edit_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

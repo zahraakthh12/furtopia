@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/petshop/order_screen.dart';
+import 'package:furtopia/view/sql/petshop/order_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});

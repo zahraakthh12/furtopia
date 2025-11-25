@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/sql/petshop/cart_screen.dart';
-import 'package:furtopia/view/sql/bottom/chat_screen.dart';
-import 'package:furtopia/view/sql/bottom/home_screen.dart';
-import 'package:furtopia/view/sql/bottom/petlist_screen.dart';
-import 'package:furtopia/view/sql/bottom/profile_screen.dart';
+import 'package:furtopia/view/firebase/bottom/home_firebase_screen.dart';
+import 'package:furtopia/view/firebase/bottom/petlist_firebase_screen.dart';
+import 'package:furtopia/view/firebase/bottom/profile_firebase_screen.dart';
+import 'package:furtopia/view/firebase/petshop/cart_firebase_screen.dart';
 
-class BottomNav extends StatefulWidget {
-  const BottomNav({super.key});
+
+class BottomNavFirebase extends StatefulWidget {
+  const BottomNavFirebase({super.key});
 
   @override
-  State<BottomNav> createState() => _BottomNavState();
+  State<BottomNavFirebase> createState() => _BottomNavFirebaseState();
 }
 
-class _BottomNavState extends State<BottomNav> {
+class _BottomNavFirebaseState extends State<BottomNavFirebase> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = [
-    HomeScreen(),
-    CartScreen(),
-    PetListScreen(),
-    ProfileScreen(),
+    HomeScreenFirebase(),
+    CartFirebaseScreen(),
+    PetListFirebaseScreen(),
+    ProfileFirebaseScreen(),
   ];
 
   @override
