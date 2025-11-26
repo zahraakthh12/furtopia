@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
+import 'package:furtopia/service/add_product.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
 
@@ -19,6 +20,7 @@ class _SplashScreenFurtopiaState extends State<SplashScreenFurtopia> {
   }
 
   isLoginFunction() async {
+    // await ProductSeeder.uploadDummyProducts();
     Future.delayed(Duration(seconds: 3)).then((value) async {
       var isLogin = await PreferenceHandler.getLogin();
       print(isLogin);
@@ -40,17 +42,18 @@ class _SplashScreenFurtopiaState extends State<SplashScreenFurtopia> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground() ,buildLayer()]));
+    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
-  SafeArea buildLayer(){
+  SafeArea buildLayer() {
     return SafeArea(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-        Image.asset(AppImages.logo)
-      ],));}
+        children: [Image.asset(AppImages.logo)],
+      ),
+    );
+  }
 
   Container buildBackground() {
     return Container(

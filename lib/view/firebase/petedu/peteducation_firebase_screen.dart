@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furtopia/navigation/bottom_nav.dart';
+import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 
@@ -11,19 +11,18 @@ class EduFirebaseScreen extends StatefulWidget {
 }
 
 class _EduFirebaseScreenState extends State<EduFirebaseScreen> {
-  final customFont = 'Poppins';
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: AppColors.shape4.withOpacity(0.75),
-      title: Text("Pet Education", style: TextStyle(fontFamily: customFont, fontWeight: FontWeight.bold, fontSize: 20),),
+      title: Text("Pet Education", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
       leading: IconButton(
         icon: Icon(Icons.arrow_back, color: AppColors.black),
         onPressed: (){
           Navigator.pushReplacement(context, 
-          MaterialPageRoute(builder: (context) => BottomNav()));
+          MaterialPageRoute(builder: (context) => BottomNavFirebase()));
         })),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
@@ -62,7 +61,7 @@ class _EduFirebaseScreenState extends State<EduFirebaseScreen> {
                 width(10),
                 Expanded(
                   child: Text(text, 
-                  style: TextStyle(fontFamily: customFont, fontWeight: FontWeight.w500),)),
+                  style: TextStyle(fontWeight: FontWeight.w500),)),
               ],
             ),
           );

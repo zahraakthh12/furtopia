@@ -29,7 +29,11 @@ class _PetShopScreenState extends State<PetShopScreen> {
   ];
 
   String formatRupiah(String price) {
-    final formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+    final formatter = NumberFormat.currency(
+      locale: 'id',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
     return formatter.format(int.tryParse(price) ?? 0);
   }
 
@@ -37,8 +41,13 @@ class _PetShopScreenState extends State<PetShopScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Pet Shop", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: customFont),),
-        backgroundColor: AppColors.shape4.withOpacity(0.75), // warna pink konsisten
+        title: Text(
+          "Pet Shop",
+          style: TextStyle(fontWeight: FontWeight.bold, fontFamily: customFont),
+        ),
+        backgroundColor: AppColors.shape4.withOpacity(
+          0.75,
+        ), // warna pink konsisten
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
@@ -63,41 +72,41 @@ class _PetShopScreenState extends State<PetShopScreen> {
                 product: "Royal Canin Persian Adult 2 kg",
                 category: "food",
                 price: "385000",
-                image: 
-                AppImages.royalcanin,
+                image: AppImages.royalcanin,
               ),
               ShopModel(
                 id: 2,
                 product: "Shampoo Anti Kutu Premium",
                 category: "grooming",
                 price: "45000",
-                image:
-                    AppImages.shampoo,
+                image: AppImages.shampoo,
               ),
               ShopModel(
                 id: 3,
                 product: "Mainan Bola Interaktif",
                 category: "toys",
                 price: "85000",
-                image:
-                    AppImages.bola,
+                image: AppImages.bola,
               ),
               ShopModel(
                 id: 4,
                 product: "Tempat Tidur Premium",
                 category: "accessories",
                 price: "450000",
-                image:
-                    AppImages.kasur,
+                image: AppImages.kasur,
               ),
             ];
           }
 
           final filteredProducts = products
-              .where((p) =>
-                  activeCategory == "all" || p.category == activeCategory)
-              .where((p) => searchQuery.isEmpty ||
-                  p.product.toLowerCase().contains(searchQuery.toLowerCase()))
+              .where(
+                (p) => activeCategory == "all" || p.category == activeCategory,
+              )
+              .where(
+                (p) =>
+                    searchQuery.isEmpty ||
+                    p.product.toLowerCase().contains(searchQuery.toLowerCase()),
+              )
               .toList();
 
           return Column(
@@ -111,7 +120,8 @@ class _PetShopScreenState extends State<PetShopScreen> {
                     hintText: "Cari produk...",
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
               ),
@@ -131,21 +141,29 @@ class _PetShopScreenState extends State<PetShopScreen> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 8),
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 10),
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           gradient: selected
                               ? LinearGradient(
-                                  colors: [AppColors.shape4.withOpacity(0.75), AppColors.shape5.withOpacity(0.75)])
+                                  colors: [
+                                    AppColors.shape4.withOpacity(0.75),
+                                    AppColors.shape5.withOpacity(0.75),
+                                  ],
+                                )
                               : null,
                           color: selected ? null : Colors.grey[200],
                         ),
                         child: Center(
-                            child: Text(
-                          cat["name"]!,
-                          style: TextStyle(
-                              color: selected ? Colors.white : Colors.black),
-                        )),
+                          child: Text(
+                            cat["name"]!,
+                            style: TextStyle(
+                              color: selected ? Colors.white : Colors.black,
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },
@@ -157,10 +175,11 @@ class _PetShopScreenState extends State<PetShopScreen> {
                 child: GridView.builder(
                   padding: const EdgeInsets.all(12),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
-                      childAspectRatio: 0.58),
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 0.58,
+                  ),
                   itemCount: filteredProducts.length,
                   itemBuilder: (context, index) {
                     final product = filteredProducts[index];
@@ -172,9 +191,10 @@ class _PetShopScreenState extends State<PetShopScreen> {
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: const [
                           BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 4,
-                              offset: Offset(2, 2))
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
                         ],
                       ),
                       child: Column(
@@ -183,70 +203,96 @@ class _PetShopScreenState extends State<PetShopScreen> {
                           // Image
                           ClipRRect(
                             borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(16)),
+                              top: Radius.circular(16),
+                            ),
                             child: Image.asset(
                               product.image,
                               height: 150,
                               width: double.infinity,
                               fit: BoxFit.cover,
-                              )
+                            ),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(product.product,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold)),
+                                Text(
+                                  product.product,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                                 const SizedBox(height: 4),
                                 Text(
                                   "Kategori: ${product.category}",
                                   style: const TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   formatRupiah(product.price),
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.shape4.withOpacity(0.75)),
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.shape4.withOpacity(0.75),
+                                  ),
                                 ),
                                 const SizedBox(height: 6),
                                 ElevatedButton.icon(
                                   style: ElevatedButton.styleFrom(
-                                      backgroundColor: AppColors.shape4.withOpacity(0.75),
-                                      minimumSize: const Size(double.infinity, 30),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  onPressed: () {final index =
-                                  cart.indexWhere((item) => item["product"] == product.product);
-                                  if (index != -1) {
-                                    cart[index]["quantity"]++;
+                                    backgroundColor: AppColors.shape4
+                                        .withOpacity(0.75),
+                                    minimumSize: const Size(
+                                      double.infinity,
+                                      30,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    final index = cart.indexWhere(
+                                      (item) =>
+                                          item["product"] == product.product,
+                                    );
+                                    if (index != -1) {
+                                      cart[index]["quantity"]++;
                                     } else {
                                       cart.add({
                                         "product": product.product,
                                         "price": int.parse(product.price),
                                         "image": product.image,
                                         "quantity": 1,
-                                        });
-                                        }
+                                      });
+                                    }
 
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text("Ditambahkan ke keranjang!"),
-      backgroundColor: AppColors.shape4,
-    ),
-  );
-                                    
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          "Ditambahkan ke keranjang!",
+                                        ),
+                                        backgroundColor: AppColors.shape4,
+                                      ),
+                                    );
                                   },
-                                  icon: const Icon(Icons.add, size: 16, color: AppColors.white,),
-                                  label: const Text("Keranjang",
-                                      style: TextStyle(fontSize: 12, color: AppColors.white, fontWeight: FontWeight.bold)),
-                                )
+                                  icon: const Icon(
+                                    Icons.add,
+                                    size: 16,
+                                    color: AppColors.white,
+                                  ),
+                                  label: const Text(
+                                    "Keranjang",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -255,7 +301,7 @@ class _PetShopScreenState extends State<PetShopScreen> {
                     );
                   },
                 ),
-              )
+              ),
             ],
           );
         },

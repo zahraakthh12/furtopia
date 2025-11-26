@@ -38,7 +38,6 @@ class BookingFirebaseScreen extends StatefulWidget {
 }
 
 class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
-  final customFont = 'Poppins';
   int currentStep = 1;
 
   final List<Service> services = [
@@ -92,7 +91,6 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
         title: Text(
           "Booking Layanan",
           style: TextStyle(
-            fontFamily: customFont,
             color: Colors.white,
             fontWeight: FontWeight.w600,
           ),

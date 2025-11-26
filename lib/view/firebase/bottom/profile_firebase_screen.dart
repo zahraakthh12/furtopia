@@ -6,6 +6,7 @@ import 'package:furtopia/service/firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
+import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
 import 'package:furtopia/view/firebase/profil_user/profile_edit_screen.dart';
 
 class ProfileFirebaseScreen extends StatefulWidget {
@@ -16,7 +17,6 @@ class ProfileFirebaseScreen extends StatefulWidget {
 }
 
 class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
-  final customFont = 'Poppins';
   UserFirebaseModel? dataUser;
 
   void initState() {
@@ -40,11 +40,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
       appBar: AppBar(
         title: Text(
           "Profil Saya",
-          style: TextStyle(
-            fontFamily: customFont,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         backgroundColor: AppColors.shape4.withOpacity(0.75),
         automaticallyImplyLeading: false,
@@ -92,7 +88,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           Text(
                             "${dataUser?.fullname ?? ""}",
                             style: TextStyle(
-                              fontFamily: customFont,
                               fontSize: 20,
                               color: AppColors.black,
                               fontWeight: FontWeight.bold,
@@ -108,10 +103,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                               width(5),
                               Text(
                                 "${dataUser?.email ?? ""}",
-                                style: TextStyle(
-                                  fontFamily: customFont,
-                                  fontSize: 11,
-                                ),
+                                style: TextStyle(fontSize: 11),
                               ),
                             ],
                           ),
@@ -125,10 +117,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                               width(5),
                               Text(
                                 "${dataUser?.phone ?? ""}",
-                                style: TextStyle(
-                                  fontFamily: customFont,
-                                  fontSize: 11,
-                                ),
+                                style: TextStyle(fontSize: 11),
                               ),
                             ],
                           ),
@@ -168,7 +157,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                       child: Text(
                         "Edit Profil",
                         style: TextStyle(
-                          fontFamily: customFont,
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                           color: AppColors.white,
@@ -203,7 +191,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                   Text(
                     "Menu",
                     style: TextStyle(
-                      fontFamily: customFont,
                       fontSize: 16,
                       color: AppColors.text1.withOpacity(0.5),
                       fontWeight: FontWeight.bold,
@@ -214,6 +201,14 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                   Row(
                     children: [
                       GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => OrderInProgressScreen(),
+                            ),
+                          );
+                        },
                         child: Container(
                           height: 50,
                           padding: EdgeInsets.all(5.0),
@@ -232,20 +227,31 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           child: Image.asset(AppImages.box, height: 50),
                         ),
                       ),
+
                       width(20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pesanan Berlangsung",
-                            style: TextStyle(
-                              fontFamily: customFont,
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w300,
+
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => OrderInProgressScreen(),
                             ),
-                          ),
-                        ],
+                          );
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pesanan Berlangsung",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w300,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -284,7 +290,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           Text(
                             "Riwayat Pesanan",
                             style: TextStyle(
-                              fontFamily: customFont,
                               fontSize: 16,
                               color: AppColors.black,
                               fontWeight: FontWeight.w300,
@@ -322,7 +327,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           Text(
                             "Pengaturan",
                             style: TextStyle(
-                              fontFamily: customFont,
                               fontSize: 16,
                               color: AppColors.black,
                               fontWeight: FontWeight.w300,
@@ -347,15 +351,9 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                     ),
                     title: Text(
                       "Konfirmasi",
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    content: Text(
-                      "Apakah Anda yakin ingin keluar dari akun?",
-                      style: TextStyle(fontFamily: 'Poppins'),
-                    ),
+                    content: Text("Apakah Anda yakin ingin keluar dari akun?"),
                     actions: [
                       TextButton(
                         child: Text("Batal"),
@@ -411,7 +409,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                     Text(
                       "Keluar dari akun",
                       style: TextStyle(
-                        fontFamily: customFont,
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),

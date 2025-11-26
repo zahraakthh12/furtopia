@@ -54,7 +54,6 @@ class _EditProfileFirebaseScreenState
 
   @override
   Widget build(BuildContext context) {
-    final customFont = 'Poppins';
 
     return Scaffold(
       appBar: AppBar(
@@ -62,7 +61,6 @@ class _EditProfileFirebaseScreenState
           "Edit Profil",
           style: TextStyle(
               color: AppColors.white,
-              fontFamily: customFont,
               fontWeight: FontWeight.bold),
         ),
         backgroundColor: AppColors.shape5.withOpacity(0.75),
@@ -112,7 +110,6 @@ class _EditProfileFirebaseScreenState
                 child: Text(
                   "Simpan Perubahan",
                   style: TextStyle(
-                      fontFamily: customFont,
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
                       color: AppColors.white),

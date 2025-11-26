@@ -216,26 +216,6 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                   ],
                 ),
 
-                height(12),
-                SizedBox(
-                  width: 200,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/google.png",
-                        height: 40,
-                        width: 40,
-                      ),
-                      width(30),
-                      Image.asset(
-                        "assets/images/wa.png",
-                        height: 40,
-                        width: 40,
-                      ),
-                    ],
-                  ),
-                ),
                 height(5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
