@@ -7,7 +7,6 @@ import 'package:furtopia/service/firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/style/text_style.dart';
-import 'package:furtopia/view/firebase/bottom/chat_firebase_screen.dart';
 import 'package:furtopia/view/firebase/petclinic/petchoose_firebase_screen.dart';
 import 'package:furtopia/view/firebase/petedu/peteducation_firebase_screen.dart';
 import 'package:furtopia/view/firebase/petshop/petshop_firebase_screen.dart';
@@ -20,8 +19,8 @@ class HomeScreenFirebase extends StatefulWidget {
 }
 
 class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
-  final customFont = 'Poppins';
   UserFirebaseModel? dataUser;
+  final customFont = 'Poppins';
 
   void initState() {
     super.initState();
@@ -43,18 +42,6 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.shape6,
-        elevation: 8,
-        child: Icon(Icons.chat_bubble, color: AppColors.white, size: 26),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => CSChatFirebaseScreen()),
-          );
-        },
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: Stack(children: [buildBackground(), buildLayer()]),
     );
   }
@@ -71,25 +58,15 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Halo,",
-                      style: TextStyle(fontFamily: customFont, fontSize: 16),
-                    ),
+                    Text("Halo,", style: TextStyle(fontSize: 16)),
                     Text(
                       "${dataUser?.fullname ?? ""}",
                       style: TextStyle(
-                        fontFamily: customFont,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
-                ),
-                const Spacer(),
-                Icon(
-                  Icons.notifications_outlined,
-                  size: 45,
-                  color: AppColors.black.withOpacity(0.5),
                 ),
               ],
             ),
@@ -122,20 +99,12 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
                           Text(
                             "Selamat datang di FurTopia!",
                             style: TextStyle(
-                              fontFamily: customFont,
                               fontSize: 14,
                               color: AppColors.text1.withOpacity(0.5),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            "Layanan perawatan hewan",
-                            style: TextStyle(fontFamily: customFont),
-                          ),
-                          Text(
-                            "terpercaya",
-                            style: TextStyle(fontFamily: customFont),
-                          ),
+                          Text("Layanan perawatan hewan \nterpercaya"),
                         ],
                       ),
                     ],
@@ -147,7 +116,6 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
             Text(
               "Layanan Kami",
               style: TextStyle(
-                fontFamily: customFont,
                 fontSize: 16,
                 color: AppColors.text1.withOpacity(0.5),
                 fontWeight: FontWeight.bold,
@@ -214,19 +182,13 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
                             Text(
                               "Pet Shop",
                               style: TextStyle(
-                                fontFamily: customFont,
                                 fontSize: 24,
                                 color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "Belanja kebutuhan, makanan,",
-                              style: TextStyle(fontFamily: customFont),
-                            ),
-                            Text(
-                              "dan aksesoris hewan",
-                              style: TextStyle(fontFamily: customFont),
+                              "Belanja kebutuhan, makanan, \ndan aksesoris hewan",
                             ),
                           ],
                         ),
@@ -297,28 +259,22 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
                             Text(
                               "Pet Clinic",
                               style: TextStyle(
-                                fontFamily: customFont,
                                 fontSize: 24,
                                 color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            Text(
-                              "Booking perawatan hewan",
-                              style: TextStyle(fontFamily: customFont),
-                            ),
+                            Text("Booking perawatan hewan"),
 
                             height(5),
                             BuildWidget1(
                               imagePath: AppImages.homeservice,
                               text: "Home Service",
-                              customFont: customFont,
                             ),
                             height(8),
                             BuildWidget1(
                               imagePath: AppImages.offlinevisit,
-                              text: "Offline Visit",
-                              customFont: customFont,
+                              text: "In-Clinic Service",
                             ),
                           ],
                         ),
@@ -387,19 +343,13 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
                             Text(
                               "Pet Education",
                               style: TextStyle(
-                                fontFamily: customFont,
                                 fontSize: 24,
                                 color: AppColors.white,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              "Artikel, tips, dan video edukasi",
-                              style: TextStyle(fontFamily: customFont),
-                            ),
-                            Text(
-                              "perawatan hewan",
-                              style: TextStyle(fontFamily: customFont),
+                              "Artikel, tips, dan video edukasi \nperawatan hewan",
                             ),
                           ],
                         ),
@@ -414,7 +364,6 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
             Text(
               "Tips Perawatan Hewan 💡",
               style: TextStyle(
-                fontFamily: customFont,
                 fontSize: 16,
                 color: AppColors.text1.withOpacity(0.5),
                 fontWeight: FontWeight.bold,
@@ -438,11 +387,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
         color: AppColors.shape1.withOpacity(0.4),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Column(
-        children: [
-          Text(text, style: TextStyle(fontFamily: customFont, fontSize: 12)),
-        ],
-      ),
+      child: Column(children: [Text(text, style: TextStyle(fontSize: 12))]),
     );
   }
 

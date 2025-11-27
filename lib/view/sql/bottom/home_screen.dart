@@ -21,14 +21,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final customFont = 'Poppins';
   UserModel? dataUser;
 
-  void initState(){
+  void initState() {
     super.initState();
     getData();
   }
 
   Future<void> getData() async {
     var id = await PreferenceHandler.getID();
-    if(id != null){
+    if (id != null) {
       UserModel? result = await DBHelper.getUser(id);
       setState(() {
         dataUser = result;
@@ -37,217 +37,392 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-
-  
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.shape6,
         elevation: 8,
-        child: Icon(Icons.chat_bubble,
-        color: AppColors.white,
-        size: 26),
+        child: Icon(Icons.chat_bubble, color: AppColors.white, size: 26),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => ChatSupportScreen()),
-            );},),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: Stack(children: [buildBackground(), buildLayer()]));
+          );
+        },
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      body: Stack(children: [buildBackground(), buildLayer()]),
+    );
   }
 
-  SafeArea buildLayer(){
+  SafeArea buildLayer() {
     return SafeArea(
-      child: 
-      SingleChildScrollView(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Row(
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Halo,", style: TextStyle(fontFamily: customFont, fontSize: 16)),
-                  Text("${dataUser?.fullname ?? ""}", style: TextStyle(fontFamily: customFont, fontSize: 24, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Halo,",
+                      style: TextStyle(fontFamily: customFont, fontSize: 16),
+                    ),
+                    Text(
+                      "${dataUser?.fullname ?? ""}",
+                      style: TextStyle(
+                        fontFamily: customFont,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                Icon(
+                  Icons.notifications_outlined,
+                  size: 45,
+                  color: AppColors.black.withOpacity(0.5),
+                ),
+              ],
+            ),
+            height(25),
+            Container(
+              height: 100,
+              padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.black.withOpacity(0.25),
+                    offset: Offset(2, 2),
+                    spreadRadius: 3,
+                    blurRadius: 1,
+                  ),
                 ],
               ),
-              const Spacer(),
-              Icon(Icons.notifications_outlined, size: 45, color: AppColors.black.withOpacity(0.5))
-            ],
-          ),
-          height(25),
-          Container(height: 100,
-            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0),
-            decoration: BoxDecoration(color: AppColors.white, borderRadius: BorderRadius.circular(15), 
-            boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-            offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-            child:
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(AppImages.pet, height: 60,),
-                  width(10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
                     children: [
-                      Text("Selamat datang di FurTopia!", style: TextStyle(fontFamily: customFont, fontSize: 14, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold),),
-                      Text("Layanan perawatan hewan", style: TextStyle(fontFamily: customFont),),
-                      Text("terpercaya", style: TextStyle(fontFamily: customFont),)
+                      Image.asset(AppImages.pet, height: 60),
+                      width(10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Selamat datang di FurTopia!",
+                            style: TextStyle(
+                              fontFamily: customFont,
+                              fontSize: 14,
+                              color: AppColors.text1.withOpacity(0.5),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "Layanan perawatan hewan",
+                            style: TextStyle(fontFamily: customFont),
+                          ),
+                          Text(
+                            "terpercaya",
+                            style: TextStyle(fontFamily: customFont),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
-              )
-            ],)),
-          height(30),
-          Text("Layanan Kami", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
-          
-          height(10),
-          GestureDetector(
-            onTap:(){
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PetShopScreen()),);
-            },
-            child: Container(height: 100,
-             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-            child: 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 60, 
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                    child: 
-                    Image.asset(AppImages.shop, height: 60,)),
-                    width(15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("Pet Shop", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                        Text("Belanja kebutuhan, makanan,", style: TextStyle(fontFamily: customFont),),
-                        Text("dan aksesoris hewan", style: TextStyle(fontFamily: customFont),)
-                      ],
-                    ),
-                  ],
-                )
-              ],)),
-          ),
+              ),
+            ),
+            height(30),
+            Text(
+              "Layanan Kami",
+              style: TextStyle(
+                fontFamily: customFont,
+                fontSize: 16,
+                color: AppColors.text1.withOpacity(0.5),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
 
-          height(20),
-          GestureDetector(
-            onTap:(){
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => PetChooseScreen()),);
-            },
-            child: Container(height: 150,
-             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-            child: 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+            height(10),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PetShopScreen()),
+                );
+              },
+              child: Container(
+                height: 100,
+                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+                decoration: BoxDecoration(
+                  color: AppColors.shape4.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2),
+                      spreadRadius: 3,
+                      blurRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 60, 
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                    child: 
-                    Image.asset(AppImages.clinic, height: 60,)),
-                    width(15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text("Pet Clinic", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                        Text("Booking perawatan hewan", style: TextStyle(fontFamily: customFont),),
-            
-                        height(5),
-                        BuildWidget1(imagePath: AppImages.homeservice, text: "Home Service", customFont: customFont,),
-                        height(8),
-                        BuildWidget1(imagePath: AppImages.offlinevisit, text: "Offline Visit", customFont: customFont),
+                        Container(
+                          height: 60,
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.shape4.withOpacity(0.3),
+                                AppColors.white,
+                              ],
+                              begin: AlignmentGeometry.topLeft,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.black.withOpacity(0.25),
+                                offset: Offset(2, 2),
+                                spreadRadius: 3,
+                                blurRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset(AppImages.shop, height: 60),
+                        ),
+                        width(15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pet Shop",
+                              style: TextStyle(
+                                fontFamily: customFont,
+                                fontSize: 24,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Belanja kebutuhan, makanan,",
+                              style: TextStyle(fontFamily: customFont),
+                            ),
+                            Text(
+                              "dan aksesoris hewan",
+                              style: TextStyle(fontFamily: customFont),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ],
-                )
-              ],)),
-          ),
+                ),
+              ),
+            ),
 
-          height(20),
-          GestureDetector(
-            onTap: (){
-              Navigator.push(context,
-              MaterialPageRoute(builder: (context) => EduScreen()));
-            },
-            child: Container(height: 100,
-             padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-             decoration: BoxDecoration(color: AppColors.shape4.withOpacity(0.4), borderRadius: BorderRadius.circular(15), 
-             boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-             offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-            child: 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+            height(20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PetChooseScreen()),
+                );
+              },
+              child: Container(
+                height: 150,
+                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+                decoration: BoxDecoration(
+                  color: AppColors.shape4.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2),
+                      spreadRadius: 3,
+                      blurRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 60, 
-                      padding: EdgeInsets.all(5.0),
-                      decoration: BoxDecoration(gradient: LinearGradient(colors: [AppColors.shape4.withOpacity(0.3), AppColors.white], begin: AlignmentGeometry.topLeft), borderRadius: BorderRadius.circular(15), 
-                      boxShadow: [BoxShadow(color: AppColors.black.withOpacity(0.25),
-                      offset: Offset(2, 2), spreadRadius: 3, blurRadius: 1)]),
-                    child: 
-                    Image.asset(AppImages.book, height: 60,)),
-                    width(15),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
                       children: [
-                        Text("Pet Education", style: TextStyle(fontFamily: customFont, fontSize: 24, color: AppColors.white, fontWeight: FontWeight.bold),),
-                        Text("Artikel, tips, dan video edukasi", style: TextStyle(fontFamily: customFont),),
-                        Text("perawatan hewan", style: TextStyle(fontFamily: customFont),)
+                        Container(
+                          height: 60,
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.shape4.withOpacity(0.3),
+                                AppColors.white,
+                              ],
+                              begin: AlignmentGeometry.topLeft,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.black.withOpacity(0.25),
+                                offset: Offset(2, 2),
+                                spreadRadius: 3,
+                                blurRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset(AppImages.clinic, height: 60),
+                        ),
+                        width(15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pet Clinic",
+                              style: TextStyle(
+                                fontFamily: customFont,
+                                fontSize: 24,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Booking perawatan hewan",
+                              style: TextStyle(fontFamily: customFont),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ],
-                )
-              ],)),
-          ),
+                ),
+              ),
+            ),
+
+            height(20),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EduScreen()),
+                );
+              },
+              child: Container(
+                height: 100,
+                padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+                decoration: BoxDecoration(
+                  color: AppColors.shape4.withOpacity(0.4),
+                  borderRadius: BorderRadius.circular(15),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.black.withOpacity(0.25),
+                      offset: Offset(2, 2),
+                      spreadRadius: 3,
+                      blurRadius: 1,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Container(
+                          height: 60,
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.shape4.withOpacity(0.3),
+                                AppColors.white,
+                              ],
+                              begin: AlignmentGeometry.topLeft,
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.black.withOpacity(0.25),
+                                offset: Offset(2, 2),
+                                spreadRadius: 3,
+                                blurRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset(AppImages.book, height: 60),
+                        ),
+                        width(15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Pet Education",
+                              style: TextStyle(
+                                fontFamily: customFont,
+                                fontSize: 24,
+                                color: AppColors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              "Artikel, tips, dan video edukasi",
+                              style: TextStyle(fontFamily: customFont),
+                            ),
+                            Text(
+                              "perawatan hewan",
+                              style: TextStyle(fontFamily: customFont),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
 
             height(30),
-            Text("Tips Perawatan Hewan 💡", style: TextStyle(fontFamily: customFont, fontSize: 16, color: AppColors.text1.withOpacity(0.5), fontWeight: FontWeight.bold)),
+            Text(
+              "Tips Perawatan Hewan 💡",
+              style: TextStyle(
+                fontFamily: customFont,
+                fontSize: 16,
+                color: AppColors.text1.withOpacity(0.5),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             height(10),
             buildTipsWidget("💉 Vaksinasi rutin setiap 6 bulan"),
             height(10),
             buildTipsWidget("🚿 Grooming berkala untuk kesehatan bulu"),
-        ],
+          ],
         ),
       ),
-      );
+    );
   }
 
   Container buildTipsWidget(String text) {
     return Container(
-            padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
-            height: 45,
-            decoration: BoxDecoration(color: AppColors.shape1.withOpacity(0.4), borderRadius: BorderRadius.circular(15), ),
-            child: Column(
-              children: [
-                Text(text, style: TextStyle(fontFamily: customFont, fontSize: 12),)
-              ],
-            ),);
+      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+      height: 45,
+      decoration: BoxDecoration(
+        color: AppColors.shape1.withOpacity(0.4),
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        children: [
+          Text(text, style: TextStyle(fontFamily: customFont, fontSize: 12)),
+        ],
+      ),
+    );
   }
 
   Container buildBackground() {
@@ -268,7 +443,7 @@ class _HomeScreenState extends State<HomeScreen> {
   //   Image? image;
   //   Icon? icon;
   //   return Container(
-  //     height: 
+  //     height:
   //   );
   // }
 

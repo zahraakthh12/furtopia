@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/firebase/petshop/product_dummy.dart';
+import 'package:furtopia/view/firebase/petshop/add_product.dart';
 import 'package:intl/intl.dart';
 import 'package:furtopia/model/firebase/shop_firebase_model.dart';
 import 'package:furtopia/memory/cart_memory.dart';
@@ -35,7 +35,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<ShopFirebaseModel> products = ProductDummyData.products;
+    List<ShopFirebaseModel> products = AddProductShop.products;
 
     // Filter kategori
     final filteredByCategory = products.where((p) {
@@ -49,6 +49,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
     }).toList();
 
     return Scaffold(
+      backgroundColor: AppColors.white,
       appBar: AppBar(
         title: Text("Pet Shop", style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.shape4.withOpacity(0.75),

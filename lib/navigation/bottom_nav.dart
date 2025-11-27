@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/sql/petshop/cart_screen.dart';
-import 'package:furtopia/view/sql/bottom/chat_screen.dart';
 import 'package:furtopia/view/sql/bottom/home_screen.dart';
 import 'package:furtopia/view/sql/bottom/petlist_screen.dart';
 import 'package:furtopia/view/sql/bottom/profile_screen.dart';

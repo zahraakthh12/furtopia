@@ -12,7 +12,7 @@ class FirebaseOrderService {
     final snapshot = await firestore
         .collection("orders")
         .where("invoice", isGreaterThanOrEqualTo: prefix)
-        .where("invoice", isLessThan: "$prefix~") // batas prefix
+        .where("invoice", isLessThan: "$prefix~")
         .orderBy("invoice", descending: true)
         .limit(1)
         .get();
@@ -20,7 +20,7 @@ class FirebaseOrderService {
     int nextNumber = 1;
 
     if (snapshot.docs.isNotEmpty) {
-      final String lastInvoice = snapshot.docs.first["invoice"]; // INV-20250110-0004
+      final String lastInvoice = snapshot.docs.first["invoice"];
       final String lastNumber = lastInvoice.split("-").last; // 0004
       nextNumber = int.tryParse(lastNumber)! + 1;
     }
@@ -28,8 +28,8 @@ class FirebaseOrderService {
     return "$prefix-${nextNumber.toString().padLeft(4, '0')}";
   }
 
-  /// Simpan pesanan
-  static Future<void> saveOrder({
+  /// SIMPAN PESANAN + RETURN invoice & orderId
+  static Future<Map<String, dynamic>> saveOrder({
     required String userId,
     required List<Map<String, dynamic>> products,
     required int subtotal,
@@ -37,6 +37,7 @@ class FirebaseOrderService {
     required int total,
   }) async {
     final docRef = firestore.collection("orders").doc();
+    final orderId = docRef.id;
 
     final invoice = await generateInvoice();
 
@@ -48,7 +49,12 @@ class FirebaseOrderService {
       "adminFee": adminFee,
       "total": total,
       "status": "pending",
-      "createdAt": DateTime.now().toIso8601String(), // tidak pakai serverTimestamp
+      "createdAt": DateTime.now().toIso8601String(),
     });
+
+    return {
+      "invoice": invoice,
+      "orderId": orderId,
+    };
   }
 }

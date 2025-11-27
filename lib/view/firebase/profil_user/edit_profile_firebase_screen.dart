@@ -13,22 +13,22 @@ class EditProfileFirebaseScreen extends StatefulWidget {
       _EditProfileFirebaseScreenState();
 }
 
-class _EditProfileFirebaseScreenState
-    extends State<EditProfileFirebaseScreen> {
+class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _fullnameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneController;
+  late TextEditingController _addressController;
 
   @override
   void initState() {
     super.initState();
 
-    _fullnameController =
-        TextEditingController(text: widget.user.fullname ?? "");
-    _emailController = TextEditingController(text: widget.user.email ?? "");
-    _phoneController = TextEditingController(text: widget.user.phone ?? "");
+    _fullnameController = TextEditingController(text: widget.user.fullname);
+    _emailController = TextEditingController(text: widget.user.email);
+    _phoneController = TextEditingController(text: widget.user.phone);
+    _addressController = TextEditingController(text: widget.user.address ?? "");
   }
 
   Future<void> _saveProfile() async {
@@ -37,8 +37,9 @@ class _EditProfileFirebaseScreenState
     final updated = UserFirebaseModel(
       uid: widget.user.uid,
       fullname: _fullnameController.text,
-      email: widget.user.email, // Email tidak diubah
+      email: widget.user.email,
       phone: _phoneController.text,
+      address: _addressController.text,
       createdAt: widget.user.createdAt,
       updateAt: DateTime.now().toIso8601String(),
     );
@@ -52,67 +53,73 @@ class _EditProfileFirebaseScreenState
     Navigator.pop(context, updated);
   }
 
+  InputDecoration buildField(String label) {
+    return InputDecoration(
+      labelText: label,
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
+      backgroundColor: Colors.white, // ← FIX LAYAR GELAP
       appBar: AppBar(
+        backgroundColor: AppColors.shape5.withOpacity(0.75),
         title: Text(
           "Edit Profil",
-          style: TextStyle(
-              color: AppColors.white,
-              fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: AppColors.shape5.withOpacity(0.75),
       ),
-      backgroundColor: AppColors.bg1.withOpacity(0.1),
+
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              // FULLNAME
               TextFormField(
                 controller: _fullnameController,
-                decoration: const InputDecoration(labelText: "Nama Lengkap"),
-                validator: (value) =>
-                    value!.isEmpty ? 'Nama tidak boleh kosong' : null,
+                decoration: buildField("Nama Lengkap"),
               ),
+              SizedBox(height: 15),
 
-              // EMAIL (readonly)
+              TextFormField(
+                controller: _phoneController,
+                decoration: buildField("Nomor Telepon"),
+              ),
+              SizedBox(height: 15),
+
               TextFormField(
                 controller: _emailController,
                 readOnly: true,
-                decoration: const InputDecoration(
-                  labelText: "Email (tidak bisa diubah)",
+                decoration: buildField("Email (tidak dapat diubah)"),
+              ),
+              SizedBox(height: 15),
+
+              TextFormField(
+                controller: _addressController,
+                decoration: buildField(
+                  "Alamat Lengkap (Jalan, No. Rumah, Kelurahan)",
                 ),
               ),
 
-              // PHONE
-              TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(labelText: "Nomor Telepon"),
-                validator: (value) =>
-                    value!.isEmpty ? 'Nomor telepon tidak boleh kosong' : null,
-              ),
-
-              const SizedBox(height: 30),
+              SizedBox(height: 30),
 
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.shape4.withOpacity(0.75),
-                  minimumSize: const Size(double.infinity, 45),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                ),
                 onPressed: _saveProfile,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.shape4,
+                  minimumSize: Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
                 child: Text(
                   "Simpan Perubahan",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.white),
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ],

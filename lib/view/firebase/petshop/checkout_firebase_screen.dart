@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/memory/cart_memory.dart';
-import 'package:furtopia/service/order_firebase.dart';
+import 'package:furtopia/service/order_shop_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
+import 'package:furtopia/view/firebase/petshop/invoice_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
+import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
 
 class CheckoutFirebaseScreen extends StatefulWidget {
   const CheckoutFirebaseScreen({super.key});
@@ -35,10 +36,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Checkout",
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: Text("Checkout", style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
@@ -56,10 +54,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     "Daftar Pesanan",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -141,10 +136,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
                     "Ringkasan Pembayaran",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
 
@@ -181,6 +173,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
             ),
             child: ElevatedButton(
               onPressed: () async {
+                // Ambil userId dari Preference
                 String? userId = await PreferenceHandler.getToken();
 
                 if (userId == null) {
@@ -190,7 +183,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   return;
                 }
 
-                // Siapkan list item yang akan disimpan
+                // Siapkan produk
                 List<Map<String, dynamic>> orderProducts = cart.map((item) {
                   return {
                     "product": item["product"],
@@ -201,7 +194,8 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   };
                 }).toList();
 
-                await FirebaseOrderService.saveOrder(
+                // Simpan ke Firebase & dapatkan invoice + orderId
+                final result = await FirebaseOrderService.saveOrder(
                   userId: userId,
                   products: orderProducts,
                   subtotal: subtotal,
@@ -209,34 +203,31 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   total: totalBayar,
                 );
 
+                final createdInvoice = result["invoice"];
+                final orderId = result["orderId"];
+
                 cart.clear();
 
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    title: Text("Pesanan Berhasil!"),
-                    content: Text(
-                      "Invoice berhasil dibuat dan pesanan disimpan.",
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context); // tutup dialog
+                // Pesan sukses
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("Pesanan berhasil dibuat!"),
+                    backgroundColor: Colors.green,
+                  ),
+                );
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OrderInProgressScreen(),
-                            ),
-                          );
-                        },
-
-                        child: Text("OK"),
-                      ),
-                    ],
+                // Arahkan ke halaman invoice
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PetshopInvoiceScreen(
+                      invoice: createdInvoice,
+                      products: orderProducts,
+                      subtotal: subtotal,
+                      adminFee: adminFee,
+                      total: totalBayar,
+                      orderId: orderId,
+                    ),
                   ),
                 );
               },

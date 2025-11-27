@@ -6,6 +6,7 @@ class UserFirebaseModel {
   String? fullname;
   String? email;
   String? phone;
+  String? address;
   String? createdAt;
   String? updateAt;
   UserFirebaseModel({
@@ -13,6 +14,7 @@ class UserFirebaseModel {
     this.fullname,
     this.email,
     this.phone,
+    this.address,
     this.createdAt,
     this.updateAt,
   });
@@ -23,6 +25,7 @@ class UserFirebaseModel {
       'fullname': fullname,
       'email': email,
       'phone': phone,
+      'address': address ?? "",
       'createdAt': createdAt,
       'updateAt': updateAt,
     };
@@ -34,6 +37,7 @@ class UserFirebaseModel {
       fullname: map['fullname'] != null ? map['fullname'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,
       phone: map['phone'] != null ? map['phone'] as String : null,
+       address: map['address'] ?? "",
       createdAt: map['createdAt'] != null ? map['createdAt'] as String : null,
       updateAt: map['updateAt'] != null ? map['updateAt'] as String : null,
     );

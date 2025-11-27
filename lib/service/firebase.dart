@@ -10,35 +10,34 @@ class FirebaseService {
 
   /// REGISTER USER (FirebaseAuth + Firestore)
   static Future<UserFirebaseModel> registerUser({
-    required String fullname,
-    required String email,
-    required String phone,
-    required String password,
-  }) async {
-    // 1. Create account
-    final cred = await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+  required String fullname,
+  required String email,
+  required String phone,
+  required String password,
+}) async {
+  final cred = await auth.createUserWithEmailAndPassword(
+    email: email,
+    password: password,
+  );
 
-    final user = cred.user!;
-    final uid = user.uid;
+  final user = cred.user!;
+  final uid = user.uid;
 
-    // 2. Build model
-    final model = UserFirebaseModel(
-      uid: uid,
-      fullname: fullname,
-      email: email,
-      phone: phone,
-      createdAt: DateTime.now().toIso8601String(),
-      updateAt: DateTime.now().toIso8601String(),
-    );
+  final model = UserFirebaseModel(
+    uid: uid,
+    fullname: fullname,
+    email: email,
+    phone: phone,
+    address: "", // default address empty
+    createdAt: DateTime.now().toIso8601String(),
+    updateAt: DateTime.now().toIso8601String(),
+  );
 
-    // 3. Save to Firestore
-    await firestore.collection(collection).doc(uid).set(model.toMap());
+  await firestore.collection(collection).doc(uid).set(model.toMap());
 
-    return model;
-  }
+  return model;
+}
+
 
   /// LOGIN USER (FirebaseAuth + Firestore)
   static Future<UserFirebaseModel?> loginUser({
@@ -107,6 +106,7 @@ class FirebaseService {
       fullname: user.fullname,
       email: user.email,
       phone: user.phone,
+      address: user.address,
       createdAt: user.createdAt,
       updateAt: DateTime.now().toIso8601String(),
     );

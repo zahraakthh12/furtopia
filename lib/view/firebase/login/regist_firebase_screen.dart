@@ -21,7 +21,6 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
   final TextEditingController fullnameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final customFont = 'Poppins';
   bool isVisibility = false;
   bool isFilled = false;
   bool isLoading = false;
@@ -87,11 +86,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
               children: [
                 Text(
                   "Mari Bergabung dengan FurTopia!",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontFamily: customFont,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 height(12),
@@ -247,10 +242,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "Sudah punya akun?",
-                      style: TextStyle(fontFamily: customFont, fontSize: 12),
-                    ),
+                    Text("Sudah punya akun?", style: TextStyle(fontSize: 12)),
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -260,7 +252,6 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                         style: TextStyle(
                           color: AppColors.bg1,
                           fontSize: 12,
-                          fontFamily: customFont,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -299,7 +290,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
       validator: validator,
       controller: controller,
       obscureText: isPassword ? isVisibility : false,
-      style: TextStyle(fontFamily: customFont, fontSize: 12),
+      style: TextStyle(fontSize: 12),
       decoration: InputDecoration(
         filled: true,
         contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
@@ -307,7 +298,6 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
         hintStyle: TextStyle(
           fontSize: 12,
           color: AppColors.black.withOpacity(0.5),
-          fontFamily: customFont,
         ),
         prefixIcon: icon,
         fillColor: AppColors.bg1.withOpacity(0.35),
@@ -346,14 +336,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
   Widget buildTitle(String text) {
     return Row(
       children: [
-        Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 12,
-            fontFamily: customFont,
-          ),
-        ),
+        Text(text, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 12)),
       ],
     );
   }

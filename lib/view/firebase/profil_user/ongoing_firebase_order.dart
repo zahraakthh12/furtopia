@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
-import 'package:furtopia/view/firebase/petshop/order_detail_screen.dart';
+import 'package:furtopia/view/firebase/profil_user/clinic_detail_order.dart';
+import 'package:furtopia/view/firebase/profil_user/order_detail_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:async/async.dart';
 
 class OrderInProgressScreen extends StatelessWidget {
   OrderInProgressScreen({super.key});
@@ -28,6 +30,19 @@ class OrderInProgressScreen extends StatelessWidget {
       );
     }
 
+    // ============== STREAM PETSHOP + PETCLINIC =================
+    final petshopStream = firestore
+        .collection("orders")
+        .where("userId", isEqualTo: user.uid)
+        .where("status", whereIn: ["pending", "process", "on-delivery"])
+        .snapshots();
+
+    final clinicStream = firestore
+        .collection("clinic_bookings")
+        .where("userId", isEqualTo: user.uid)
+        .where("status", whereIn: ["pending", "process"])
+        .snapshots();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -37,29 +52,42 @@ class OrderInProgressScreen extends StatelessWidget {
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      body: StreamBuilder<QuerySnapshot>(
-        stream: firestore
-            .collection("orders")
-            .where("userId", isEqualTo: user.uid)
-            .where("status", whereIn: ["pending", "process", "on-delivery"])
-            .orderBy("createdAt", descending: true)
-            .snapshots(),
-
+      body: StreamBuilder<List<QuerySnapshot>>(
+        stream: StreamZip([petshopStream, clinicStream]),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+          if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          final data = snapshot.data!;
+          final petshopDocs = data[0].docs;
+          final clinicDocs = data[1].docs;
+
+          // Gabungkan dua list
+          List<Map<String, dynamic>> allOrders = [];
+
+          // ---- PETSHOP ORDER ----
+          for (var doc in petshopDocs) {
+            final data = doc.data() as Map<String, dynamic>;
+            data["docId"] = doc.id;
+            data["type"] = "petshop";
+            allOrders.add(data);
+          }
+
+          // ---- PET CLINIC BOOKING ----
+          for (var doc in clinicDocs) {
+            final data = doc.data() as Map<String, dynamic>;
+            data["docId"] = doc.id;
+            data["type"] = "clinic";
+            allOrders.add(data);
+          }
+
+          if (allOrders.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.shopping_bag_outlined,
-                    size: 80,
-                    color: Colors.grey,
-                  ),
+                  Icon(Icons.receipt_long, size: 80, color: Colors.grey),
                   SizedBox(height: 10),
                   Text(
                     "Tidak ada pesanan berlangsung",
@@ -70,161 +98,24 @@ class OrderInProgressScreen extends StatelessWidget {
             );
           }
 
-          final orders = snapshot.data!.docs;
+          // Urutkan berdasarkan createdAt (descending)
+          allOrders.sort((a, b) {
+            final aDate =
+                DateTime.tryParse(a["createdAt"] ?? "") ?? DateTime(2000);
+            final bDate =
+                DateTime.tryParse(b["createdAt"] ?? "") ?? DateTime(2000);
+            return bDate.compareTo(aDate);
+          });
 
           return ListView.builder(
             padding: const EdgeInsets.all(16),
-            itemCount: orders.length,
+            itemCount: allOrders.length,
             itemBuilder: (context, index) {
-              final data = orders[index].data() as Map<String, dynamic>;
+              final data = allOrders[index];
 
-              final items = List<Map<String, dynamic>>.from(data["products"]);
-              final status = data["status"];
-              final total = data["total"];
-              final invoice = data["invoice"];
-
-              return Container(
-                margin: EdgeInsets.only(bottom: 16),
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(14),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 6,
-                      color: Colors.black12,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header Invoice
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Invoice: $invoice",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: statusColor(status),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          constraints: BoxConstraints(maxWidth: 120),
-                          child: Text(
-                            statusLabel(status),
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 10),
-
-                    // Item pertama
-                    Row(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            items[0]["image"],
-                            width: 60,
-                            height: 60,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            items[0]["product"],
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 8),
-
-                    // Jika item > 1
-                    if (items.length > 1)
-                      Text(
-                        "+${items.length - 1} produk lainnya",
-                        style: TextStyle(color: Colors.grey[700], fontSize: 12),
-                      ),
-
-                    SizedBox(height: 12),
-
-                    // Total bayar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Total Bayar:",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          formatRupiah(total),
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.shape4,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    SizedBox(height: 12),
-
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  OrderDetailScreen(orderId: orders[index].id),
-                            ),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.shape4.withOpacity(0.85),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: Text(
-                          "Lihat Detail",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+              return data["type"] == "petshop"
+                  ? _buildPetshopCard(context, data)
+                  : _buildClinicCard(context, data);
             },
           );
         },
@@ -232,7 +123,228 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
-  // Warna label status
+  // ==========================================================
+  // CARD: PETSHOP ORDER
+  // ==========================================================
+  Widget _buildPetshopCard(BuildContext context, Map<String, dynamic> data) {
+    final items = List<Map<String, dynamic>>.from(data["products"]);
+    final invoice = data["invoice"];
+    final total = data["total"];
+    final status = data["status"];
+    final id = data["docId"];
+
+    return _orderCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(invoice, status),
+          SizedBox(height: 10),
+
+          Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.network(
+                  items[0]["image"],
+                  width: 60,
+                  height: 60,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  items[0]["product"],
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
+            ],
+          ),
+
+          if (items.length > 1)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(
+                "+${items.length - 1} produk lainnya",
+                style: TextStyle(color: Colors.grey[700], fontSize: 12),
+              ),
+            ),
+
+          SizedBox(height: 14),
+          _totalPrice(total),
+
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => OrderDetailScreen(orderId: id),
+                  ),
+                );
+              },
+              style: _btnStyle(),
+              child: Text(
+                "Lihat Detail",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================================
+  // CARD: PET CLINIC BOOKING
+  // ==========================================================
+  Widget _buildClinicCard(BuildContext context, Map<String, dynamic> data) {
+    final invoice = data["invoice"];
+    final status = data["status"];
+    final serviceName = data["serviceName"];
+    final date = data["date"];
+    final time = data["time"];
+    final category = data["category"];
+    final address = data["address"];
+    final id = data["docId"];
+
+    return _orderCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _header(invoice, status),
+          SizedBox(height: 10),
+
+          Text(
+            serviceName ?? "-",
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+
+          SizedBox(height: 6),
+
+          Text("Tanggal: $date"),
+          Text("Waktu: $time"),
+          Text("Kategori: $category"),
+
+          if (address != null) Text("Alamat: $address", maxLines: 2),
+
+          SizedBox(height: 14),
+
+          Align(
+            alignment: Alignment.centerRight,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ClinicBookingDetailScreen(bookingId: id),
+                  ),
+                );
+              },
+              style: _btnStyle(),
+              child: Text(
+                "Detail Booking",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ==========================================================
+  // WIDGET BUILDER
+  // ==========================================================
+  Widget _orderCard({required Widget child}) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 16),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(blurRadius: 6, color: Colors.black12, offset: Offset(0, 3)),
+        ],
+      ),
+      child: child,
+    );
+  }
+
+  Widget _header(String invoice, String status) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            "No. Pesanan: $invoice",
+            style: TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+
+        const SizedBox(width: 10),
+
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 90, // 🔥 BATAS agar chip tidak memanjang
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: statusColor(status),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              statusLabel(status),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+              overflow:
+                  TextOverflow.ellipsis, // 🔥 jika teks panjang, dipotong “...”
+              maxLines: 1,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _totalPrice(int total) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "Total Bayar:",
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        Text(
+          formatRupiah(total),
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: AppColors.shape4,
+          ),
+        ),
+      ],
+    );
+  }
+
+  ButtonStyle _btnStyle() {
+    return ElevatedButton.styleFrom(
+      backgroundColor: AppColors.shape4.withOpacity(0.85),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    );
+  }
+
+  // ==========================================================
+  // STATUS
+  // ==========================================================
   Color statusColor(String status) {
     switch (status) {
       case "pending":
@@ -246,15 +358,14 @@ class OrderInProgressScreen extends StatelessWidget {
     }
   }
 
-  // Label status untuk UI
   String statusLabel(String status) {
     switch (status) {
       case "pending":
-        return "Menunggu Diproses";
+        return "Menunggu";
       case "process":
         return "Diproses";
       case "on-delivery":
-        return "Dikirim";
+        return "Diterima";
       default:
         return "Unknown";
     }

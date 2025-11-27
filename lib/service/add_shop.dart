@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:furtopia/model/firebase/shop_firebase_model.dart';
-import 'package:furtopia/view/firebase/petshop/product_dummy.dart';
+import 'package:furtopia/view/firebase/petshop/add_product.dart';
 
 class ProductSeeder {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   /// Menambahkan seluruh dummy product ke Firestore
   static Future<void> uploadDummyProducts() async {
-    final products = ProductDummyData.products;
+    final products = AddProductShop.products;
 
     for (var p in products) {
       await firestore.collection("products").doc(p.uid).set({

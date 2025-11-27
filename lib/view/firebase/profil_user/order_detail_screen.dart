@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailScreen extends StatelessWidget {
   final String orderId;
@@ -60,7 +61,7 @@ class OrderDetailScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Invoice",
+                      "No. Pesanan",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -176,6 +177,61 @@ class OrderDetailScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
+
+              SizedBox(height: 20),
+
+              Container(
+                padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(14),
+                  boxShadow: [
+                    BoxShadow(
+                      blurRadius: 6,
+                      color: Colors.black12,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hubungi Kami",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      "Jika Anda butuh bantuan, silakan hubungi admin melalui WhatsApp.",
+                      style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+                    ),
+                    SizedBox(height: 12),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        contactAdmin(data);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.shape4.withOpacity(0.85),
+                        minimumSize: Size(double.infinity, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      icon: Icon(Icons.chat_bubble, color: Colors.white),
+                      label: Text(
+                        "Chat Admin di WhatsApp",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           );
         },
@@ -315,5 +371,46 @@ class OrderDetailScreen extends StatelessWidget {
         backgroundColor: Colors.green,
       ),
     );
+  }
+
+  void contactAdmin(Map<String, dynamic> order) async {
+    final adminNumber = "085710546602";
+
+    final invoice = order["invoice"];
+    final total = order["total"];
+    final createdAt = order["createdAt"]?.toString() ?? "";
+    final products = List<Map<String, dynamic>>.from(order["products"]);
+
+    // Buat format produk
+    String productList = products
+        .map((p) {
+          return "- ${p["product"]} (${p["quantity"]} x Rp${p["price"]})";
+        })
+        .join("\n");
+
+    final message =
+        """
+Halo Admin 👋
+
+Saya ingin menanyakan pesanan saya.
+
+➡️ *No. Pesanan:* $invoice
+➡️ *Tanggal:* $createdAt
+
+*Daftar Produk:*
+$productList
+
+*Total Pembayaran:* Rp$total
+
+Mohon bantuannya ya 🙏
+""";
+
+    final url = Uri.parse(
+      "https://wa.me/62${adminNumber.substring(1)}?text=${Uri.encodeComponent(message)}",
+    );
+
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
   }
 }

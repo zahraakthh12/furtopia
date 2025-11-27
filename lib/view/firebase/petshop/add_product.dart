@@ -1,6 +1,6 @@
 import 'package:furtopia/model/firebase/shop_firebase_model.dart';
 
-class ProductDummyData {
+class AddProductShop {
   static List<ShopFirebaseModel> products = [
     ShopFirebaseModel(
       uid: "1",
@@ -69,6 +69,19 @@ class ProductDummyData {
       price: "65000",
       images: [
         "https://makassarhobi.com/wp-content/uploads/2022/09/rug-1664507758704-1.jpeg.jpg",
+      ],
+      rating: 0,
+      ratingCount: 0,
+      stock: "10",
+    ),
+
+    ShopFirebaseModel(
+      uid: "7",
+      product: "Pasir Gumpal Markotop 5,5 liter",
+      category: "grooming",
+      price: "40000",
+      images: [
+        "https://makassarhobi.com/wp-content/uploads/2020/04/image-2022-07-11T115319.554.jpg",
       ],
       rating: 0,
       ratingCount: 0,

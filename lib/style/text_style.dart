@@ -4,13 +4,12 @@ import 'package:furtopia/style/app_colors.dart';
 class BuildWidget1 extends StatelessWidget {
   final String imagePath;
   final String text;
-  final String customFont;
+  final customFont = 'Poppins';
 
   const BuildWidget1({
     super.key,
     required this.imagePath,
     required this.text,
-    required this.customFont,
   });
 
   @override

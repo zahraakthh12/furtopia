@@ -6,8 +6,9 @@ import 'package:furtopia/service/firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
+import 'package:furtopia/view/firebase/profil_user/edit_profile_firebase_screen.dart';
 import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
-import 'package:furtopia/view/firebase/profil_user/profile_edit_screen.dart';
+import 'package:furtopia/view/firebase/profil_user/order_history_screen.dart';
 
 class ProfileFirebaseScreen extends StatefulWidget {
   const ProfileFirebaseScreen({super.key});
@@ -144,7 +145,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                UserEditProfileFirebase(user: dataUser!),
+                                EditProfileFirebaseScreen(user: dataUser!),
                           ),
                         );
                         // Jika ada data yang dikembalikan dari halaman edit
@@ -189,7 +190,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Menu",
+                    "Menu Lainnya",
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.text1.withOpacity(0.5),
@@ -256,48 +257,49 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                     ],
                   ),
 
-                  // Expanded(
-                  //         child: Container(
-                  //           margin: EdgeInsets.only(right: 8),
-                  //           height: 0.2,
-                  //           color: AppColors.bg1.withOpacity(0.5),
-                  //         ),
-                  //       ),
                   height(20),
-                  Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.shape4.withOpacity(0.75),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.black.withOpacity(0.25),
-                              offset: Offset(2, 2),
-                              spreadRadius: 3,
-                              blurRadius: 1,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => OrderHistoryScreen()),
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 50,
+                          padding: EdgeInsets.all(5.0),
+                          decoration: BoxDecoration(
+                            color: AppColors.shape4.withOpacity(0.75),
+                            borderRadius: BorderRadius.circular(15),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.black.withOpacity(0.25),
+                                offset: Offset(2, 2),
+                                spreadRadius: 3,
+                                blurRadius: 1,
+                              ),
+                            ],
+                          ),
+                          child: Image.asset(AppImages.history, height: 50),
+                        ),
+                        width(20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Riwayat Pesanan",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: AppColors.black,
+                                fontWeight: FontWeight.w300,
+                              ),
                             ),
                           ],
                         ),
-                        child: Image.asset(AppImages.history, height: 50),
-                      ),
-                      width(20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Riwayat Pesanan",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
 
                   height(20),
