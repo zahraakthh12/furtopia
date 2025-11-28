@@ -1,23 +1,21 @@
 import 'dart:convert';
 
 class ClinicBookingModel {
-  String? uid; // ID booking
-  String? userId; // ID user Firebase
-  String? petId; // ID hewan (optional)
+  String? uid;
+  String? userId;
+  String? petId;
 
-  // SERVICE INFO
   String? invoice;
   String? invoiceDate;
-  String? serviceId; // ID layanan
-  String? serviceName; // Nama layanan (ex: Grooming Basah)
-  String? category; // Home Service / In-Clinic
+  String? serviceId;
+  String? serviceName; 
+  String? category; 
   String? price;
 
-  // BOOKING INFO
-  String? address; // hanya untuk Home Service
-  String? date; // yyyy-MM-dd
-  String? time; // 13:00
-  String? status; // pending, process, done, cancelled
+  String? address; 
+  String? date;
+  String? time;
+  String? status; 
 
   String? createdAt;
   String? updatedAt;

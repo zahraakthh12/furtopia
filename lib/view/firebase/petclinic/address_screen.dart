@@ -56,7 +56,6 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
             children: [
               const SizedBox(height: 16),
 
-              // CARD INFO SERVICE
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Container(
@@ -133,7 +132,6 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
 
               const SizedBox(height: 24),
 
-              // FORM ALAMAT JIKA HOME SERVICE
               if (isHomeService)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),

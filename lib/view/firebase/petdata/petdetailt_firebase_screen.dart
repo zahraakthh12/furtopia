@@ -16,13 +16,12 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final pet = widget.pet;
+    // final pet = widget.pet;
 
     return Scaffold(
       backgroundColor: const Color(0xFFFAF5E9),
       body: Column(
         children: [
-          // HEADER
           Container(
             width: double.infinity,
             decoration: const BoxDecoration(
@@ -53,7 +52,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
             ),
           ),
 
-          // CONTENT
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -81,7 +79,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    // TAB SECTION
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.grey.shade200,
@@ -105,12 +102,10 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
             ),
           ),
 
-          // FOOTER BUTTON — Booking & Edit
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
               children: [
-                // Booking button (nanti bisa dihubungkan ke clinic)
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {},
@@ -183,9 +178,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
-  // ===============================
-  // TAB BUTTON
-  // ===============================
   Widget buildTabButton(String title, int index) {
     final isActive = selectedTab == index;
     return Expanded(
@@ -220,9 +212,7 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
-  // ===============================
-  // INFORMASI HEWAN
-  // ===============================
+
   Widget buildInfoSection() {
     final pet = widget.pet;
 
@@ -264,9 +254,7 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
-  // ===============================
-  // HEALTH TAB (EMPTY FOR NOW)
-  // ===============================
+
   Widget buildHealthSection() {
     return const Center(
       child: Text(

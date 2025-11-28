@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:furtopia/model/firebase/clinic_firebase_model.dart';
 import 'package:furtopia/model/firebase/order_clinic_firebase.dart';
 import 'package:furtopia/model/firebase/pet_firebase_model.dart';
-import 'package:furtopia/service/clinic_firebase.dart';
+import 'package:furtopia/service/clinicbooking_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/firebase/petclinic/invoice_screen.dart';
 import 'package:intl/intl.dart';
@@ -41,9 +41,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
     "16:00",
   ];
 
-  // =======================================================
-  // 🔥 GENERATE INVOICE: INV-20251127-2-0001
-  // =======================================================
   Future<String> generateInvoice() async {
     String datePart = DateFormat("yyyyMMdd").format(DateTime.now());
     String serviceId = widget.service.uid ?? "0";
@@ -59,9 +56,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
     return "INV-$datePart-$serviceId-$padded";
   }
 
-  // =======================================================
-  // 🔥 SIMPAN BOOKING KE FIREBASE
-  // =======================================================
   Future<void> submitBooking() async {
     if (selectedDate == null || selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -127,7 +121,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // CARD INFO SERVICE
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -187,7 +180,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
 
             const SizedBox(height: 20),
 
-            // ALAMAT (Jika Home Service)
             if (widget.address != null) ...[
               Text(
                 "Alamat Kamu",
@@ -213,7 +205,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
               const SizedBox(height: 22),
             ],
 
-            // PILIH TANGGAL
             Text(
               "Tanggal",
               style: TextStyle(
@@ -264,7 +255,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
 
             const SizedBox(height: 25),
 
-            // TIME SLOT
             Text(
               "Waktu",
               style: TextStyle(
@@ -313,7 +303,6 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
         ),
       ),
 
-      // BUTTON CONFIRM
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(color: Colors.white),

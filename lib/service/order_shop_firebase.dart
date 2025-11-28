@@ -21,7 +21,7 @@ class FirebaseOrderService {
 
     if (snapshot.docs.isNotEmpty) {
       final String lastInvoice = snapshot.docs.first["invoice"];
-      final String lastNumber = lastInvoice.split("-").last; // 0004
+      final String lastNumber = lastInvoice.split("-").last;
       nextNumber = int.tryParse(lastNumber)! + 1;
     }
 

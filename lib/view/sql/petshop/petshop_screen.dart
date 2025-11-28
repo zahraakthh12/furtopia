@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
 import 'package:furtopia/memory/cart_memory.dart';
-import 'package:furtopia/model/shop_model.dart';
+import 'package:furtopia/model/sql/shop_model.dart';
 import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';

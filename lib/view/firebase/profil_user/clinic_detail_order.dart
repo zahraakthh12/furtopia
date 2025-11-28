@@ -51,15 +51,12 @@ class ClinicBookingDetailScreen extends StatelessWidget {
           final petId = data["petId"];
           final createdAt = data["createdAt"];
 
-          // biaya admin
           const adminFee = 10000;
-          final total =
-              (int.tryParse(price) ?? 0) + adminFee;
+          final total = (int.tryParse(price) ?? 0) + adminFee;
 
           return ListView(
             padding: EdgeInsets.all(16),
             children: [
-              // ===================== INVOICE BOX =====================
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -70,14 +67,20 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("No. Pesanan",
-                        style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.bold)),
+                    Text(
+                      "No. Pesanan",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 4),
                     Text(invoice, style: TextStyle(fontSize: 16)),
                     SizedBox(height: 10),
-                    Text("Tanggal Booking:",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text(
+                      "Tanggal Booking:",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     Text(createdAt.toString()),
                   ],
                 ),
@@ -85,15 +88,13 @@ class ClinicBookingDetailScreen extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              // ============ INFO HEWAN ============
               FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
                     .collection("pets")
                     .doc(petId)
                     .get(),
                 builder: (context, snap) {
-                  if (!snap.hasData)
-                    return Container();
+                  if (!snap.hasData) return Container();
 
                   final pet = snap.data!.data() as Map<String, dynamic>?;
 
@@ -102,9 +103,13 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Hewan Peliharaan",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
+                      Text(
+                        "Hewan Peliharaan",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       SizedBox(height: 10),
 
                       Container(
@@ -126,14 +131,19 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(pet["name"] ?? "",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16)),
-                                Text("${pet["type"]} • ${pet["age"]}",
-                                    style: TextStyle(color: Colors.grey[700])),
+                                Text(
+                                  pet["name"] ?? "",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  "${pet["type"]} • ${pet["age"]}",
+                                  style: TextStyle(color: Colors.grey[700]),
+                                ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -144,9 +154,10 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                 },
               ),
 
-              // ============ INFO LAYANAN ============
-              Text("Detail Layanan",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(
+                "Detail Layanan",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10),
 
               Container(
@@ -154,31 +165,33 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(color: Colors.black12, blurRadius: 4),
-                  ],
+                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(serviceName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    Text(
+                      serviceName,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                     SizedBox(height: 6),
                     Text("Kategori: $category"),
                     Text("Tanggal: $date"),
                     Text("Waktu: $time"),
-                    if (address != null)
-                      Text("Alamat: $address"),
+                    if (address != null) Text("Alamat: $address"),
                   ],
                 ),
               ),
 
               SizedBox(height: 20),
 
-              // ===================== RINGKASAN =====================
-              Text("Ringkasan Pembayaran",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Text(
+                "Ringkasan Pembayaran",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               SizedBox(height: 10),
 
               summaryRow("Harga Layanan", rupiah(price)),
@@ -191,8 +204,6 @@ class ClinicBookingDetailScreen extends StatelessWidget {
               ),
 
               SizedBox(height: 30),
-
-              // ===================== BUTTON SESUAI STATUS =====================
 
               if (status == "pending") ...[
                 actionButton(
@@ -221,7 +232,6 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-              // ===================== WHATSAPP ADMIN =====================
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -229,17 +239,22 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
-                        blurRadius: 6,
-                        color: Colors.black12,
-                        offset: Offset(0, 3)),
+                      blurRadius: 6,
+                      color: Colors.black12,
+                      offset: Offset(0, 3),
+                    ),
                   ],
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Hubungi Admin",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(
+                      "Hubungi Admin",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     SizedBox(height: 8),
                     Text(
                       "Jika Anda butuh bantuan terkait booking ini, silakan hubungi admin.",
@@ -247,7 +262,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     ElevatedButton.icon(
-                      onPressed: () => contactAdmin(data),
+                      onPressed: () => contactAdmin(data, context),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.shape4.withOpacity(0.85),
                         minimumSize: Size(double.infinity, 48),
@@ -259,7 +274,9 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                       label: Text(
                         "Chat Admin via WhatsApp",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.white),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -271,8 +288,6 @@ class ClinicBookingDetailScreen extends StatelessWidget {
       ),
     );
   }
-
-  // =========================== UI HELPERS ===========================
 
   Widget summaryRow(
     String label,
@@ -317,15 +332,16 @@ class ClinicBookingDetailScreen extends StatelessWidget {
     );
   }
 
-  // =========================== ACTIONS ===========================
 
   void cancelBooking(BuildContext context) async {
     final confirm = await showDialog(
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: Text("Batalkan Booking?",
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          "Batalkan Booking?",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         content: Text("Anda yakin ingin membatalkan booking ini?"),
         actions: [
           TextButton(
@@ -347,9 +363,9 @@ class ClinicBookingDetailScreen extends StatelessWidget {
         .collection("clinic_bookings")
         .doc(bookingId)
         .update({
-      "status": "cancel",
-      "updatedAt": FieldValue.serverTimestamp(),
-    });
+          "status": "cancel",
+          "updatedAt": FieldValue.serverTimestamp(),
+        });
 
     Navigator.pop(context);
 
@@ -361,34 +377,42 @@ class ClinicBookingDetailScreen extends StatelessWidget {
     );
   }
 
-  void contactAdmin(Map<String, dynamic> order) async {
-    final adminNumber = "085710546602";
+  Future<void> contactAdmin(
+    Map<String, dynamic> order,
+    BuildContext context,
+  ) async {
+    final phone = "6285710546602"; // Nomor admin kamu
 
-    final invoice = order["invoice"];
-    final service = order["serviceName"];
-    final date = order["date"];
-    final time = order["time"];
-    final price = order["price"];
+    final message =
+        """
+Halo Admin Klinik 👋
 
-    final message = """
-Halo Admin 👋
+Saya ingin bertanya mengenai booking klinik saya.
 
-Saya ingin menanyakan booking klinik hewan saya.
-
-➡️ *No. Pesanan:* $invoice
-➡️ *Layanan:* $service
-➡️ *Tanggal:* $date
-➡️ *Waktu:* $time
-➡️ *Harga:* Rp$price
+📄 *No. Pesanan:* ${order["invoice"]}
+🐾 *Layanan:* ${order["serviceName"]}
+📅 *Tanggal:* ${order["date"]}
+⏰ *Waktu:* ${order["time"]}
+📍 *Alamat:* ${order["address"] ?? 'Tidak ada alamat'}
+💰 *Harga:* Rp${order["price"]}
 
 Mohon bantuannya ya 🙏
 """;
 
     final url = Uri.parse(
-        "https://wa.me/62${adminNumber.substring(1)}?text=${Uri.encodeComponent(message)}");
+      "https://wa.me/$phone?text=${Uri.encodeComponent(message)}",
+    );
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+    try {
+      if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Tidak dapat membuka WhatsApp 😭")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Terjadi kesalahan: $e")));
     }
   }
 }

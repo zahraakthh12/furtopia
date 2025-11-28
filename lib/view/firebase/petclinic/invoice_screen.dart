@@ -17,6 +17,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Invoice Booking"),
         backgroundColor: AppColors.shape4.withOpacity(0.8),
       ),
@@ -26,7 +27,6 @@ class ClinicInvoiceScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // HEADER INVOICE
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(18),
@@ -93,12 +93,8 @@ class ClinicInvoiceScreen extends StatelessWidget {
 
             const Spacer(),
 
-            // =======================================================
-            // BUTTON Aksi
-            // =======================================================
             Column(
               children: [
-                // BUTTON LIHAT DETAIL BOOKING
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -131,7 +127,6 @@ class ClinicInvoiceScreen extends StatelessWidget {
 
                 const SizedBox(height: 12),
 
-                // BUTTON KEMBALI KE BERANDA
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton(

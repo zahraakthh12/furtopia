@@ -1,7 +1,7 @@
-import 'package:furtopia/model/clinic_model.dart';
-import 'package:furtopia/model/pet_model.dart';
-import 'package:furtopia/model/shop_model.dart';
-import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/model/sql/clinic_model.dart';
+import 'package:furtopia/model/sql/pet_model.dart';
+import 'package:furtopia/model/sql/shop_model.dart';
+import 'package:furtopia/model/sql/user_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -64,7 +64,6 @@ class DBHelper {
     required String password,
   }) async {
     final dbs = await db();
-    //query adalah fungsi untuk menampilkan data (READ)
     final List<Map<String, dynamic>> results = await dbs.query(
       tableUser,
       where: 'email = ? AND password = ?',
@@ -89,7 +88,6 @@ class DBHelper {
     //UPDATE USER
   static Future<void> updateUser(UserModel user) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
       tableUser,
       user.toMap(),
@@ -103,7 +101,6 @@ class DBHelper {
   //DELETE USER
   static Future<void> deleteUser(int id) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableUser, where: "id = ?", whereArgs: [id]);
   }
 
@@ -145,7 +142,6 @@ class DBHelper {
     //UPDATE Pet
   static Future<void> updatePet(PetModel pet) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
       tablePet,
       pet.toMap(),
@@ -159,7 +155,6 @@ class DBHelper {
   //DELETE Pet
   static Future<void> deletePet(int id) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tablePet, where: "id = ?", whereArgs: [id]);
   }
 
@@ -186,7 +181,6 @@ class DBHelper {
     //UPDATE BOOKING
   static Future<void> updateBooking(ClinicModel clinic) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
       tableClinic,
       clinic.toMap(),
@@ -227,7 +221,6 @@ class DBHelper {
     //UPDATE BOOKING
   static Future<void> updateOrder(ShopModel shop) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.update(
       tableShop,
       shop.toMap(),
@@ -241,7 +234,6 @@ class DBHelper {
   //DELETE BOOKING
   static Future<void> deleteOrder(int id) async {
     final dbs = await db();
-    //Insert adalah fungsi untuk menambahkan data (CREATE)
     await dbs.delete(tableShop, where: "id = ?", whereArgs: [id]);
   }
 }

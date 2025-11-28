@@ -46,8 +46,6 @@ class OrderHistoryScreen extends StatelessWidget {
         stream: firestore
             .collection("orders")
             .where("userId", isEqualTo: user.uid)
-            /// penting! whereIn tidak boleh dikombinasi orderBy field yang sama
-            .where("status", whereIn: ["completed", "cancelled"])
             .orderBy("createdAt", descending: true)
             .snapshots(),
 
@@ -108,7 +106,6 @@ class OrderHistoryScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 🔶 Invoice + Status
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -148,7 +145,6 @@ class OrderHistoryScreen extends StatelessWidget {
 
                     SizedBox(height: 8),
 
-                    // 🔸 Tanggal pesanan
                     Text(
                       "Tanggal: ${formatDate(createdAt)}",
                       style: TextStyle(fontSize: 12, color: Colors.grey),
@@ -156,7 +152,6 @@ class OrderHistoryScreen extends StatelessWidget {
 
                     SizedBox(height: 12),
 
-                    // 🔹 Produk pertama
                     Row(
                       children: [
                         ClipRRect(

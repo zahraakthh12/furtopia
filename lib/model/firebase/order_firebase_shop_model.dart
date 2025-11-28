@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 class OrderFirebaseModel {
-  String? orderId; // id dokumen Firestore
-  String? invoiceCode; // kode invoice: TGL-NOMOR
-  String? userId; // UID customer yang memesan
-  List<Map<String, dynamic>> items; // daftar item
-  int subtotal; // total harga barang
-  int adminFee; // biaya admin
-  int total; // total akhir
-  String? createdAt; // tanggal pemesanan
-  String status; // pending, diproses, selesai, dibatalkan
+  String? orderId;
+  String? invoiceCode; 
+  String? userId; 
+  List<Map<String, dynamic>> items; 
+  int subtotal; 
+  int adminFee; 
+  int total; 
+  String? createdAt;
+  String status;
 
   OrderFirebaseModel({
     this.orderId,

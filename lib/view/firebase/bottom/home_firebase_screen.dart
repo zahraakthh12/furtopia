@@ -20,7 +20,6 @@ class HomeScreenFirebase extends StatefulWidget {
 
 class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
   UserFirebaseModel? dataUser;
-  final customFont = 'Poppins';
 
   void initState() {
     super.initState();
@@ -41,9 +40,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(children: [buildBackground(), buildLayer()]),
-    );
+    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
   }
 
   SafeArea buildLayer() {

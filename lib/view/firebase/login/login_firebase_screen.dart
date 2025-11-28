@@ -117,22 +117,22 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                   },
                 ),
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Lupa Kata Sandi?",
-                      style: TextStyle(
-                        color: AppColors.bg1,
-                        fontSize: 12,
-                        fontFamily: customFont,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-
+                // Align(
+                //   alignment: Alignment.centerRight,
+                //   child: TextButton(
+                //     onPressed: () {},
+                //     child: Text(
+                //       "Lupa Kata Sandi?",
+                //       style: TextStyle(
+                //         color: AppColors.bg1,
+                //         fontSize: 12,
+                //         fontFamily: customFont,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                height(20),
                 LoginButton(
                   text: "Login",
                   onPressed: () async {
@@ -191,31 +191,30 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                   },
                 ),
 
-                height(16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(right: 8),
-                        height: 1,
-                        color: AppColors.bg1.withOpacity(0.5),
-                      ),
-                    ),
-                    Text(
-                      "atau",
-                      style: TextStyle(fontFamily: customFont, fontSize: 12),
-                    ),
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.only(left: 8),
-                        height: 1,
-                        color: AppColors.bg1.withOpacity(0.5),
-                      ),
-                    ),
-                  ],
-                ),
-
+                // height(16),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Expanded(
+                //       child: Container(
+                //         margin: EdgeInsets.only(right: 8),
+                //         height: 1,
+                //         color: AppColors.bg1.withOpacity(0.5),
+                //       ),
+                //     ),
+                //     Text(
+                //       "atau",
+                //       style: TextStyle(fontFamily: customFont, fontSize: 12),
+                //     ),
+                //     Expanded(
+                //       child: Container(
+                //         margin: EdgeInsets.only(left: 8),
+                //         height: 1,
+                //         color: AppColors.bg1.withOpacity(0.5),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 height(5),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

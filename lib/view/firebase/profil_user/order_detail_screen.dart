@@ -49,7 +49,6 @@ class OrderDetailScreen extends StatelessWidget {
           return ListView(
             padding: EdgeInsets.all(16),
             children: [
-              // ===================== INVOICE BOX =====================
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -81,7 +80,6 @@ class OrderDetailScreen extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              // ===================== PRODUK LIST =====================
               Text(
                 "Produk",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -135,7 +133,6 @@ class OrderDetailScreen extends StatelessWidget {
 
               SizedBox(height: 16),
 
-              // ===================== RINGKASAN =====================
               Text(
                 "Ringkasan Pembayaran",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -152,7 +149,6 @@ class OrderDetailScreen extends StatelessWidget {
 
               SizedBox(height: 30),
 
-              // ===================== TOMBOL AKSI =====================
               if (status == "pending") ...[
                 actionButton(
                   text: "Batalkan Pesanan",
@@ -211,8 +207,9 @@ class OrderDetailScreen extends StatelessWidget {
                     SizedBox(height: 12),
                     ElevatedButton.icon(
                       onPressed: () {
-                        contactAdmin(data);
+                        contactAdmin(context, data);
                       },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.shape4.withOpacity(0.85),
                         minimumSize: Size(double.infinity, 48),
@@ -238,8 +235,6 @@ class OrderDetailScreen extends StatelessWidget {
       ),
     );
   }
-
-  // =========================== FUNGSI TAMBAHAN ===========================
 
   Widget summaryRow(
     String label,
@@ -284,7 +279,6 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  // =========================== AKSI BUTTON ===========================
 
   void cancelOrder(BuildContext context) async {
     final confirm = await showDialog(
@@ -373,44 +367,58 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  void contactAdmin(Map<String, dynamic> order) async {
-    final adminNumber = "085710546602";
+  void contactAdmin(BuildContext context, Map<String, dynamic> order) async {
+    const adminNumber = "085710546602";
 
-    final invoice = order["invoice"];
-    final total = order["total"];
-    final createdAt = order["createdAt"]?.toString() ?? "";
-    final products = List<Map<String, dynamic>>.from(order["products"]);
+    final phone = "62${adminNumber.substring(1)}";
 
-    // Buat format produk
+    final invoice = order["invoice"] ?? "-";
+    final total = order["total"] ?? 0;
+    final createdAt = order["createdAt"] != null
+        ? order["createdAt"].toString()
+        : "-";
+
+    final products = List<Map<String, dynamic>>.from(order["products"] ?? []);
+
+    // Buat list produk
     String productList = products
         .map((p) {
-          return "- ${p["product"]} (${p["quantity"]} x Rp${p["price"]})";
+          final product = p["product"] ?? "";
+          final qty = p["quantity"] ?? 0;
+          final price = p["price"] ?? 0;
+          return "- $product ($qty x Rp$price)";
         })
         .join("\n");
 
+    // Pesan WA
     final message =
         """
 Halo Admin 👋
 
 Saya ingin menanyakan pesanan saya.
 
-➡️ *No. Pesanan:* $invoice
-➡️ *Tanggal:* $createdAt
+🧾 *No. Pesanan:* $invoice
+📅 *Tanggal:* $createdAt
 
-*Daftar Produk:*
+📦 *Daftar Produk:*
 $productList
 
-*Total Pembayaran:* Rp$total
+💰 *Total Pembayaran:* Rp$total
 
 Mohon bantuannya ya 🙏
 """;
 
     final url = Uri.parse(
-      "https://wa.me/62${adminNumber.substring(1)}?text=${Uri.encodeComponent(message)}",
+      "https://wa.me/$phone?text=${Uri.encodeComponent(message)}",
     );
 
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      // WA tidak terbuka
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Gagal membuka WhatsApp 😭")),
+        );
+      }
     }
   }
 }

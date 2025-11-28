@@ -13,7 +13,7 @@ class ClinicProductSeeder {
       final docRef = firestore.collection("clinic_services").doc();
 
       await docRef.set({
-        "uid": docRef.id,
+        "uid": p.uid,
         "product": p.product,
         "description": p.description,
         "price": p.price,

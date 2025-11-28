@@ -148,7 +148,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                                 EditProfileFirebaseScreen(user: dataUser!),
                           ),
                         );
-                        // Jika ada data yang dikembalikan dari halaman edit
                         if (updatedUser != null) {
                           setState(() {
                             dataUser = updatedUser;
@@ -171,8 +170,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
 
             height(30),
             Container(
-              height: 280,
-              width: 500,
+              height: 130,
               padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
               decoration: BoxDecoration(
                 color: AppColors.white,
@@ -190,7 +188,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Menu Lainnya",
+                    "Menu",
                     style: TextStyle(
                       fontSize: 16,
                       color: AppColors.text1.withOpacity(0.5),
@@ -253,88 +251,6 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-
-                  height(20),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => OrderHistoryScreen()),
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 50,
-                          padding: EdgeInsets.all(5.0),
-                          decoration: BoxDecoration(
-                            color: AppColors.shape4.withOpacity(0.75),
-                            borderRadius: BorderRadius.circular(15),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.black.withOpacity(0.25),
-                                offset: Offset(2, 2),
-                                spreadRadius: 3,
-                                blurRadius: 1,
-                              ),
-                            ],
-                          ),
-                          child: Image.asset(AppImages.history, height: 50),
-                        ),
-                        width(20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Riwayat Pesanan",
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: AppColors.black,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  height(20),
-                  Row(
-                    children: [
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.all(5.0),
-                        decoration: BoxDecoration(
-                          color: AppColors.shape4.withOpacity(0.75),
-                          borderRadius: BorderRadius.circular(15),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.black.withOpacity(0.25),
-                              offset: Offset(2, 2),
-                              spreadRadius: 3,
-                              blurRadius: 1,
-                            ),
-                          ],
-                        ),
-                        child: Image.asset(AppImages.setting, height: 50),
-                      ),
-                      width(20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Pengaturan",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.w300,
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),

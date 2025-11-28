@@ -102,7 +102,6 @@ class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
 
                           const SizedBox(height: 10),
 
-                          // BUTTON BOOKING
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(

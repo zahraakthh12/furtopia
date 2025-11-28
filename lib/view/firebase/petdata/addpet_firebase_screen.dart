@@ -30,14 +30,12 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
 
   final List<String> petIcons = ['🐱', '🐶', '🐰', '🐹', '🐦', '🐠', '🐢', '🦎'];
 
-  /// NEXT STEP → jika step terakhir, simpan ke Firebase
   void nextStep() async {
     if (currentStep < 4) {
       setState(() => currentStep++);
       return;
     }
 
-    // === CREATE FIREBASE MODEL ===
     final newPet = PetFirebaseModel(
       ownerId: uid,
       icon: formData["icon"],
@@ -50,7 +48,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
       length: formData["length"],
     );
 
-    // === SAVE TO FIRESTORE ===
     try {
       await PetFirebaseService.createPet(newPet);
 
@@ -60,7 +57,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
         textColor: AppColors.black,
       );
 
-      Navigator.pop(context); // kembali ke list pet
+      Navigator.pop(context);
     } catch (e) {
       Fluttertoast.showToast(
         msg: "Gagal menambahkan hewan: $e",
@@ -80,7 +77,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
       backgroundColor: const Color(0xFFFAF5E9),
       body: Column(
         children: [
-          // HEADER
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -123,7 +119,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
             ),
           ),
 
-          // BUTTONS
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
@@ -143,7 +138,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                   ),
                 if (currentStep > 1) const SizedBox(width: 10),
 
-                // NEXT / SUBMIT
                 Expanded(
                   child: ElevatedButton(
                     onPressed: nextStep,
@@ -170,7 +164,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
-  // === SWITCH STEP ===
   Widget buildStepContent() {
     switch (currentStep) {
       case 1:
@@ -310,7 +303,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
-  // DROPDOWN
   Widget buildDropdown(String label, String key, List<String> items) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -344,7 +336,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
-  // SUMMARY CARD
   Widget buildSummaryCard() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -374,7 +365,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
-  // STEPPER
   Widget buildStepper() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

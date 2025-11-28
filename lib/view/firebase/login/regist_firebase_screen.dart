@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
 
-//Bahas Shared Preference
 class RegistFirebaseScreen extends StatefulWidget {
   const RegistFirebaseScreen({super.key});
   static const id = "/register";
@@ -64,7 +63,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
           padding: const EdgeInsets.only(
             left: 25,
             right: 25,
-            top: 160,
+            top: 70,
             bottom: 70,
           ),
           child: Container(
@@ -194,7 +193,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                           user = result;
                         });
 
-                        // contoh: simpan token kalau ada
+                  
                         if (user.uid != null) {
                           await PreferenceHandler.saveToken(user.uid!);
 
@@ -368,7 +367,6 @@ class LoginButton extends StatelessWidget {
             ? CircularProgressIndicator()
             : Text(
                 text,
-                // "Login",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,

@@ -3,10 +3,12 @@ import 'package:furtopia/model/firebase/shop_firebase_model.dart';
 
 class ShopFirebaseService {
   static final FirebaseFirestore firestore = FirebaseFirestore.instance;
-  static const String collection = "shop_items";
+  static const String collection = "products";
 
   /// CREATE PRODUCT
-  static Future<ShopFirebaseModel> createProduct(ShopFirebaseModel product) async {
+  static Future<ShopFirebaseModel> createProduct(
+    ShopFirebaseModel product,
+  ) async {
     final doc = firestore.collection(collection).doc();
 
     final newProduct = ShopFirebaseModel(
@@ -32,37 +34,36 @@ class ShopFirebaseService {
     final snap = await firestore.collection(collection).get();
 
     return snap.docs
-        .map((e) => ShopFirebaseModel.fromMap({
-              "uid": e.id,
-              ...e.data(),
-            }))
+        .map((e) => ShopFirebaseModel.fromMap({"uid": e.id, ...e.data()}))
         .toList();
   }
 
   /// GET PRODUCTS BY OWNER
-  static Future<List<ShopFirebaseModel>> getProductsByOwner(String ownerId) async {
+  static Future<List<ShopFirebaseModel>> getProductsByOwner(
+    String ownerId,
+  ) async {
     final snap = await firestore
         .collection(collection)
         .where("ownerId", isEqualTo: ownerId)
         .get();
 
-    return snap.docs.map((e) => ShopFirebaseModel.fromMap({
-          "uid": e.id,
-          ...e.data(),
-        })).toList();
+    return snap.docs
+        .map((e) => ShopFirebaseModel.fromMap({"uid": e.id, ...e.data()}))
+        .toList();
   }
 
   /// GET PRODUCTS BY CATEGORY
-  static Future<List<ShopFirebaseModel>> getProductsByCategory(String category) async {
+  static Future<List<ShopFirebaseModel>> getProductsByCategory(
+    String category,
+  ) async {
     final snap = await firestore
         .collection(collection)
         .where("category", isEqualTo: category)
         .get();
 
-    return snap.docs.map((e) => ShopFirebaseModel.fromMap({
-          "uid": e.id,
-          ...e.data(),
-        })).toList();
+    return snap.docs
+        .map((e) => ShopFirebaseModel.fromMap({"uid": e.id, ...e.data()}))
+        .toList();
   }
 
   /// GET PRODUCT BY UID
@@ -70,10 +71,7 @@ class ShopFirebaseService {
     final doc = await firestore.collection(collection).doc(uid).get();
     if (!doc.exists) return null;
 
-    return ShopFirebaseModel.fromMap({
-      "uid": doc.id,
-      ...doc.data()!,
-    });
+    return ShopFirebaseModel.fromMap({"uid": doc.id, ...doc.data()!});
   }
 
   /// UPDATE PRODUCT
@@ -115,9 +113,8 @@ class ShopFirebaseService {
         .where("product", isLessThanOrEqualTo: "$query\uf8ff")
         .get();
 
-    return snap.docs.map((e) => ShopFirebaseModel.fromMap({
-          "uid": e.id,
-          ...e.data(),
-        })).toList();
+    return snap.docs
+        .map((e) => ShopFirebaseModel.fromMap({"uid": e.id, ...e.data()}))
+        .toList();
   }
 }

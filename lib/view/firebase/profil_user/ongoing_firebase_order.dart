@@ -30,7 +30,6 @@ class OrderInProgressScreen extends StatelessWidget {
       );
     }
 
-    // ============== STREAM PETSHOP + PETCLINIC =================
     final petshopStream = firestore
         .collection("orders")
         .where("userId", isEqualTo: user.uid)
@@ -66,7 +65,7 @@ class OrderInProgressScreen extends StatelessWidget {
           // Gabungkan dua list
           List<Map<String, dynamic>> allOrders = [];
 
-          // ---- PETSHOP ORDER ----
+          //PETSHOP ORDER
           for (var doc in petshopDocs) {
             final data = doc.data() as Map<String, dynamic>;
             data["docId"] = doc.id;
@@ -74,7 +73,7 @@ class OrderInProgressScreen extends StatelessWidget {
             allOrders.add(data);
           }
 
-          // ---- PET CLINIC BOOKING ----
+          // PET CLINIC BOOKING
           for (var doc in clinicDocs) {
             final data = doc.data() as Map<String, dynamic>;
             data["docId"] = doc.id;
@@ -123,9 +122,6 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
-  // ==========================================================
-  // CARD: PETSHOP ORDER
-  // ==========================================================
   Widget _buildPetshopCard(BuildContext context, Map<String, dynamic> data) {
     final items = List<Map<String, dynamic>>.from(data["products"]);
     final invoice = data["invoice"];
@@ -198,9 +194,6 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
-  // ==========================================================
-  // CARD: PET CLINIC BOOKING
-  // ==========================================================
   Widget _buildClinicCard(BuildContext context, Map<String, dynamic> data) {
     final invoice = data["invoice"];
     final status = data["status"];
@@ -256,9 +249,6 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
-  // ==========================================================
-  // WIDGET BUILDER
-  // ==========================================================
   Widget _orderCard({required Widget child}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -290,7 +280,7 @@ class OrderInProgressScreen extends StatelessWidget {
 
         ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: 90, // 🔥 BATAS agar chip tidak memanjang
+            maxWidth: 90,
           ),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -306,7 +296,7 @@ class OrderInProgressScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               overflow:
-                  TextOverflow.ellipsis, // 🔥 jika teks panjang, dipotong “...”
+                  TextOverflow.ellipsis,
               maxLines: 1,
             ),
           ),
@@ -342,9 +332,6 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
-  // ==========================================================
-  // STATUS
-  // ==========================================================
   Color statusColor(String status) {
     switch (status) {
       case "pending":

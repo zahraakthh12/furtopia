@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
-import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/model/sql/user_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 
 class EditProfileScreen extends StatefulWidget {

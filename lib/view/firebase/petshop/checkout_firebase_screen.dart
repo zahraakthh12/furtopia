@@ -25,6 +25,31 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
     ).format(price);
   }
 
+  Future<bool?> showConfirmDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Konfirmasi Pesanan"),
+          content: Text("Apakah kamu yakin ingin membuat pesanan ini?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text("Batal"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context, true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.shape4,
+              ),
+              child: Text("OK", style: TextStyle(color: AppColors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     int subtotal = cart.fold<int>(
@@ -47,9 +72,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
               children: [
                 const SizedBox(height: 12),
 
-                // =======================
-                // LIST PRODUK
-                // =======================
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
@@ -90,7 +113,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
 
                         const SizedBox(width: 12),
 
-                        // DETAIL PRODUK
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,9 +151,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
 
                 const SizedBox(height: 20),
 
-                // =======================
                 // RINGKASAN PEMBAYARAN
-                // =======================
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
@@ -156,9 +176,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
             ),
           ),
 
-          // =======================
-          // BUTTON BUAT PESANAN
-          // =======================
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -173,9 +190,10 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
             ),
             child: ElevatedButton(
               onPressed: () async {
-                // Ambil userId dari Preference
-                String? userId = await PreferenceHandler.getToken();
+                bool? confirm = await showConfirmDialog(context);
 
+                if (confirm == false || confirm == null) return;
+                String? userId = await PreferenceHandler.getToken();
                 if (userId == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("User tidak ditemukan")),
@@ -183,7 +201,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   return;
                 }
 
-                // Siapkan produk
                 List<Map<String, dynamic>> orderProducts = cart.map((item) {
                   return {
                     "product": item["product"],
@@ -194,7 +211,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   };
                 }).toList();
 
-                // Simpan ke Firebase & dapatkan invoice + orderId
                 final result = await FirebaseOrderService.saveOrder(
                   userId: userId,
                   products: orderProducts,
@@ -208,7 +224,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
 
                 cart.clear();
 
-                // Pesan sukses
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text("Pesanan berhasil dibuat!"),
@@ -216,7 +231,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   ),
                 );
 
-                // Arahkan ke halaman invoice
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
@@ -253,7 +267,6 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
     );
   }
 
-  // RINGKASAN ROW
   Widget summaryRow(
     String label,
     String value, {

@@ -16,7 +16,6 @@ class PetEducationModel {
     this.createdAt,
   });
 
-  // Convert Firestore → Model
   factory PetEducationModel.fromMap(Map<String, dynamic> map, String id) {
     return PetEducationModel(
       id: id,
@@ -27,7 +26,6 @@ class PetEducationModel {
     );
   }
 
-  // Convert Model → Firestore
   Map<String, dynamic> toMap() {
     return {
       "title": title,

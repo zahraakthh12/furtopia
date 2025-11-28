@@ -37,12 +37,10 @@ class _BottomNavFirebaseState extends State<BottomNavFirebase> {
         unselectedItemColor: AppColors.shape4.withOpacity(0.4),
 
         selectedLabelStyle: TextStyle(
-          fontFamily: "Poppins",
           fontWeight: FontWeight.w600,
           fontSize: 12,
         ),
         unselectedLabelStyle: TextStyle(
-          fontFamily: "Poppins",
           fontSize: 11,
         ),
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:furtopia/model/pet_model.dart';
+import 'package:furtopia/model/sql/pet_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/sql/petdata/petedit_screen.dart';
 

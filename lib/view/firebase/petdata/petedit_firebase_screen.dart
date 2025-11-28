@@ -36,7 +36,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
     lengthC = TextEditingController(text: pet.length ?? "");
   }
 
-  /// === Konfirmasi sebelum simpan ===
   void showConfirmDialog() {
     showDialog(
       context: context,
@@ -62,7 +61,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
               child: const Text("Batal"),
             ),
 
-            /// === Tombol Simpan ===
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.shape4.withOpacity(0.6),
@@ -73,7 +71,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
               onPressed: () async {
                 Navigator.pop(context);
 
-                /// Build updated pet model
                 final updatedPet = PetFirebaseModel(
                   uid: widget.pet.uid,
                   ownerId: widget.pet.ownerId,
@@ -111,9 +108,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
     );
   }
 
-  // ===============================================
-  // UI EDIT FORM
-  // ===============================================
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +168,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
     );
   }
 
-  /// Reusable input
   Widget buildTextField(String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/database/db_helper.dart';
-import 'package:furtopia/model/user_model.dart';
+import 'package:furtopia/model/sql/user_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
