@@ -1,13 +1,13 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // untuk membuat UI Flutter
 import 'package:furtopia/model/firebase/clinic_firebase_model.dart';
 import 'package:furtopia/model/firebase/pet_firebase_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/firebase/petclinic/schedule_screen.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; // untuk format tanggal dan mata uang
 
 class BookingFirebaseScreen extends StatefulWidget {
-  final PetFirebaseModel pet;
-  final ClinicFirebaseModel service;
+  final PetFirebaseModel pet; // untuk menyimpan data hewan peliharaan
+  final ClinicFirebaseModel service; // untuk menyimpan data layanan klinik
 
   const BookingFirebaseScreen({
     super.key,
@@ -20,20 +20,21 @@ class BookingFirebaseScreen extends StatefulWidget {
 }
 
 class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
-  final addressC = TextEditingController();
+  final addressC = TextEditingController(); // controller untuk input alamat
 
+  // format harga ke dalam format rupiah
   String formatRupiah(String price) {
     final formatter = NumberFormat.currency(
       locale: "id",
       symbol: "Rp ",
-      decimalDigits: 0,
+      decimalDigits: 0, // tanpa desimal
     );
-    return formatter.format(int.tryParse(price) ?? 0);
+    return formatter.format(int.tryParse(price) ?? 0); // mengubah string ke int 
   }
 
   @override
   Widget build(BuildContext context) {
-    final isHomeService = widget.service.category == "Home Service";
+    final isHomeService = widget.service.category == "Home Service"; // cek kategori layanan apakah Home Service atau In-Clinic Service
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -132,6 +133,7 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
 
               const SizedBox(height: 24),
 
+              // Tampilan input alamat hanya muncul jika layanan adalah Home Service
               if (isHomeService)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -175,6 +177,7 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
                   ),
                 ),
 
+              // Tampilan informasi jika layanan adalah In-Clinic Service
               if (!isHomeService)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -207,13 +210,14 @@ class _BookingFirebaseScreenState extends State<BookingFirebaseScreen> {
                 return;
               }
 
+              // Navigasi ke layar pemilihan jadwal dengan data yang diperlukan
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (_) => BookingDateTimeScreen(
-                    service: widget.service,
-                    pet: widget.pet, // ⬅ WAJIB
-                    address: isHomeService ? addressC.text : null,
+                    service: widget.service, // mengirim data layanan
+                    pet: widget.pet, // mengirim data hewan peliharaan
+                    address: isHomeService ? addressC.text : null, // mengirim alamat jika Home Service
                   ),
                 ),
               );

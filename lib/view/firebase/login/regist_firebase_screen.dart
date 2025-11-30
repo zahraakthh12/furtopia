@@ -10,28 +10,30 @@ import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
 
 class RegistFirebaseScreen extends StatefulWidget {
   const RegistFirebaseScreen({super.key});
-  static const id = "/register";
+  static const id = "/register"; // identifier route
   @override
   State<RegistFirebaseScreen> createState() => _RegistFirebaseScreenState();
 }
 
 class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController fullnameController = TextEditingController();
-  final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool isVisibility = false;
-  bool isFilled = false;
-  bool isLoading = false;
-  UserFirebaseModel user = UserFirebaseModel();
+  final TextEditingController emailController = TextEditingController(); // controller untuk email
+  final TextEditingController fullnameController = TextEditingController(); // controller untuk nama lengkap
+  final TextEditingController phoneController = TextEditingController(); // controller untuk nomor telepon
+  final TextEditingController passwordController = TextEditingController(); // controller untuk password
+  bool isVisibility = false; // untuk menampilkan atau menyembunyikan password
+  bool isFilled = false; // untuk mengecek apakah semua field sudah terisi
+  bool isLoading = false; // untuk menampilkan loading saat proses registrasi
+  UserFirebaseModel user = UserFirebaseModel(); // model user firebase
 
   @override
+  // inisialisasi state dan menambahkan listener pada controller
   void initState() {
     super.initState();
-    emailController.addListener(_checkFields);
-    passwordController.addListener(_checkFields);
+    emailController.addListener(_checkFields); // menambahkan listener pada emailController
+    passwordController.addListener(_checkFields); // menambahkan listener pada passwordController
   }
 
+  // fungsi untuk mengecek apakah semua field sudah terisi
   void _checkFields() {
     setState(() {
       isFilled =
@@ -42,18 +44,12 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(children: [buildBackground(), buildLayer()]),
+      resizeToAvoidBottomInset: false, // menghindari overflow saat keyboard muncul
+      body: Stack(children: [buildBackground(), buildLayer()]), // menumpuk background dan layer utama
     );
   }
 
-  // register() async {
-  //   Navigator.push(
-  //     context,
-  //     MaterialScreenRoute(builder: (context) => HomeScreenDay15()),
-  //   );
-  // }
-
+  // key untuk form validasi
   final _formKey = GlobalKey<FormState>();
   SafeArea buildLayer() {
     return SafeArea(
@@ -89,6 +85,8 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                   textAlign: TextAlign.center,
                 ),
                 height(12),
+
+                // Nama Lengkap
                 buildTitle("Nama Lengkap"),
                 height(5),
                 buildTextField(
@@ -107,6 +105,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                 ),
 
                 height(12),
+                // Nomor Telepon
                 buildTitle("Nomor Telepon"),
                 height(5),
                 buildTextField(
@@ -127,6 +126,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                 ),
 
                 height(12),
+                /// Email
                 buildTitle("Email"),
                 height(5),
                 buildTextField(
@@ -151,6 +151,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                 ),
 
                 height(12),
+                // Password
                 buildTitle("Password"),
                 height(5),
                 buildTextField(
@@ -171,15 +172,18 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                   },
                 ),
                 height(24),
+
+                // Button Daftar
                 LoginButton(
                   text: "Daftar",
-                  isLoading: isLoading,
+                  isLoading: isLoading, // menampilkan loading saat proses registrasi
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
                         isLoading = true;
                       });
 
+                      // proses registrasi dengan Firebase
                       try {
                         final result = await FirebaseService.registerUser(
                           email: emailController.text.trim(),
@@ -188,12 +192,13 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                           password: passwordController.text,
                         );
 
+                        // jika berhasil, simpan data user dan navigasi ke halaman login
                         setState(() {
                           isLoading = false;
                           user = result;
                         });
 
-                  
+                        // simpan token user di shared preferences
                         if (user.uid != null) {
                           await PreferenceHandler.saveToken(user.uid!);
 
@@ -207,6 +212,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                           );
                         }
 
+                        // navigasi ke halaman login
                         context.pushReplacement(LoginFirebaseScreen());
                       } catch (e) {
                         Fluttertoast.showToast(msg: e.toString());
@@ -265,6 +271,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
     );
   }
 
+  // membuat background layar
   Container buildBackground() {
     return Container(
       height: double.infinity,
@@ -278,6 +285,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
     );
   }
 
+  // membuat text field dengan parameter yang dibutuhkan
   TextFormField buildTextField({
     String? hintText,
     bool isPassword = false,
@@ -288,7 +296,7 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
     return TextFormField(
       validator: validator,
       controller: controller,
-      obscureText: isPassword ? isVisibility : false,
+      obscureText: isPassword ? !isVisibility : false,
       style: TextStyle(fontSize: 12),
       decoration: InputDecoration(
         filled: true,
@@ -320,18 +328,20 @@ class _RegistFirebaseScreenState extends State<RegistFirebaseScreen> {
                   });
                 },
                 icon: Icon(
-                  isVisibility ? Icons.visibility_off : Icons.visibility,
+                  isVisibility ? Icons.visibility : Icons.visibility_off,
                   color: AppColors.black.withOpacity(0.4),
                 ),
               )
-            : null,
+            : null,  // jika bukan password, tidak ada suffix icon
       ),
     );
   }
 
+  // membuat jarak vertikal dan horizontal
   SizedBox height(double height) => SizedBox(height: height);
   SizedBox width(double width) => SizedBox(width: width);
 
+  // membuat judul text field
   Widget buildTitle(String text) {
     return Row(
       children: [

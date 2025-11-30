@@ -5,15 +5,15 @@ import 'package:furtopia/model/firebase/order_clinic_firebase.dart';
 import 'package:furtopia/view/firebase/profil_user/clinic_detail_order.dart';
 
 class ClinicInvoiceScreen extends StatelessWidget {
-  final ClinicBookingModel booking;
+  final ClinicBookingModel booking; // data booking klinik yang akan ditampilkan
 
   const ClinicInvoiceScreen({super.key, required this.booking});
 
   @override
   Widget build(BuildContext context) {
-    final adminFee = 10000;
-    final servicePrice = int.tryParse(booking.price ?? "0") ?? 0;
-    final total = servicePrice + adminFee;
+    final adminFee = 10000; // biaya admin tetap
+    final servicePrice = int.tryParse(booking.price ?? "0") ?? 0; // harga layanan dari booking
+    final total = servicePrice + adminFee; // total biaya yang harus dibayar
 
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +50,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    booking.invoice ?? "-",
+                    booking.invoice ?? "-", // menampilkan nomor invoice
                     style: const TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -59,7 +59,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // DETAIL BOOKING
+            // Detail Booking
             _infoBox(
               title: "Detail Booking",
               children: [
@@ -67,26 +67,26 @@ class ClinicInvoiceScreen extends StatelessWidget {
                 _item("Kategori", booking.category ?? "-"),
                 _item("Tanggal", booking.date ?? "-"),
                 _item("Waktu", booking.time ?? "-"),
-                if (booking.address != null) _item("Alamat", booking.address!),
+                if (booking.address != null) _item("Alamat", booking.address!), // tampilkan alamat jika ada
               ],
             ),
 
             const SizedBox(height: 20),
 
-            // DETAIL HARGA
+            // Detail Harga
             _infoBox(
               title: "Rincian Biaya",
               children: [
                 _item(
                   "Harga Layanan",
-                  "Rp ${NumberFormat("#,###").format(servicePrice)}",
+                  "Rp ${NumberFormat("#,###").format(servicePrice)}", // format harga layanan
                 ),
-                _item("Biaya Admin", "Rp 10.000"),
+                _item("Biaya Admin", "Rp 10.000"), // biaya admin tetap
                 const Divider(),
                 _item(
                   "Total Bayar",
-                  "Rp ${NumberFormat("#,###").format(total)}",
-                  bold: true,
+                  "Rp ${NumberFormat("#,###").format(total)}", // format total biaya
+                  bold: true, // cetak tebal untuk total
                 ),
               ],
             ),
@@ -104,7 +104,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (_) => ClinicBookingDetailScreen(
                             bookingId: booking.uid!,
-                          ),
+                          ), // navigasi ke layar detail booking dengan ID booking
                         ),
                       );
                     },
@@ -131,7 +131,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
                   width: double.infinity,
                   child: OutlinedButton(
                     onPressed: () {
-                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.popUntil(context, (route) => route.isFirst); // kembali ke beranda
                     },
                     style: OutlinedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 16),
@@ -157,6 +157,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan kotak informasi dengan judul dan daftar item
   Widget _infoBox({required String title, required List<Widget> children}) {
     return Container(
       width: double.infinity,
@@ -182,6 +183,7 @@ class ClinicInvoiceScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan satu baris item dengan key dan value
   Widget _item(String key, String value, {bool bold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),

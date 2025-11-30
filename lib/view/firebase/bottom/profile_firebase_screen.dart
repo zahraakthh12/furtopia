@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart'; // untuk widget Flutter
+import 'package:firebase_auth/firebase_auth.dart'; // untuk autentikasi Firebase
 import 'package:furtopia/model/firebase/user_firebase_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/service/firebase.dart';
@@ -8,7 +8,6 @@ import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
 import 'package:furtopia/view/firebase/profil_user/edit_profile_firebase_screen.dart';
 import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
-import 'package:furtopia/view/firebase/profil_user/order_history_screen.dart';
 
 class ProfileFirebaseScreen extends StatefulWidget {
   const ProfileFirebaseScreen({super.key});
@@ -18,13 +17,15 @@ class ProfileFirebaseScreen extends StatefulWidget {
 }
 
 class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
-  UserFirebaseModel? dataUser;
+  UserFirebaseModel? dataUser; // menyimpan data user yang diambil dari Firebase
 
+  // menginisialisasi state dan memanggil getData
   void initState() {
     super.initState();
     getData();
   }
 
+  // mengambil data user dari Firebase
   Future<void> getData() async {
     String? uid = await PreferenceHandler.getToken(); // ambil UID Firestore
     if (uid != null) {
@@ -44,9 +45,9 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
         backgroundColor: AppColors.shape4.withOpacity(0.75),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // menghilangkan tombol back
       ),
-      body: Stack(children: [buildBackground(), buildLayer()]),
+      body: Stack(children: [buildBackground(), buildLayer()]), // menumpuk background dan layer
     );
   }
 
@@ -140,17 +141,18 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                         ),
                       ),
                       onPressed: () async {
-                        if (dataUser == null) return;
+                        if (dataUser == null) return; // pastikan dataUser tidak null
                         final updatedUser = await Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                EditProfileFirebaseScreen(user: dataUser!),
+                                EditProfileFirebaseScreen(user: dataUser!), // menuju halaman edit profil
                           ),
                         );
+                        // refresh data user setelah kembali dari halaman edit profil
                         if (updatedUser != null) {
                           setState(() {
-                            dataUser = updatedUser;
+                            dataUser = updatedUser; // perbarui data user dengan data yang diupdate
                           });
                         }
                       },
@@ -204,7 +206,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => OrderInProgressScreen(),
+                              builder: (_) => OrderInProgressScreen(), // menuju halaman pesanan berlangsung
                             ),
                           );
                         },
@@ -234,7 +236,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => OrderInProgressScreen(),
+                              builder: (_) => OrderInProgressScreen(), // menuju halaman pesanan berlangsung
                             ),
                           );
                         },
@@ -258,9 +260,11 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
               ),
             ),
 
+            // logout button
             height(30),
             GestureDetector(
               onTap: () async {
+                // Tampilkan dialog konfirmasi logout
                 bool? confirmLogout = await showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -299,7 +303,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const LoginFirebaseScreen(),
+                      builder: (context) => const LoginFirebaseScreen(), // kembali ke halaman login
                     ),
                   );
                 }
@@ -352,6 +356,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
     );
   }
 
+  // membuat background
   Container buildBackground() {
     return Container(
       height: double.infinity,
@@ -365,15 +370,7 @@ class _ProfileFirebaseScreenState extends State<ProfileFirebaseScreen> {
     );
   }
 
-  // Container boxScreen(){
-  //   String? text;
-  //   Image? image;
-  //   Icon? icon;
-  //   return Container(
-  //     height:
-  //   );
-  // }
-
+  // membuat SizedBox untuk jarak
   SizedBox height(double height) => SizedBox(height: height);
   SizedBox width(double width) => SizedBox(width: width);
 }

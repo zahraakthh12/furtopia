@@ -14,22 +14,22 @@ class PetChooseFirebaseScreen extends StatefulWidget {
 }
 
 class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
-  List<PetFirebaseModel> petList = [];
+  List<PetFirebaseModel> petList = []; // daftar hewan peliharaan yang diambil dari Firebase
 
   @override
+  // init state untuk memulai pengambilan data hewan peliharaan saat layar dibuat
   void initState() {
     super.initState();
-    fetchPets();
+    fetchPets(); // panggil fetchPets untuk mengambil data hewan peliharaan
   }
 
-  /// GET PET LIST FROM FIREBASE
+  // fungsi untuk mengambil data hewan peliharaan dari Firebase
   Future<void> fetchPets() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
-
-    final pets = await PetFirebaseService.getPetsByOwner(uid);
+    final uid = FirebaseAuth.instance.currentUser!.uid; // dapatkan UID pengguna saat ini
+    final pets = await PetFirebaseService.getPetsByOwner(uid); // ambil data hewan peliharaan berdasarkan UID pemilik
 
     setState(() {
-      petList = pets;
+      petList = pets; // perbarui state dengan data hewan peliharaan yang diambil
     });
   }
 
@@ -49,6 +49,8 @@ class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+
+            // tampilkan pesan jika daftar hewan peliharaan kosong
             if (petList.isEmpty)
               Expanded(
                 child: Column(
@@ -64,12 +66,14 @@ class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
                   ],
                 ),
               )
+
+            // tampilkan daftar hewan peliharaan jika tidak kosong
             else
               Expanded(
                 child: ListView.builder(
-                  itemCount: petList.length,
+                  itemCount: petList.length, // jumlah item dalam daftar hewan peliharaan
                   itemBuilder: (context, index) {
-                    final pet = petList[index];
+                    final pet = petList[index]; // ambil data hewan peliharaan pada indeks tertentu
 
                     return Container(
                       margin: const EdgeInsets.only(bottom: 12),
@@ -81,8 +85,10 @@ class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+
+                          // tampilkan informasi hewan peliharaan
                           ListTile(
-                            contentPadding: EdgeInsets.zero,
+                            contentPadding: EdgeInsets.zero, // hilangkan padding default
                             leading: Text(
                               pet.icon ?? "🐾",
                               style: const TextStyle(fontSize: 40),
@@ -110,7 +116,7 @@ class _PetChooseFirebaseScreenState extends State<PetChooseFirebaseScreen> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (_) =>
-                                        PetClinicChooseServiceScreen(pet: pet),
+                                        PetClinicChooseServiceScreen(pet: pet), // navigasi ke layar booking dengan mengirim data hewan peliharaan
                                   ),
                                 );
                               },

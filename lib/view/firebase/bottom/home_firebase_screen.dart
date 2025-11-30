@@ -1,6 +1,5 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
+import 'dart:developer'; // untuk logging
+import 'package:flutter/material.dart'; // untuk widget Flutter
 import 'package:furtopia/model/firebase/user_firebase_model.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
 import 'package:furtopia/service/firebase.dart';
@@ -19,13 +18,15 @@ class HomeScreenFirebase extends StatefulWidget {
 }
 
 class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
-  UserFirebaseModel? dataUser;
+  UserFirebaseModel? dataUser; // menyimpan data user yang diambil dari Firebase
 
+  // menginisialisasi state dan memanggil getData
   void initState() {
     super.initState();
     getData();
   }
 
+  // mengambil data user dari Firebase
   Future<void> getData() async {
     String? uid = await PreferenceHandler.getToken(); // ambil UID user
     log(uid.toString());
@@ -40,7 +41,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()]));
+    return Scaffold(body: Stack(children: [buildBackground(), buildLayer()])); //menumpuk background dan layer
   }
 
   SafeArea buildLayer() {
@@ -50,6 +51,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // header
             Row(
               children: [
                 Column(
@@ -119,13 +121,14 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
               ),
             ),
 
+            // pet shop
             height(10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PetShopFirebaseScreen(),
+                    builder: (context) => PetShopFirebaseScreen(), // menuju halaman pet shop
                   ),
                 );
               },
@@ -196,13 +199,14 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
               ),
             ),
 
+            // pet clinic
             height(20),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => PetChooseFirebaseScreen(),
+                    builder: (context) => PetChooseFirebaseScreen(), //menuju halaman pet choose
                   ),
                 );
               },
@@ -282,12 +286,13 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
               ),
             ),
 
+            // pet education
             height(20),
             GestureDetector(
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EduFirebaseScreen()),
+                  MaterialPageRoute(builder: (context) => EduFirebaseScreen()), //menuju halaman pet education
                 );
               },
               child: Container(
@@ -376,6 +381,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
     );
   }
 
+  // membuat widget tips
   Container buildTipsWidget(String text) {
     return Container(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
@@ -388,6 +394,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
     );
   }
 
+  // membuat background
   Container buildBackground() {
     return Container(
       height: double.infinity,
@@ -401,15 +408,7 @@ class _HomeScreenFirebaseState extends State<HomeScreenFirebase> {
     );
   }
 
-  // Container boxScreen(){
-  //   String? text;
-  //   Image? image;
-  //   Icon? icon;
-  //   return Container(
-  //     height:
-  //   );
-  // }
-
+  // membuat SizedBox untuk jarak
   SizedBox height(double height) => SizedBox(height: height);
   SizedBox width(double width) => SizedBox(width: width);
 }

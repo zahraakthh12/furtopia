@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // untuk autentikasi Firebase
+import 'package:flutter/material.dart'; // untuk widget Flutter
 import 'package:furtopia/model/firebase/pet_firebase_model.dart';
 import 'package:furtopia/service/pet_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
@@ -15,32 +15,33 @@ class PetListFirebaseScreen extends StatefulWidget {
 }
 
 class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
-  List<PetFirebaseModel> petList = [];
+  List<PetFirebaseModel> petList = []; // list data hewan dari firebase
 
   @override
+  // menginisialisasi state dan memanggil fetchPets
   void initState() {
     super.initState();
     fetchPets();
   }
 
-  /// GET DATA PET FROM FIREBASE (OWNER ID)
+  // mengambil data hewan dari Firebase berdasarkan ID pemilik
   Future<void> fetchPets() async {
-    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final uid = FirebaseAuth.instance.currentUser!.uid; // ambil UID user saat ini
+    final pets = await PetFirebaseService.getPetsByOwner(uid); // ambil data hewan berdasarkan UID pemilik 
 
-    final pets = await PetFirebaseService.getPetsByOwner(uid);
-
+    // perbarui state dengan data hewan yang diambil
     setState(() {
       petList = pets;
     });
   }
 
-  /// DELETE FROM FIREBASE
+  // menghapus data hewan dari Firebase
   Future<void> deletePet(String uid) async {
     await PetFirebaseService.deletePet(uid);
     fetchPets();
   }
 
-  /// Confirm delete popup
+  // menampilkan dialog konfirmasi penghapusan
   Future<void> showDeleteDialog(PetFirebaseModel pet) async {
     showDialog(
       context: context,
@@ -72,7 +73,7 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
 
                 Row(
                   children: [
-                    // CANCEL
+                    // cancek
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () => Navigator.pop(context),
@@ -90,12 +91,12 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                     ),
                     const SizedBox(width: 10),
 
-                    // DELETE
+                    // hapus
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () async {
-                          Navigator.pop(context);
-                          await deletePet(pet.uid!);
+                          Navigator.pop(context); // tutup dialog
+                          await deletePet(pet.uid!); // hapus hewan
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.redAccent,
@@ -134,13 +135,13 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
 
       body: Stack(
         children: [
-          buildBackground(),
+          buildBackground(), // menumpuk background dan konten
 
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                /// ADD PET BUTTON
+                // button add pet
                 Align(
                   alignment: Alignment.topRight,
                   child: InkWell(
@@ -148,10 +149,10 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const AddPetFirebaseScreen(),
+                          builder: (_) => const AddPetFirebaseScreen(), // menuju halaman tambah hewan
                         ),
                       );
-                      fetchPets();
+                      fetchPets(); // refresh list hewan setelah kembali dari halaman tambah hewan
                     },
                     child: Container(
                       width: 40,
@@ -167,7 +168,7 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
 
                 const SizedBox(height: 10),
 
-                /// LIST / EMPTY VIEW
+                // halaman list hewan jika kosong
                 if (petList.isEmpty)
                   Expanded(
                     child: Column(
@@ -182,6 +183,8 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                       ],
                     ),
                   )
+
+                // halaman list hewan jika ada data
                 else
                   Expanded(
                     child: ListView.builder(
@@ -194,7 +197,7 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                           decoration: BoxDecoration(
                             color: Colors.white.withOpacity(
                               0.85,
-                            ), // PUTIH AGAR KONTRAS
+                            ),
                             borderRadius: BorderRadius.circular(16),
                           ),
                           child: ListTile(
@@ -226,10 +229,10 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) =>
-                                            PetDetailFirebaseScreen(pet: pet),
+                                            PetDetailFirebaseScreen(pet: pet), // menuju halaman detail hewan 
                                       ),
                                     );
-                                    fetchPets();
+                                    fetchPets(); // refresh list hewan setelah kembali dari halaman detail hewan
                                   },
                                 ),
                                 IconButton(
@@ -237,7 +240,7 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
                                     Icons.delete_outline,
                                     color: Colors.grey,
                                   ),
-                                  onPressed: () => showDeleteDialog(pet),
+                                  onPressed: () => showDeleteDialog(pet), // tampilkan dialog konfirmasi hapus
                                 ),
                               ],
                             ),
@@ -254,6 +257,7 @@ class _PetListFirebaseScreenState extends State<PetListFirebaseScreen> {
     );
   }
 
+  // membuat background
   Container buildBackground() {
     return Container(
       height: double.infinity,

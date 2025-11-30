@@ -26,37 +26,4 @@ class ClinicBookingService {
     await docRef.set(data);
   }
 
-  static Future<String> generateInvoice({
-    required String serviceCategory,
-  }) async {
-    // Tanggal hari ini
-    final today = DateTime.now();
-    final datePart =
-        "${today.year}"
-        "${today.month.toString().padLeft(2, '0')}"
-        "${today.day.toString().padLeft(2, '0')}";
-
-    // Kode kategori
-    final categoryCode = serviceCategory == "Home Service" ? "HM" : "IC";
-
-    final snapshot = await firestore
-        .collection(collection)
-        .where("datePart", isEqualTo: datePart)
-        .where("categoryCode", isEqualTo: categoryCode)
-        .orderBy("createdAt", descending: true)
-        .limit(1)
-        .get();
-
-    int runningNumber = 1;
-
-    if (snapshot.docs.isNotEmpty) {
-      final lastInvoice = snapshot.docs.first.data()["invoice"];
-      final lastNumber = int.parse(lastInvoice.split("-").last);
-      runningNumber = lastNumber + 1;
-    }
-
-    final numberPart = runningNumber.toString().padLeft(3, "0");
-
-    return "INV-$datePart-$categoryCode-$numberPart";
-  }
 }

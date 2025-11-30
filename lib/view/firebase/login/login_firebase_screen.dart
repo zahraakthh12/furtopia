@@ -1,42 +1,40 @@
-//Bahas Shared Preference
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';  // untuk widget Flutter
 import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/service/firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/style/app_images.dart';
-import 'package:furtopia/navigation/bottom_nav.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fluttertoast/fluttertoast.dart'; // untuk menampilkan toast
 import 'package:furtopia/view/firebase/login/regist_firebase_screen.dart';
 
 class LoginFirebaseScreen extends StatefulWidget {
   const LoginFirebaseScreen({super.key});
-  static const id = "/login_screen18";
+  static const id = "/login_screen18"; // identifier untuk route
   @override
   State<LoginFirebaseScreen> createState() => _LoginFirebaseScreenState();
 }
 
 class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool isVisibility = false;
-  final customFont = 'Poppins';
+  final TextEditingController emailController = TextEditingController(); // controller untuk input email 
+  final TextEditingController passwordController = TextEditingController(); // controller untuk input password
+  bool isVisibility = false; // untuk mengatur visibilitas password
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(children: [buildBackground(), buildLayer()]),
+      resizeToAvoidBottomInset: false, // menghindari resize saat keyboard muncul
+      body: Stack(children: [buildBackground(), buildLayer()]), // menumpuk background dan layer utama
     );
   }
 
-  login() async {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => BottomNav()),
-    );
-  }
+  // untuk proses login
+  // login() async {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => BottomNavFirebase()), // navigasi ke BottomNav setelah login
+  //   );
+  // }
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // key untuk form validasi
   SafeArea buildLayer() {
     return SafeArea(
       child: Form(
@@ -65,14 +63,15 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    fontFamily: customFont,
                   ),
                 ),
                 Text(
                   "Masuk ke Akun Anda",
-                  style: TextStyle(fontSize: 12, fontFamily: customFont),
+                  style: TextStyle(fontSize: 12),
                 ),
                 height(12),
+
+                // Email TextField
                 buildTitle("Email"),
                 height(5),
                 buildTextField(
@@ -97,6 +96,8 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                 ),
 
                 height(12),
+
+                // Password TextField
                 buildTitle("Kata Sandi"),
                 height(5),
                 buildTextField(
@@ -133,23 +134,23 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                 //   ),
                 // ),
                 height(20),
+
+                // Tombol Login
                 LoginButton(
                   text: "Login",
                   onPressed: () async {
+                    // proses validasi form
                     if (_formKey.currentState!.validate()) {
                       print(emailController.text);
-                      PreferenceHandler.saveLogin(true);
-                      // final data = await DbHelper.loginUser(
-                      //   email: emailController.text,
-                      //   password: passwordController.text,
-                      // );
+                      PreferenceHandler.saveLogin(true); // menyimpan status login
                       final data = await FirebaseService.loginUser(
                         email: emailController.text,
                         password: passwordController.text,
                       );
                       print(data);
+                      // jika login berhasil
                       if (data != null) {
-                        PreferenceHandler.saveToken(data.uid.toString());
+                        PreferenceHandler.saveToken(data.uid.toString()); // menyimpan token user
                         Fluttertoast.showToast(
                           msg: "Login berhasil! Selamat datang 👋",
                           toastLength: Toast.LENGTH_LONG,
@@ -161,7 +162,7 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BottomNavFirebase(),
+                            builder: (context) => BottomNavFirebase(), // navigasi ke BottomNavFirebase setelah login
                           ),
                         );
                       } else {
@@ -221,14 +222,14 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                   children: [
                     Text(
                       "Belum punya akun?",
-                      style: TextStyle(fontFamily: customFont, fontSize: 12),
+                      style: TextStyle(fontSize: 12),
                     ),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegistFirebaseScreen(),
+                            builder: (context) => RegistFirebaseScreen(), // navigasi ke halaman registrasi
                           ),
                         );
                       },
@@ -237,7 +238,6 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
                         style: TextStyle(
                           color: AppColors.bg1,
                           fontSize: 12,
-                          fontFamily: customFont,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -252,6 +252,7 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
     );
   }
 
+  // membuat background
   Container buildBackground() {
     return Container(
       height: double.infinity,
@@ -265,6 +266,7 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
     );
   }
 
+  // membuat text field
   TextFormField buildTextField({
     String? hintText,
     bool isPassword = false,
@@ -275,8 +277,8 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
     return TextFormField(
       validator: validator,
       controller: controller,
-      obscureText: isPassword ? isVisibility : false,
-      style: TextStyle(fontFamily: customFont, fontSize: 12),
+      obscureText: isPassword ? !isVisibility : false,
+      style: TextStyle(fontSize: 12),
       decoration: InputDecoration(
         filled: true,
         contentPadding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
@@ -284,7 +286,6 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
         hintStyle: TextStyle(
           fontSize: 12,
           color: AppColors.black.withOpacity(0.5),
-          fontFamily: customFont,
         ),
         prefixIcon: icon,
         fillColor: AppColors.bg1.withOpacity(0.35),
@@ -304,22 +305,24 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    isVisibility = !isVisibility;
+                    isVisibility = !isVisibility; 
                   });
                 },
                 icon: Icon(
-                  isVisibility ? Icons.visibility_off : Icons.visibility,
+                  isVisibility ? Icons.visibility : Icons.visibility_off,
                   color: AppColors.black.withOpacity(0.4),
                 ),
               )
-            : null,
+            : null, // jika bukan password, tidak ada suffix icon
       ),
     );
   }
 
+  // membuat SizedBox untuk jarak
   SizedBox height(double height) => SizedBox(height: height);
   SizedBox width(double width) => SizedBox(width: width);
 
+  // membuat judul text field
   Widget buildTitle(String text) {
     return Row(
       children: [
@@ -328,7 +331,6 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 12,
-            fontFamily: customFont,
           ),
         ),
       ],
@@ -336,11 +338,11 @@ class _LoginFirebaseScreenState extends State<LoginFirebaseScreen> {
   }
 }
 
+// membuat tombol login
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key, this.onPressed, required this.text});
   final void Function()? onPressed;
   final String text;
-  final customFont = 'Poppins';
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -359,7 +361,6 @@ class LoginButton extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.bold,
             color: Colors.white,
-            fontFamily: customFont,
           ),
         ),
       ),

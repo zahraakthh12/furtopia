@@ -13,7 +13,7 @@ class AddPetFirebaseScreen extends StatefulWidget {
 }
 
 class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
-  int currentStep = 1;
+  int currentStep = 1; // langkah saat ini dalam proses penambahan hewan peliharaan
 
   final Map<String, dynamic> formData = {
     'icon': '',
@@ -24,18 +24,19 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     'color': '',
     'weight': '',
     'length': '',
-  };
+  }; // menyimpan data formulir hewan peliharaan
 
-  final uid = FirebaseAuth.instance.currentUser!.uid;
+  final uid = FirebaseAuth.instance.currentUser!.uid; // dapatkan UID pengguna saat ini
 
-  final List<String> petIcons = ['🐱', '🐶', '🐰', '🐹', '🐦', '🐠', '🐢', '🦎'];
+  final List<String> petIcons = ['🐱', '🐶', '🐰', '🐹', '🐦', '🐠', '🐢', '🦎']; // daftar ikon hewan peliharaan
 
+  // fungsi untuk melanjutkan ke langkah berikutnya atau menyimpan data hewan peliharaan
   void nextStep() async {
     if (currentStep < 4) {
       setState(() => currentStep++);
-      return;
+      return; // untuk 
     }
-
+ 
     final newPet = PetFirebaseModel(
       ownerId: uid,
       icon: formData["icon"],

@@ -7,7 +7,7 @@ import 'package:furtopia/view/firebase/petclinic/address_screen.dart';
 import 'package:intl/intl.dart';
 
 class PetClinicChooseServiceScreen extends StatefulWidget {
-  final PetFirebaseModel pet;
+  final PetFirebaseModel pet; // untuk menyimpan data hewan peliharaan
   const PetClinicChooseServiceScreen({super.key, required this.pet});
 
   @override
@@ -17,11 +17,11 @@ class PetClinicChooseServiceScreen extends StatefulWidget {
 
 class _PetClinicChooseServiceScreenState
     extends State<PetClinicChooseServiceScreen> {
-  String activeCategory = "all";
-  String searchQuery = "";
+  String activeCategory = "all"; // kategori layanan yang aktif
+  String searchQuery = ""; // query pencarian layanan
 
-  List<ClinicFirebaseModel> services = [];
-  bool isLoading = true;
+  List<ClinicFirebaseModel> services = []; // daftar layanan klinik
+  bool isLoading = true; // status loading data
 
   List<Map<String, String>> categories = [
     {"id": "all", "name": "Semua"},
@@ -30,39 +30,42 @@ class _PetClinicChooseServiceScreenState
   ];
 
   @override
+  // memuat data layanan saat inisialisasi state
   void initState() {
     super.initState();
     loadServices();
   }
 
+  // fungsi untuk memuat data layanan dari Firebase
   Future<void> loadServices() async {
-    final data = await ClinicServiceFirebase.getAllServices();
+    final data = await ClinicServiceFirebase.getAllServices(); // ambil semua layanan dari Firebase
     setState(() {
-      services = data;
-      isLoading = false;
+      services = data; // untuk menyimpan data layanan
+      isLoading = false; // untuk menandai bahwa data telah dimuat
     });
   }
 
+  // format harga ke dalam format rupiah
   String formatRupiah(String price) {
     final formatter = NumberFormat.currency(
       locale: 'id',
       symbol: 'Rp ',
       decimalDigits: 0,
     );
-    return formatter.format(int.tryParse(price) ?? 0);
+    return formatter.format(int.tryParse(price) ?? 0); // mengubah string ke int dan memformat ke rupiah
   }
 
   @override
   Widget build(BuildContext context) {
-    // FILTER CATEGORY
+    // filter berdasarkan kategori
     final filterCategory = services.where((s) {
       return activeCategory == "all" || s.category == activeCategory;
     });
 
-    // FILTER SEARCH
+    // filter berdasarkan pencarian
     final filtered = filterCategory.where((s) {
       return searchQuery.isEmpty ||
-          (s.product ?? "").toLowerCase().contains(searchQuery.toLowerCase());
+          (s.product ?? "").toLowerCase().contains(searchQuery.toLowerCase()); // pencarian tidak sensitif huruf besar/kecil
     }).toList();
 
     return Scaffold(
@@ -75,7 +78,7 @@ class _PetClinicChooseServiceScreenState
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      body: isLoading
+      body: isLoading // tampilkan indikator loading jika data masih dimuat
           ? const Center(child: CircularProgressIndicator())
           : Column(
               children: [
@@ -96,36 +99,36 @@ class _PetClinicChooseServiceScreenState
                 SizedBox(
                   height: 50,
                   child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
+                    scrollDirection: Axis.horizontal, // arah scroll horizontal
+                    itemCount: categories.length, // jumlah kategori
                     itemBuilder: (context, index) {
-                      final cat = categories[index];
-                      final selected = cat["id"] == activeCategory;
+                      final cat = categories[index]; // ambil kategori berdasarkan indeks
+                      final selected = cat["id"] == activeCategory;  // cek apakah kategori ini yang aktif
 
                       return GestureDetector(
-                        onTap: () => setState(() => activeCategory = cat["id"]!),
+                        onTap: () => setState(() => activeCategory = cat["id"]!), // ubah kategori aktif saat diklik
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 8),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 10),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            gradient: selected
+                            gradient: selected // jika kategori ini aktif, beri gradasi warna
                                 ? LinearGradient(
                                     colors: [
                                       AppColors.shape4.withOpacity(0.75),
                                       AppColors.shape5.withOpacity(0.75),
                                     ],
                                   )
-                                : null,
-                            color: selected ? null : Colors.grey[200],
+                                : null, // jika tidak aktif, tidak ada gradasi warna
+                            color: selected ? null : Colors.grey[200], // warna latar belakang jika tidak aktif
                           ),
                           child: Center(
                             child: Text(
                               cat["name"]!,
                               style: TextStyle(
                                 color:
-                                    selected ? Colors.white : Colors.black87,
+                                    selected ? Colors.white : Colors.black87, // warna teks berdasarkan status aktif
                               ),
                             ),
                           ),
@@ -138,7 +141,7 @@ class _PetClinicChooseServiceScreenState
                 const SizedBox(height: 8),
 
                 Expanded(
-                  child: filtered.isEmpty
+                  child: filtered.isEmpty // cek apakah daftar layanan yang difilter kosong
                       ? const Center(
                           child: Text(
                             "Layanan tidak ditemukan",
@@ -147,9 +150,9 @@ class _PetClinicChooseServiceScreenState
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.all(12),
-                          itemCount: filtered.length,
+                          itemCount: filtered.length, // jumlah layanan yang difilter
                           itemBuilder: (context, index) {
-                            final s = filtered[index];
+                            final s = filtered[index]; // ambil layanan berdasarkan indeks
 
                             return Container(
                               margin: const EdgeInsets.only(bottom: 12),
@@ -180,8 +183,8 @@ class _PetClinicChooseServiceScreenState
 
                                   Text(
                                     s.description ?? "-",
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2, // batasi maksimal 2 baris teks
+                                    overflow: TextOverflow.ellipsis, // jika teks terlalu panjang, tambahkan elipsis (...)
                                     style: const TextStyle(
                                       fontSize: 13,
                                       color: Colors.grey,
@@ -200,7 +203,7 @@ class _PetClinicChooseServiceScreenState
                                           BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      s.category ?? "-",
+                                      s.category ?? "-", // tampilkan kategori layanan
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w600,
@@ -211,7 +214,7 @@ class _PetClinicChooseServiceScreenState
                                   const SizedBox(height: 10),
 
                                   Text(
-                                    formatRupiah(s.price ?? "0"),
+                                    formatRupiah(s.price ?? "0"), // format harga layanan
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
@@ -244,7 +247,7 @@ class _PetClinicChooseServiceScreenState
                                                 BookingFirebaseScreen(
                                               service: s,
                                               pet: widget.pet,
-                                            ),
+                                            ), // navigasi ke layar booking dengan data layanan dan hewan peliharaan
                                           ),
                                         );
                                       },

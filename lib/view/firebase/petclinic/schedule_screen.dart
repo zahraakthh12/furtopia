@@ -10,9 +10,9 @@ import 'package:furtopia/view/firebase/petclinic/invoice_screen.dart';
 import 'package:intl/intl.dart';
 
 class BookingDateTimeScreen extends StatefulWidget {
-  final ClinicFirebaseModel service;
-  final String? address;
-  final PetFirebaseModel pet;
+  final ClinicFirebaseModel service; // data layanan klinik yang akan dibooking
+  final String? address; // alamat untuk layanan Home Service
+  final PetFirebaseModel pet; // data hewan peliharaan yang akan dibooking
 
   const BookingDateTimeScreen({
     super.key,
@@ -26,11 +26,12 @@ class BookingDateTimeScreen extends StatefulWidget {
 }
 
 class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
-  DateTime? selectedDate;
-  String? selectedTime;
+  DateTime? selectedDate; // tanggal yang dipilih
+  String? selectedTime; // waktu yang dipilih
 
-  bool loading = false;
+  bool loading = false; // status loading saat submit booking
 
+  // daftar slot waktu yang tersedia untuk booking
   List<String> timeSlots = [
     "09:00",
     "10:00",
@@ -41,54 +42,57 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
     "16:00",
   ];
 
+  // fungsi untuk menghasilkan nomor invoice unik 
   Future<String> generateInvoice() async {
-    String datePart = DateFormat("yyyyMMdd").format(DateTime.now());
-    String serviceId = widget.service.uid ?? "0";
+    String datePart = DateFormat("yyyyMMdd").format(DateTime.now()); // bagian tanggal dari invoice
+    String serviceId = widget.service.uid ?? "0"; // ID layanan
 
-    final snap = await FirebaseFirestore.instance
-        .collection("clinic_bookings")
-        .where("invoiceDate", isEqualTo: datePart)
-        .get();
+    final snap = await FirebaseFirestore.instance // menghitung jumlah booking pada hari ini
+        .collection("clinic_bookings") // koleksi booking klinik
+        .where("invoiceDate", isEqualTo: datePart) // filter berdasarkan tanggal invoice
+        .get(); // ambil data snapshot
 
-    int countToday = snap.docs.length + 1;
-    String padded = countToday.toString().padLeft(4, "0");
+    int countToday = snap.docs.length + 1; // hitung jumlah booking hari ini dan tambahkan 1 untuk booking baru
+    String padded = countToday.toString().padLeft(4, "0"); // pad angka dengan nol di depan hingga 4 digit
 
-    return "INV-$datePart-$serviceId-$padded";
+    return "INV-$datePart-$serviceId-$padded"; // format nomor invoice
   }
 
+  // fungsi untuk mengirim data booking ke Firebase
   Future<void> submitBooking() async {
-    if (selectedDate == null || selectedTime == null) {
+    if (selectedDate == null || selectedTime == null) { // validasi input tanggal dan waktu
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Silakan pilih tanggal & waktu."),
           backgroundColor: Colors.red,
         ),
       );
-      return;
+      return; // hentikan eksekusi jika input tidak valid
     }
 
-    setState(() => loading = true);
+    setState(() => loading = true); // set status loading menjadi true
 
-    final invoice = await generateInvoice();
+    final invoice = await generateInvoice(); // buat nomor invoice baru
 
+    // buat model booking dengan data yang diperlukan
     final booking = ClinicBookingModel(
-      userId: FirebaseAuth.instance.currentUser?.uid ?? "UNKNOWN",
-      petId: widget.pet.uid,
+      userId: FirebaseAuth.instance.currentUser?.uid ?? "UNKNOWN", // ID pengguna saat ini atau "UNKNOWN" jika tidak tersedia
+      petId: widget.pet.uid, // ID hewan peliharaan yang akan dibooking
       serviceId: widget.service.uid,
       serviceName: widget.service.product,
       category: widget.service.category,
       price: widget.service.price,
       address: widget.address,
-      date: DateFormat("yyyy-MM-dd").format(selectedDate!),
+      date: DateFormat("yyyy-MM-dd").format(selectedDate!), // format tanggal booking
       time: selectedTime,
-      status: "pending",
+      status: "pending", // status awal booking
       invoice: invoice,
-      invoiceDate: DateFormat("yyyyMMdd").format(DateTime.now()),
+      invoiceDate: DateFormat("yyyyMMdd").format(DateTime.now()), // bagian tanggal untuk invoice
     );
 
-    await ClinicBookingService.createBooking(booking);
+    await ClinicBookingService.createBooking(booking); // kirim data booking ke Firebase
 
-    setState(() => loading = false);
+    setState(() => loading = false); // set status loading menjadi false
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
@@ -99,7 +103,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
 
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (_) => ClinicInvoiceScreen(booking: booking)),
+      MaterialPageRoute(builder: (_) => ClinicInvoiceScreen(booking: booking)), // navigasi ke layar invoice dengan data booking
     );
   }
 
@@ -113,7 +117,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         backgroundColor: AppColors.shape4.withOpacity(0.75),
-        elevation: 0,
+        elevation: 0, 
       ),
 
       body: SingleChildScrollView(
@@ -180,6 +184,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
 
             const SizedBox(height: 20),
 
+            // tampilkan alamat jika ada 
             if (widget.address != null) ...[
               Text(
                 "Alamat Kamu",
@@ -215,6 +220,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
             ),
             const SizedBox(height: 8),
 
+            // pemilihan tanggal booking
             GestureDetector(
               onTap: () async {
                 final DateTime? picked = await showDatePicker(
@@ -224,6 +230,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
                   lastDate: DateTime.now().add(const Duration(days: 60)),
                 );
 
+                // jika tanggal dipilih, setel tanggal terpilih
                 if (picked != null) {
                   setState(() => selectedDate = picked);
                 }
@@ -242,7 +249,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      selectedDate == null
+                      selectedDate == null // tampilkan teks default jika belum memilih tanggal
                           ? "Pilih tanggal booking..."
                           : DateFormat("dd MMM yyyy").format(selectedDate!),
                       style: const TextStyle(fontSize: 15),
@@ -265,14 +272,17 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
             ),
             const SizedBox(height: 12),
 
+            
+            // pemilihan waktu booking
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: timeSlots.map((time) {
-                final selected = selectedTime == time;
+                final selected = selectedTime == time; // cek apakah slot waktu ini terpilih
 
+                // buat widget untuk setiap slot waktu
                 return GestureDetector(
-                  onTap: () => setState(() => selectedTime = time),
+                  onTap: () => setState(() => selectedTime = time), // setel waktu terpilih saat slot diketuk
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     padding: const EdgeInsets.symmetric(
@@ -295,7 +305,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
                     ),
                   ),
                 );
-              }).toList(),
+              }).toList(), // konversi hasil map ke dalam list widget
             ),
 
             const SizedBox(height: 120),
@@ -309,7 +319,7 @@ class _BookingDateTimeScreenState extends State<BookingDateTimeScreen> {
         child: SizedBox(
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: loading ? null : submitBooking,
+            onPressed: loading ? null : submitBooking, // nonaktifkan tombol saat loading
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.shape4,
               padding: const EdgeInsets.symmetric(vertical: 16),

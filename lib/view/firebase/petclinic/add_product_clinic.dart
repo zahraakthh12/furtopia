@@ -14,7 +14,7 @@ class AddProductClinic {
       product: "Grooming Basah",
       description: "Layanan grooming basah lengkap untuk semua jenis kucing.",
       price: "100000",
-      category: "Offline Visit",
+      category: "In-Clinic Service",
     ),
     ClinicFirebaseModel(
       uid: "3",
@@ -28,7 +28,7 @@ class AddProductClinic {
       product: "Grooming Kering",
       description: "Perawatan grooming tanpa air, cocok untuk kucing sensitif.",
       price: "60000",
-      category: "Offline Visit",
+      category: "In-Clinic Service",
     ),
     ClinicFirebaseModel(
       uid: "5",
@@ -42,21 +42,21 @@ class AddProductClinic {
       product: "Medical Check-Up",
       description: "Pemeriksaan kesehatan dasar",
       price: "75000",
-      category: "Offline Visit",
+      category: "In-Clinic Service",
     ),
     ClinicFirebaseModel(
       uid: "7",
       product: "Steril Betina",
       description: "Sterilisasi betina",
       price: "360000",
-      category: "Offline Visit",
+      category: "In-Clinic Service",
     ),
     ClinicFirebaseModel(
       uid: "8",
       product: "Steril Jantan",
       description: "Sterilisasi jantan",
       price: "280000",
-      category: "Offline Visit",
+      category: "In-Clinic Service",
     ),
   ];
 }
