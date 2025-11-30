@@ -14,61 +14,62 @@ class PetShopFirebaseScreen extends StatefulWidget {
 }
 
 class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
-  String activeCategory = "all";
-  String searchQuery = "";
-  bool loading = true;
-  List<ShopFirebaseModel> products = [];
-  List<ShopFirebaseModel> filteredProducts = [];
+  String activeCategory = "all"; // kategori yang sedang aktif
+  String searchQuery = ""; // query pencarian
+  bool loading = true; // status loading data
+  List<ShopFirebaseModel> products = []; // semua produk dari firebase
+  List<ShopFirebaseModel> filteredProducts = []; // produk yang sudah difilter berdasarkan kategori dan pencarian
 
   List<Map<String, String>> categories = [
     {"id": "all", "name": "Semua"},
     {"id": "food", "name": "Makanan"},
     {"id": "grooming", "name": "Perawatan"},
     {"id": "accessories", "name": "Aksesoris"},
-  ];
+  ]; // daftar kategori produk
 
   @override
+  // inisialisasi state dan memuat produk dari Firebase saat widget dibuat
   void initState() {
     super.initState();
     loadProducts();
   }
 
   Future<void> loadProducts() async {
-    setState(() => loading = true);
+    setState(() => loading = true);  // mulai loading
 
     try {
-      products = await ShopFirebaseService.getAllProducts();
-      applyFilters();
+      products = await ShopFirebaseService.getAllProducts(); // ambil semua produk dari Firebase
+      applyFilters(); // terapkan filter setelah memuat produk
     } catch (e) {
-      print("ERROR FETCH PRODUCT: $e");
+      print("ERROR FETCH PRODUCT: $e"); // cetak error jika gagal memuat produk
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Gagal memuat produk")));
     }
 
-    setState(() => loading = false);
+    setState(() => loading = false); // selesai loading
   }
 
   void applyFilters() {
     List<ShopFirebaseModel> list = products;
 
-    // FILTER CATEGORY
+    // filter kategori
     if (activeCategory != "all") {
-      list = list.where((p) => p.category == activeCategory).toList();
+      list = list.where((p) => p.category == activeCategory).toList(); // filter berdasarkan kategori yang dipilih
     }
 
-    // FILTER SEARCH
+    // filter pencarian
     if (searchQuery.isNotEmpty) {
       list = list
           .where(
             (p) => (p.product ?? "").toLowerCase().contains(
-              searchQuery.toLowerCase(),
+              searchQuery.toLowerCase(), // filter berdasarkan query pencarian
             ),
           )
-          .toList();
+          .toList(); // konversi hasil filter ke list
     }
 
-    setState(() => filteredProducts = list);
+    setState(() => filteredProducts = list); // perbarui state dengan produk yang sudah difilter
   }
 
   String formatRupiah(String price) {
@@ -76,8 +77,8 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
       locale: 'id',
       symbol: 'Rp ',
       decimalDigits: 0,
-    );
-    return formatter.format(int.tryParse(price) ?? 0);
+    ); // format mata uang Rupiah
+    return formatter.format(int.tryParse(price) ?? 0); // kembalikan harga yang sudah diformat
   }
 
   @override
@@ -92,7 +93,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => BottomNavFirebase()),
+              MaterialPageRoute(builder: (context) => BottomNavFirebase()), // navigasi ke beranda
             );
           },
         ),
@@ -108,7 +109,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                   child: TextField(
                     onChanged: (value) {
                       searchQuery = value;
-                      applyFilters();
+                      applyFilters(); // terapkan filter saat query pencarian berubah
                     },
                     decoration: InputDecoration(
                       hintText: "Cari produk...",
@@ -128,12 +129,12 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       final cat = categories[index];
-                      final selected = cat["id"] == activeCategory;
+                      final selected = cat["id"] == activeCategory; // cek apakah kategori ini yang sedang aktif
 
                       return GestureDetector(
                         onTap: () {
                           activeCategory = cat["id"]!;
-                          applyFilters();
+                          applyFilters(); // terapkan filter saat kategori berubah
                         },
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -150,7 +151,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                                       AppColors.shape5.withOpacity(0.75),
                                     ],
                                   )
-                                : null,
+                                : null, // jika tidak dipilih, tidak ada gradien
                             color: selected ? null : Colors.grey[200],
                           ),
                           child: Center(
@@ -169,9 +170,9 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
 
                 const SizedBox(height: 8),
 
-                // PRODUCTS
+                // product grid
                 Expanded(
-                  child: filteredProducts.isEmpty
+                  child: filteredProducts.isEmpty // jika tidak ada produk yang ditemukan
                       ? const Center(child: Text("Produk tidak ditemukan"))
                       : GridView.builder(
                           padding: const EdgeInsets.all(12),
@@ -184,9 +185,9 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                               ),
                           itemCount: filteredProducts.length,
                           itemBuilder: (context, index) {
-                            final p = filteredProducts[index];
+                            final p = filteredProducts[index]; // ambil produk yang sudah difilter
 
-                            return productCard(p);
+                            return productCard(p); // tampilkan kartu produk
                           },
                         ),
                 ),
@@ -195,6 +196,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
     );
   }
 
+  // membuat kartu produk
   Widget productCard(ShopFirebaseModel p) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
@@ -209,12 +211,11 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // IMAGE
           ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: p.images != null && p.images!.isNotEmpty
+            child: p.images != null && p.images!.isNotEmpty // jika ada gambar
                 ? Image.network(
-                    p.images!.first,
+                    p.images!.first, // tampilkan gambar pertama dari daftar gambar
                     height: 150,
                     width: double.infinity,
                     fit: BoxFit.cover,
@@ -228,7 +229,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                   ),
           ),
 
-          // DETAILS
+          // detail produk
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(8),
@@ -238,7 +239,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                   Text(
                     p.product ?? "-",
                     maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    overflow: TextOverflow.ellipsis, // potong teks jika terlalu panjang
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
 
@@ -254,7 +255,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
                       const Icon(Icons.star, color: Colors.orange, size: 14),
                       const SizedBox(width: 4),
                       Text(
-                        "${p.rating?.toStringAsFixed(1) ?? "0.0"}",
+                        "${p.rating?.toStringAsFixed(1) ?? "0.0"}", // tampilkan rating dengan 1 desimal
                         style: const TextStyle(fontSize: 12),
                       ),
                     ],
@@ -285,7 +286,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
             ),
           ),
 
-          // CART BUTTON
+          // tombol keranjang
           Padding(
             padding: const EdgeInsets.all(8),
             child: ElevatedButton.icon(
@@ -298,32 +299,32 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
               ),
               onPressed: () {
                 final idx = cart.indexWhere(
-                  (item) => item["product"] == p.product,
+                  (item) => item["product"] == p.product, // cek apakah produk sudah ada di keranjang
                 );
 
                 if (idx != -1) {
-                  final maxStock = cart[idx]["stock"] ?? 0;
+                  final maxStock = cart[idx]["stock"] ?? 0; // ambil stok maksimum dari produk di keranjang
 
-                  if (cart[idx]["quantity"] >= maxStock) {
+                  if (cart[idx]["quantity"] >= maxStock) { // jika kuantitas sudah mencapai stok maksimum
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: const Text("Stok tidak mencukupi"),
                         backgroundColor: AppColors.shape4,
                       ),
                     );
-                    return;
+                    return; // keluar dari fungsi tanpa menambah kuantitas
                   }
 
-                  cart[idx]["quantity"]++;
-                } else {
+                  cart[idx]["quantity"]++; // tambahkan kuantitas produk di keranjang
+                } else { // jika produk belum ada di keranjang
                   cart.add({
                     "uid": p.uid,
                     "product": p.product,
-                    "price": int.tryParse(p.price ?? "0"),
+                    "price": int.tryParse(p.price ?? "0"), // konversi harga ke integer
                     "image": p.images?.first,
-                    "quantity": 1,
-                    "stock": int.tryParse(p.stock.toString()) ?? 0,
-                  });
+                    "quantity": 1, // mulai dengan kuantitas 1
+                    "stock": int.tryParse(p.stock.toString()) ?? 0, // konversi stok ke integer
+                  }); // tambahkan produk baru ke keranjang
                 }
 
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -335,7 +336,7 @@ class _PetShopFirebaseScreenState extends State<PetShopFirebaseScreen> {
               },
               icon: const Icon(Icons.add, size: 16, color: Colors.white),
               label: Text(
-                p.stock == 0 ? "Stok Habis" : "Keranjang",
+                p.stock == 0 ? "Stok Habis" : "Keranjang", // tampilkan teks sesuai stok
                 style: const TextStyle(
                   fontSize: 12,
                   color: Colors.white,

@@ -3,7 +3,7 @@ import 'package:furtopia/model/firebase/pet_firebase_model.dart';
 import 'package:furtopia/view/firebase/petdata/petedit_firebase_screen.dart';
 
 class PetDetailFirebaseScreen extends StatefulWidget {
-  final PetFirebaseModel pet;
+  final PetFirebaseModel pet; // Data hewan peliharaan yang akan ditampilkan
   const PetDetailFirebaseScreen({super.key, required this.pet});
 
   @override
@@ -12,12 +12,10 @@ class PetDetailFirebaseScreen extends StatefulWidget {
 }
 
 class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
-  int selectedTab = 0; // 0 = Informasi, 1 = Kesehatan
+  int selectedTab = 0; // Tab yang sedang dipilih (0: Informasi, 1: Kesehatan)
 
   @override
   Widget build(BuildContext context) {
-    // final pet = widget.pet;
-
     return Scaffold(
       backgroundColor: const Color(0xFFFAF5E9),
       body: Column(
@@ -37,13 +35,12 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pop(context), // Kembali ke halaman sebelumnya
                 ),
                 const Text(
                   "Profil Hewan",
                   style: TextStyle(
                     color: Colors.white,
-                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                   ),
@@ -52,6 +49,7 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
             ),
           ),
 
+          // Bagian konten utama 
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -72,7 +70,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
                       widget.pet.name ?? "",
                       style: const TextStyle(
                         color: Color(0xFFB76E79),
-                        fontFamily: 'Poppins',
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                       ),
@@ -94,14 +91,15 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
 
                     const SizedBox(height: 20),
 
-                    if (selectedTab == 0) buildInfoSection(),
-                    if (selectedTab == 1) buildHealthSection(),
+                    if (selectedTab == 0) buildInfoSection(), // Tampilkan bagian informasi
+                    if (selectedTab == 1) buildHealthSection(), // Tampilkan bagian kesehatan
                   ],
                 ),
               ),
             ),
           ),
 
+          // Bagian tombol di bawah
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
@@ -114,7 +112,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
                     label: const Text(
                       "Booking",
                       style: TextStyle(
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w600,
                           color: Colors.white),
                     ),
@@ -136,9 +133,9 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (_) =>
-                              PetEditFirebaseScreen(pet: widget.pet),
+                              PetEditFirebaseScreen(pet: widget.pet), // Navigasi ke layar edit hewan peliharaan dengan data hewan saat ini
                         ),
-                      ).then((updatedPet) {
+                      ).then((updatedPet) { // Terima data hewan yang diperbarui setelah kembali dari layar edit
                         if (updatedPet != null &&
                             updatedPet is PetFirebaseModel) {
                           setState(() {
@@ -163,7 +160,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
                     child: const Text(
                       "Edit",
                       style: TextStyle(
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFB76E79),
                       ),
@@ -178,11 +174,12 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
+  // Widget untuk membuat tombol tab aktif
   Widget buildTabButton(String title, int index) {
-    final isActive = selectedTab == index;
+    final isActive = selectedTab == index; // Periksa apakah tab ini aktif
     return Expanded(
       child: GestureDetector(
-        onTap: () => setState(() => selectedTab = index),
+        onTap: () => setState(() => selectedTab = index), // Ubah tab yang dipilih saat ditekan
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -203,7 +200,6 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isActive ? const Color(0xFFB76E79) : Colors.grey,
-              fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -212,9 +208,9 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
-
+  // Widget untuk menampilkan bagian informasi hewan peliharaan
   Widget buildInfoSection() {
-    final pet = widget.pet;
+    final pet = widget.pet; 
 
     return Column(
       children: [
@@ -228,6 +224,7 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
+  // widget untuk menampilkan kotak informasi pet
   Widget buildInfoBox(String title, String value) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -241,12 +238,10 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
         children: [
           Text(title,
               style: const TextStyle(
-                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   color: Colors.black54)),
           Text(value,
               style: const TextStyle(
-                  fontFamily: 'Poppins',
                   fontWeight: FontWeight.w600,
                   color: Color(0xFFB76E79))),
         ],
@@ -254,12 +249,12 @@ class _PetDetailFirebaseScreenState extends State<PetDetailFirebaseScreen> {
     );
   }
 
-
+  // Widget untuk menampilkan bagian kesehatan hewan peliharaan
   Widget buildHealthSection() {
     return const Center(
       child: Text(
         "Belum ada data kesehatan 🩺",
-        style: TextStyle(fontFamily: 'Poppins', color: Colors.grey),
+        style: TextStyle(color: Colors.grey),
       ),
     );
   }

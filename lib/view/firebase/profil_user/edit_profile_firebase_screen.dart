@@ -4,7 +4,7 @@ import 'package:furtopia/service/firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 
 class EditProfileFirebaseScreen extends StatefulWidget {
-  final UserFirebaseModel user;
+  final UserFirebaseModel user; // data user yang akan diedit
 
   const EditProfileFirebaseScreen({super.key, required this.user});
 
@@ -14,7 +14,7 @@ class EditProfileFirebaseScreen extends StatefulWidget {
 }
 
 class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // key untuk validasi form
 
   late TextEditingController _fullnameController;
   late TextEditingController _emailController;
@@ -23,14 +23,16 @@ class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
 
   @override
   void initState() {
-    super.initState();
+    super.initState(); // inisialisasi state
 
+    // inisialisasi controller dengan data user yang diterima dari widget
     _fullnameController = TextEditingController(text: widget.user.fullname);
     _emailController = TextEditingController(text: widget.user.email);
     _phoneController = TextEditingController(text: widget.user.phone);
     _addressController = TextEditingController(text: widget.user.address ?? "");
   }
 
+  // fungsi untuk menyimpan perubahan profil
   Future<void> _saveProfile() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -44,15 +46,16 @@ class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
       updateAt: DateTime.now().toIso8601String(),
     );
 
-    await FirebaseService.updateUser(updated);
+    await FirebaseService.updateUser(updated);  // simpan perubahan ke Firestore
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profil berhasil diperbarui!')),
     );
 
-    Navigator.pop(context, updated);
+    Navigator.pop(context, updated); // kembali ke layar sebelumnya dengan data user yang diperbarui
   }
 
+  // fungsi untuk membangun field input
   InputDecoration buildField(String label) {
     return InputDecoration(
       labelText: label,
@@ -65,7 +68,7 @@ class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // ← FIX LAYAR GELAP
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppColors.shape5.withOpacity(0.75),
         title: Text(
@@ -109,7 +112,7 @@ class _EditProfileFirebaseScreenState extends State<EditProfileFirebaseScreen> {
               SizedBox(height: 30),
 
               ElevatedButton(
-                onPressed: _saveProfile,
+                onPressed: _saveProfile, // panggil fungsi simpan perubahan
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.shape4,
                   minimumSize: Size(double.infinity, 50),

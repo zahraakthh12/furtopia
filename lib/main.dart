@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:furtopia/firebase_options.dart';
+import 'package:flutter/material.dart'; // dasar Flutter
+import 'package:furtopia/firebase_options.dart'; 
 import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/splash_screen.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/date_symbol_data_local.dart'; // untuk format tanggal lokal
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

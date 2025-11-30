@@ -10,8 +10,8 @@ import 'package:async/async.dart';
 class OrderInProgressScreen extends StatelessWidget {
   OrderInProgressScreen({super.key});
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance; // untuk autentikasi
+  final FirebaseFirestore firestore = FirebaseFirestore.instance; // untuk akses Firestore
 
   String formatRupiah(int price) {
     return NumberFormat.currency(
@@ -19,23 +19,25 @@ class OrderInProgressScreen extends StatelessWidget {
       symbol: 'Rp ',
       decimalDigits: 0,
     ).format(price);
-  }
+  } // format mata uang Rupiah
 
   @override
   Widget build(BuildContext context) {
-    final user = auth.currentUser;
-    if (user == null) {
+    final user = auth.currentUser; // ambil user yang sedang login
+    if (user == null) { // jika tidak ada user yang login
       return Scaffold(
         body: Center(child: Text("Harap login terlebih dahulu.")),
       );
     }
 
+    // Stream untuk pesanan petshop yang sedang berlangsung
     final petshopStream = firestore
         .collection("orders")
         .where("userId", isEqualTo: user.uid)
         .where("status", whereIn: ["pending", "process", "on-delivery"])
         .snapshots();
 
+    // Stream untuk booking klinik hewan yang sedang berlangsung
     final clinicStream = firestore
         .collection("clinic_bookings")
         .where("userId", isEqualTo: user.uid)
@@ -51,7 +53,9 @@ class OrderInProgressScreen extends StatelessWidget {
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      body: StreamBuilder<List<QuerySnapshot>>(
+      body: 
+      // StreamBuilder untuk menggabungkan data pesanan petshop dan booking klinik hewan
+      StreamBuilder<List<QuerySnapshot>>(
         stream: StreamZip([petshopStream, clinicStream]),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -65,15 +69,15 @@ class OrderInProgressScreen extends StatelessWidget {
           // Gabungkan dua list
           List<Map<String, dynamic>> allOrders = [];
 
-          //PETSHOP ORDER
+          // pesanan petshop
           for (var doc in petshopDocs) {
             final data = doc.data() as Map<String, dynamic>;
             data["docId"] = doc.id;
             data["type"] = "petshop";
-            allOrders.add(data);
+            allOrders.add(data); // tambahkan ke list gabungan
           }
 
-          // PET CLINIC BOOKING
+          // booking petclinic
           for (var doc in clinicDocs) {
             final data = doc.data() as Map<String, dynamic>;
             data["docId"] = doc.id;
@@ -81,6 +85,7 @@ class OrderInProgressScreen extends StatelessWidget {
             allOrders.add(data);
           }
 
+          // Jika tidak ada pesanan
           if (allOrders.isEmpty) {
             return Center(
               child: Column(
@@ -97,7 +102,7 @@ class OrderInProgressScreen extends StatelessWidget {
             );
           }
 
-          // Urutkan berdasarkan createdAt (descending)
+          // Urutkan berdasarkan createdAt (descending) atau tanggal pembuatan terbaru
           allOrders.sort((a, b) {
             final aDate =
                 DateTime.tryParse(a["createdAt"] ?? "") ?? DateTime(2000);
@@ -106,6 +111,7 @@ class OrderInProgressScreen extends StatelessWidget {
             return bDate.compareTo(aDate);
           });
 
+          // Tampilkan daftar pesanan
           return ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: allOrders.length,
@@ -122,6 +128,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan kartu pesanan petshop
   Widget _buildPetshopCard(BuildContext context, Map<String, dynamic> data) {
     final items = List<Map<String, dynamic>>.from(data["products"]);
     final invoice = data["invoice"];
@@ -129,6 +136,7 @@ class OrderInProgressScreen extends StatelessWidget {
     final status = data["status"];
     final id = data["docId"];
 
+    // tampilkan kartu pesanan petshop
     return _orderCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,7 +167,7 @@ class OrderInProgressScreen extends StatelessWidget {
             ],
           ),
 
-          if (items.length > 1)
+          if (items.length > 1) // jika ada lebih dari 1 produk
             Padding(
               padding: const EdgeInsets.only(top: 6),
               child: Text(
@@ -178,11 +186,11 @@ class OrderInProgressScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => OrderDetailScreen(orderId: id),
+                    builder: (_) => OrderDetailScreen(orderId: id), // buka detail pesanan petshop 
                   ),
                 );
               },
-              style: _btnStyle(),
+              style: _btnStyle(), // gaya tombol
               child: Text(
                 "Lihat Detail",
                 style: TextStyle(color: Colors.white),
@@ -194,6 +202,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan kartu booking klinik hewan
   Widget _buildClinicCard(BuildContext context, Map<String, dynamic> data) {
     final invoice = data["invoice"];
     final status = data["status"];
@@ -249,6 +258,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan kartu pesanan atau booking
   Widget _orderCard({required Widget child}) {
     return Container(
       margin: EdgeInsets.only(bottom: 16),
@@ -264,6 +274,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan header kartu pesanan atau booking
   Widget _header(String invoice, String status) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -296,7 +307,7 @@ class OrderInProgressScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
               overflow:
-                  TextOverflow.ellipsis,
+                  TextOverflow.ellipsis, // jika teks terlalu panjang
               maxLines: 1,
             ),
           ),
@@ -305,6 +316,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan total harga
   Widget _totalPrice(int total) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -325,6 +337,7 @@ class OrderInProgressScreen extends StatelessWidget {
     );
   }
 
+  // gaya tombol
   ButtonStyle _btnStyle() {
     return ElevatedButton.styleFrom(
       backgroundColor: AppColors.shape4.withOpacity(0.85),

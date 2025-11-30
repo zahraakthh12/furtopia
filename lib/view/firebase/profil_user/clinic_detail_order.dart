@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ClinicBookingDetailScreen extends StatelessWidget {
-  final String bookingId;
+  final String bookingId; // ID booking yang akan ditampilkan detailnya
 
   const ClinicBookingDetailScreen({super.key, required this.bookingId});
 
@@ -16,7 +16,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
       symbol: 'Rp ',
       decimalDigits: 0,
     ).format(p);
-  }
+  } // format mata uang Rupiah
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,9 @@ class ClinicBookingDetailScreen extends StatelessWidget {
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      body: StreamBuilder<DocumentSnapshot>(
+      body: 
+      // StreamBuilder untuk mendapatkan data booking secara real-time
+      StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection("clinic_bookings")
             .doc(bookingId)
@@ -38,7 +40,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
 
-          final data = snapshot.data!.data() as Map<String, dynamic>;
+          final data = snapshot.data!.data() as Map<String, dynamic>; // data booking
 
           final invoice = data["invoice"];
           final serviceName = data["serviceName"];
@@ -52,7 +54,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
           final createdAt = data["createdAt"];
 
           const adminFee = 10000;
-          final total = (int.tryParse(price) ?? 0) + adminFee;
+          final total = (int.tryParse(price) ?? 0) + adminFee; // total bayar = harga + biaya admin
 
           return ListView(
             padding: EdgeInsets.all(16),
@@ -88,18 +90,19 @@ class ClinicBookingDetailScreen extends StatelessWidget {
 
               SizedBox(height: 16),
 
+              // detail hewan peliharaan 
               FutureBuilder<DocumentSnapshot>(
                 future: FirebaseFirestore.instance
                     .collection("pets")
                     .doc(petId)
-                    .get(),
+                    .get(), // ambil data hewan peliharaan berdasarkan petId
                 builder: (context, snap) {
-                  if (!snap.hasData) return Container();
+                  if (!snap.hasData) return Container(); 
+                  final pet = snap.data!.data() as Map<String, dynamic>?; 
 
-                  final pet = snap.data!.data() as Map<String, dynamic>?;
+                  if (pet == null) return Container(); // jika data hewan peliharaan null, tampilkan container kosong
 
-                  if (pet == null) return Container();
-
+                  // tampilkan detail hewan peliharaan
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -181,7 +184,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                     Text("Kategori: $category"),
                     Text("Tanggal: $date"),
                     Text("Waktu: $time"),
-                    if (address != null) Text("Alamat: $address"),
+                    if (address != null) Text("Alamat: $address"), // tampilkan alamat jika ada
                   ],
                 ),
               ),
@@ -205,6 +208,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
 
               SizedBox(height: 30),
 
+              // tombol berdasarkan status booking
               if (status == "pending") ...[
                 actionButton(
                   text: "Batalkan Booking",
@@ -212,7 +216,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                   onTap: () => cancelBooking(context),
                 ),
                 SizedBox(height: 12),
-              ],
+              ], // tombol batal hanya muncul jika status pending
 
               if (status == "process") ...[
                 Center(
@@ -222,7 +226,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-              ],
+              ], // pesan status untuk proses
 
               if (status == "done")
                 Center(
@@ -230,8 +234,9 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                     "Booking telah selesai.",
                     style: TextStyle(color: Colors.green),
                   ),
-                ),
+                ), // pesan status untuk selesai
 
+              // kontak admin
               Container(
                 padding: EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -262,7 +267,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     ElevatedButton.icon(
-                      onPressed: () => contactAdmin(data, context),
+                      onPressed: () => contactAdmin(data, context), // fungsi kontak admin
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.shape4.withOpacity(0.85),
                         minimumSize: Size(double.infinity, 48),
@@ -289,6 +294,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
     );
   }
 
+  // widget baris ringkasan pembayaran
   Widget summaryRow(
     String label,
     String value, {
@@ -313,13 +319,14 @@ class ClinicBookingDetailScreen extends StatelessWidget {
     );
   }
 
+  // widget tombol aksi
   Widget actionButton({
     required String text,
     required Color color,
-    required VoidCallback onTap,
+    required VoidCallback onTap, 
   }) {
     return ElevatedButton(
-      onPressed: onTap,
+      onPressed: onTap, // aksi saat tombol ditekan
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         minimumSize: Size(double.infinity, 48),
@@ -333,6 +340,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
   }
 
 
+  // fungsi batal booking
   void cancelBooking(BuildContext context) async {
     final confirm = await showDialog(
       context: context,
@@ -345,7 +353,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
         content: Text("Anda yakin ingin membatalkan booking ini?"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Navigator.pop(context, false), 
             child: Text("Tidak"),
           ),
           ElevatedButton(
@@ -357,7 +365,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
       ),
     );
 
-    if (confirm != true) return;
+    if (confirm != true) return; // jika pesanan dibatalkan
 
     await FirebaseFirestore.instance
         .collection("clinic_bookings")
@@ -365,7 +373,7 @@ class ClinicBookingDetailScreen extends StatelessWidget {
         .update({
           "status": "cancel",
           "updatedAt": FieldValue.serverTimestamp(),
-        });
+        }); // update status booking di Firestore
 
     Navigator.pop(context);
 
@@ -377,11 +385,12 @@ class ClinicBookingDetailScreen extends StatelessWidget {
     );
   }
 
+  // fungsi kontak admin via WhatsApp
   Future<void> contactAdmin(
-    Map<String, dynamic> order,
-    BuildContext context,
+    Map<String, dynamic> order, // data booking
+    BuildContext context, // context untuk menampilkan snackbar
   ) async {
-    final phone = "6285710546602"; // Nomor admin kamu
+    final phone = "6285710546602"; // Nomor admin WhatsApp
 
     final message =
         """
@@ -401,18 +410,18 @@ Mohon bantuannya ya 🙏
 
     final url = Uri.parse(
       "https://wa.me/$phone?text=${Uri.encodeComponent(message)}",
-    );
+    ); // URL WhatsApp dengan pesan terisi
 
     try {
       if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Tidak dapat membuka WhatsApp 😭")),
-        );
+        ); // tampilkan pesan jika gagal membuka WhatsApp
       }
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Terjadi kesalahan: $e")));
+      ).showSnackBar(SnackBar(content: Text("Terjadi kesalahan: $e"))); // tampilkan pesan jika terjadi kesalahan
     }
   }
 }

@@ -3,7 +3,7 @@ import 'package:furtopia/model/firebase/education_firebase_model.dart';
 import 'package:furtopia/style/app_colors.dart';
 
 class PetEduDetailScreen extends StatelessWidget {
-  final PetEducationModel education;
+  final PetEducationModel education; // Data edukasi hewan peliharaan yang akan ditampilkan
 
   const PetEduDetailScreen({super.key, required this.education});
 
@@ -16,7 +16,7 @@ class PetEduDetailScreen extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.pop(context), // Kembali ke halaman sebelumnya
         ),
         title: Text(
           education.title ?? "",
@@ -35,18 +35,21 @@ class PetEduDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Image.network(
+              child: 
+              // menampilkan gambar
+              Image.network(
                 education.image != null && education.image!.isNotEmpty
                     ? education.image!.first
-                    : "",
+                    : "", // jika tidak ada gambar, tampilkan string kosong
                 height: 200,
-                errorBuilder: (context, error, stack) =>
+                errorBuilder: (context, error, stack) => // menampilkan ikon jika gambar gagal dimuat
                     const Icon(Icons.broken_image, size: 120, color: Colors.grey),
               ),
             ),
 
             const SizedBox(height: 20),
 
+            // menampilkan judul edukasi
             Text(
               education.title ?? "",
               style: const TextStyle(
@@ -58,6 +61,7 @@ class PetEduDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
+            // menampilkan konten edukasi
             Text(
               education.content ?? "",
               style: const TextStyle(

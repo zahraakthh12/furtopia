@@ -28,7 +28,7 @@ class FirebaseService {
     fullname: fullname,
     email: email,
     phone: phone,
-    address: "", // default address empty
+    address: "", // alamat awal kosong
     createdAt: DateTime.now().toIso8601String(),
     updateAt: DateTime.now().toIso8601String(),
   );
@@ -55,18 +55,18 @@ class FirebaseService {
 
       // Get user from Firestore
       final doc = await firestore.collection(collection).doc(user.uid).get();
-      if (!doc.exists) return null;
+      if (!doc.exists) return null; // user tidak ditemukan di Firestore
 
       return UserFirebaseModel.fromMap({
-        "uid": user.uid,
-        ...doc.data()!,
+        "uid": user.uid, // pastikan uid disertakan
+        ...doc.data()!, // gabungkan data dari Firestore
       });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-credential' ||
           e.code == 'wrong-password' ||
           e.code == 'user-not-found') {
         return null;
-      }
+      } // jika kredensial salah atau user tidak ditemukan
       print("FirebaseAuth Error: ${e.code}");
       rethrow;
     }

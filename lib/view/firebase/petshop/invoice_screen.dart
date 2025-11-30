@@ -4,6 +4,7 @@ import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/firebase/profil_user/order_detail_screen.dart';
 
 class PetshopInvoiceScreen extends StatelessWidget {
+  // Data invoice yang diterima dari layar checkout
   final String invoice;
   final List<Map<String, dynamic>> products;
   final int subtotal;
@@ -27,7 +28,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
       symbol: "Rp ",
       decimalDigits: 0,
     ).format(price);
-  }
+  } // format mata uang Rupiah
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +80,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
+              // detail produk
               _infoBox(
                 title: "Detail Produk",
                 child: Column(
@@ -118,7 +120,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  "${item["quantity"]} x ${rupiah(item["price"])}",
+                                  "${item["quantity"]} x ${rupiah(item["price"])}", // quantity x harga satuan
                                   style: const TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey,
@@ -143,6 +145,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
 
               const SizedBox(height: 20),
 
+              // rincian pembayaran
               _infoBox(
                 title: "Rincian Pembayaran",
                 child: Column(
@@ -159,7 +162,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
 
               Column(
                 crossAxisAlignment:
-                    CrossAxisAlignment.stretch,
+                    CrossAxisAlignment.stretch, // membuat tombol selebar mungkin
                 children: [
                   SizedBox(
                     width: double.infinity,
@@ -168,7 +171,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => OrderDetailScreen(orderId: orderId),
+                            builder: (_) => OrderDetailScreen(orderId: orderId), // navigasi ke detail pesanan dengan orderId
                           ),
                         );
                       },
@@ -195,7 +198,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
                     width: double.infinity,
                     child: OutlinedButton(
                       onPressed: () {
-                        Navigator.popUntil(context, (route) => route.isFirst);
+                        Navigator.popUntil(context, (route) => route.isFirst); // kembali ke beranda
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -222,6 +225,7 @@ class PetshopInvoiceScreen extends StatelessWidget {
     );
   }
 
+  // membuat kotak info dengan judul dan konten
   Widget _infoBox({required String title, required Widget child}) {
     return Container(
       width: double.infinity,
@@ -247,11 +251,12 @@ class PetshopInvoiceScreen extends StatelessWidget {
     );
   }
 
+  // membuat baris ringkasan pembayaran
   Widget _row(String label, String value, {bool bold = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, // spasi antara label dan nilai
         children: [
           Text(label),
           Text(

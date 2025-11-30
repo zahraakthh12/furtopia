@@ -15,36 +15,39 @@ class CartFirebaseScreen extends StatefulWidget {
 }
 
 class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
-  bool loading = true;
-  Map<String, ShopFirebaseModel?> productData = {};
+  bool loading = true; // menandakan apakah data masih dimuat
+  Map<String, ShopFirebaseModel?> productData = {}; // menyimpan data produk berdasarkan UID
 
   @override
+  // Inisialisasi dan muat data produk dari Firebase saat layar dibuat
   void initState() {
     super.initState();
     loadProductsFromFirebase();
   }
 
-  /// Ambil ulang semua data dari Firebase berdasarkan UID yg ada di cart
+  // Muat data produk dari Firebase berdasarkan item di keranjang
   Future<void> loadProductsFromFirebase() async {
     loading = true;
     setState(() {});
 
-    productData.clear();
+    productData.clear(); // bersihkan data produk sebelumnya
 
     for (var item in cart) {
-      final uid = item["uid"];
+      final uid = item["uid"]; // ambil UID produk dari item keranjang
 
-      // jika uid kosong atau null → skip saja
+      // lewati jika UID null atau kosong
       if (uid == null || uid.toString().isEmpty) continue;
 
+      // ambil data produk dari Firebase dan simpan dalam peta productData
       final product = await ShopFirebaseService.getProduct(uid);
       productData[uid] = product;
     }
 
-    loading = false;
+    loading = false; // data selesai dimuat
     setState(() {});
   }
 
+  // Format angka menjadi format Rupiah
   String formatRupiah(int price) {
     return NumberFormat.currency(
       locale: 'id',
@@ -56,9 +59,10 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     if (loading) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: CircularProgressIndicator()); // tampilkan indikator loading saat data dimuat
     }
 
+    // Tampilkan tampilan keranjang kosong jika tidak ada item
     if (cart.isEmpty) {
       return Scaffold(
         appBar: AppBar(
@@ -69,23 +73,26 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
           ),
           backgroundColor: AppColors.shape4.withOpacity(0.75),
         ),
-        body: emptyCartView(),
+        body: emptyCartView(), // tampilkan keranjang kosong
       );
     }
 
-    int totalHarga = 0;
+    // Hitung total harga semua item dalam keranjang
+    int totalHarga = 0; // inisialisasi total harga
 
     for (var item in cart) {
-      final data = productData[item["uid"]];
+      final data = productData[item["uid"]]; // ambil data produk berdasarkan UID
 
+      // jika data produk ditemukan, hitung total harga
       if (data != null) {
-        final price = int.tryParse(data.price ?? "0") ?? 0;
-        final qty = int.tryParse(item["quantity"].toString()) ?? 1;
+        final price = int.tryParse(data.price ?? "0") ?? 0; // ambil harga produk
+        final qty = int.tryParse(item["quantity"].toString()) ?? 1; // ambil jumlah produk dalam keranjang
 
-        totalHarga += price * qty;
+        totalHarga += price * qty; // tambahkan ke total harga
       }
     }
 
+    // tampilan keranjang dengan daftar item dan total harga
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -97,9 +104,9 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
       ),
       body: Stack(
         children: [
-          buildBackground(), // background muncul
+          buildBackground(), 
           Container(
-            color: Colors.white.withOpacity(0), // <= buat transparan
+            color: Colors.white.withOpacity(0), 
             child: cartListView(totalHarga),
           ),
         ],
@@ -107,6 +114,7 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
     );
   }
 
+  // widget halaman keranjang kosong
   Widget emptyCartView() {
     return Stack(
       children: [
@@ -125,18 +133,20 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
     );
   }
 
-  Widget cartListView(int totalHarga) {
+  // widget halaman terdapat produk
+  Widget cartListView(int totalHarga ) {
     return Column(
       children: [
         Expanded(
           child: RefreshIndicator(
-            onRefresh: loadProductsFromFirebase,
+            onRefresh: loadProductsFromFirebase, // fungsi refresh data produk
             child: ListView.builder(
               itemCount: cart.length,
               itemBuilder: (context, index) {
                 final item = cart[index];
                 final data = productData[item["uid"]];
 
+                // jika data produk tidak ditemukan, akan ditampilkan pesan produk dihapus
                 if (data == null) {
                   return ListTile(
                     title: const Text("Produk telah dihapus dari database"),
@@ -144,14 +154,14 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
                       icon: const Icon(Icons.delete),
                       onPressed: () {
                         setState(() {
-                          cart.removeAt(index);
+                          cart.removeAt(index); // hapus item dari keranjang
                         });
                       },
                     ),
                   );
                 }
 
-                final price = int.tryParse(data.price ?? "0") ?? 0;
+                final price = int.tryParse(data.price ?? "0") ?? 0; // ambil harga produk
 
                 return Card(
                   color: AppColors.white,
@@ -203,9 +213,9 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
                           onPressed: () {
                             setState(() {
                               if (item["quantity"] > 1) {
-                                item["quantity"]--;
+                                item["quantity"]--; // kurangi jumlah item
                               } else {
-                                cart.removeAt(index);
+                                cart.removeAt(index); // hapus item jika jumlahnya 0
                               }
                             });
                           },
@@ -217,21 +227,21 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            final maxStock =
-                                int.tryParse(data.stock.toString()) ?? 0;
+                            final maxStock = 
+                                int.tryParse(data.stock.toString()) ?? 0; // ambil stok maksimum produk
 
-                            if (item["quantity"] >= maxStock) {
+                            if (item["quantity"] >= maxStock) { // cek apakah jumlah item melebihi stok
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: const Text("Stok tidak mencukupi"),
                                   backgroundColor: AppColors.shape4,
                                 ),
                               );
-                              return;
+                              return; // hentikan eksekusi jika stok tidak mencukupi
                             }
 
                             setState(() {
-                              item["quantity"]++;
+                              item["quantity"]++; // tambahkan jumlah item
                             });
                           },
                         ),
@@ -244,6 +254,7 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
           ),
         ),
 
+        // Bagian total harga dan tombol checkout
         Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
@@ -283,7 +294,7 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const CheckoutFirebaseScreen(),
+                      builder: (_) => const CheckoutFirebaseScreen(), // navigasi ke layar checkout
                     ),
                   );
                 },
@@ -310,6 +321,7 @@ class _CartFirebaseScreenState extends State<CartFirebaseScreen> {
     );
   }
 
+  // membuat background
   Container buildBackground() {
     return Container(
       height: double.infinity,

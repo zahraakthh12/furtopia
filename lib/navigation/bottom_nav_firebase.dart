@@ -14,7 +14,7 @@ class BottomNavFirebase extends StatefulWidget {
 }
 
 class _BottomNavFirebaseState extends State<BottomNavFirebase> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 0; // indeks untuk menandai tab yang dipilih
 
   static const List<Widget> _widgetOptions = [
     HomeScreenFirebase(),

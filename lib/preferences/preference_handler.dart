@@ -56,4 +56,5 @@ class PreferenceHandler {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(keyUserId);
   }
+
 }

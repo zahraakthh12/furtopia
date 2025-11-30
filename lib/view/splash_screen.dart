@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:furtopia/navigation/bottom_nav_firebase.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
-import 'package:furtopia/service/add_clinic.dart';
-import 'package:furtopia/service/add_edu.dart';
-import 'package:furtopia/service/add_shop.dart';
 import 'package:furtopia/style/app_images.dart';
 import 'package:furtopia/view/firebase/login/login_firebase_screen.dart';
-import 'package:furtopia/view/firebase/petedu/add_edu.dart';
 
 class SplashScreenFurtopia extends StatefulWidget {
   const SplashScreenFurtopia({super.key});
@@ -25,7 +21,7 @@ class _SplashScreenFurtopiaState extends State<SplashScreenFurtopia> {
   isLoginFunction() async {
     // await ProductSeeder.uploadDummyProducts();
     // await ClinicProductSeeder.uploadDummyClinicServices();
-    //await PetEducationSeeder.uploadDummyEducation();
+    // await PetEducationSeeder.uploadDummyEducation();
     Future.delayed(Duration(seconds: 3)).then((value) async {
       var isLogin = await PreferenceHandler.getLogin();
       print(isLogin);

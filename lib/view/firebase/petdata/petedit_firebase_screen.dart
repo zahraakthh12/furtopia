@@ -5,7 +5,7 @@ import 'package:furtopia/service/pet_firebase.dart';
 import 'package:furtopia/style/app_colors.dart';
 
 class PetEditFirebaseScreen extends StatefulWidget {
-  final PetFirebaseModel pet;
+  final PetFirebaseModel pet; // Data hewan peliharaan yang akan diedit
   const PetEditFirebaseScreen({super.key, required this.pet});
 
   @override
@@ -13,8 +13,9 @@ class PetEditFirebaseScreen extends StatefulWidget {
 }
 
 class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>(); // Key untuk form validasi
 
+  // Controller untuk setiap field input
   late TextEditingController nameC;
   late TextEditingController typeC;
   late TextEditingController genderC;
@@ -24,6 +25,7 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
   late TextEditingController lengthC;
 
   @override
+  // Inisialisasi controller dengan data hewan yang akan diedit
   void initState() {
     super.initState();
     final pet = widget.pet;
@@ -36,6 +38,7 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
     lengthC = TextEditingController(text: pet.length ?? "");
   }
 
+  // Menampilkan dialog konfirmasi sebelum menyimpan perubahan
   void showConfirmDialog() {
     showDialog(
       context: context,
@@ -47,13 +50,11 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
           title: const Text(
             "Konfirmasi",
             style: TextStyle(
-              fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
             ),
           ),
           content: const Text(
-            "Apakah Anda yakin ingin menyimpan perubahan data hewan ini?",
-            style: TextStyle(fontFamily: 'Poppins'),
+            "Apakah Anda yakin ingin menyimpan perubahan data hewan ini?"
           ),
           actions: [
             TextButton(
@@ -68,9 +69,11 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              // Simpan perubahan data hewan peliharaan
               onPressed: () async {
                 Navigator.pop(context);
 
+                // Buat objek PetFirebaseModel dengan data yang diperbarui
                 final updatedPet = PetFirebaseModel(
                   uid: widget.pet.uid,
                   ownerId: widget.pet.ownerId,
@@ -83,23 +86,23 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
                   weight: weightC.text,
                   length: lengthC.text,
                   createdAt: widget.pet.createdAt,
-                  updateAt: DateTime.now().toIso8601String(),
+                  updateAt: DateTime.now().toIso8601String(), // Perbarui timestamp
                 );
 
                 try {
-                  await PetFirebaseService.updatePet(updatedPet);
+                  await PetFirebaseService.updatePet(updatedPet); // panggil service untuk update data
 
-                  if (!mounted) return;
+                  if (!mounted) return; // jika widget sudah tidak ada, hentikan eksekusi
                   Fluttertoast.showToast(msg: "Data hewan berhasil diperbarui");
 
-                  if (mounted) Navigator.pop(context, updatedPet);
-                } catch (e) {
+                  if (mounted) Navigator.pop(context, updatedPet); // Kembali ke layar sebelumnya dengan mengirim data hewan yang diperbarui
+                } catch (e) { // Tangani error jika update gagal
                   Fluttertoast.showToast(msg: "Gagal update: $e");
                 }
               },
               child: const Text(
                 "Simpan",
-                style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -117,7 +120,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
         title: const Text(
           "Edit Data Hewan",
           style: TextStyle(
-            fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
             fontSize: 20,
           ),
@@ -127,7 +129,7 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Form(
-          key: _formKey,
+          key: _formKey, // Gunakan form key untuk validasi
           child: ListView(
             children: [
               buildTextField("Nama Hewan", nameC),
@@ -141,6 +143,7 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
               const SizedBox(height: 10),
 
               ElevatedButton(
+                // Simpan perubahan data hewan peliharaan
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     showConfirmDialog();
@@ -155,7 +158,6 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
                 child: const Text(
                   "Simpan Perubahan",
                   style: TextStyle(
-                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                   ),
@@ -168,6 +170,7 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
     );
   }
 
+  // widget untuk membuat field input teks dengan label
   Widget buildTextField(String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -176,14 +179,13 @@ class _PetEditFirebaseScreenState extends State<PetEditFirebaseScreen> {
         decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(
-            fontFamily: 'Poppins',
             color: AppColors.shape4.withOpacity(0.6),
           ),
           filled: true,
           fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        validator: (v) => v!.isEmpty ? "$label tidak boleh kosong" : null,
+        validator: (v) => v!.isEmpty ? "$label tidak boleh kosong" : null, // Validasi input tidak boleh kosong
       ),
     );
   }

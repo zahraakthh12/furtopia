@@ -15,17 +15,17 @@ class FirebaseOrderService {
         .where("invoice", isLessThan: "$prefix~")
         .orderBy("invoice", descending: true)
         .limit(1)
-        .get();
+        .get(); // ambil invoice terakhir hari ini
 
-    int nextNumber = 1;
+    int nextNumber = 1; // nomor urut berikutnya
 
     if (snapshot.docs.isNotEmpty) {
       final String lastInvoice = snapshot.docs.first["invoice"];
-      final String lastNumber = lastInvoice.split("-").last;
-      nextNumber = int.tryParse(lastNumber)! + 1;
+      final String lastNumber = lastInvoice.split("-").last; // ambil nomor urut terakhir
+      nextNumber = int.tryParse(lastNumber)! + 1; // hitung nomor urut berikutnya dari invoice terakhir
     }
 
-    return "$prefix-${nextNumber.toString().padLeft(4, '0')}";
+    return "$prefix-${nextNumber.toString().padLeft(4, '0')}"; // format invoice dengan nomor urut 4 digit
   }
 
   /// SIMPAN PESANAN + RETURN invoice & orderId

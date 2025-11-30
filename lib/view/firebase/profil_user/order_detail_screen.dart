@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OrderDetailScreen extends StatelessWidget {
-  final String orderId;
+  final String orderId; // ID pesanan yang akan ditampilkan
   const OrderDetailScreen({super.key, required this.orderId});
 
   String rupiah(int price) {
@@ -14,7 +14,7 @@ class OrderDetailScreen extends StatelessWidget {
       symbol: 'Rp ',
       decimalDigits: 0,
     ).format(price);
-  }
+  } // format mata uang Rupiah
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,9 @@ class OrderDetailScreen extends StatelessWidget {
         backgroundColor: AppColors.shape4.withOpacity(0.75),
       ),
 
-      body: StreamBuilder<DocumentSnapshot>(
+      body: 
+      // StreamBuilder untuk mendapatkan data pesanan secara real-time
+      StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection("orders")
             .doc(orderId)
@@ -86,7 +88,7 @@ class OrderDetailScreen extends StatelessWidget {
               ),
               SizedBox(height: 10),
 
-              ...products.map((p) {
+              ...products.map((p) { // daftar produk
                 return Container(
                   margin: EdgeInsets.only(bottom: 12),
                   padding: EdgeInsets.all(12),
@@ -118,7 +120,7 @@ class OrderDetailScreen extends StatelessWidget {
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 4),
-                            Text("${p["quantity"]} x ${rupiah(p["price"])}"),
+                            Text("${p["quantity"]} x ${rupiah(p["price"])}"), // quantity x harga satuan
                           ],
                         ),
                       ),
@@ -156,7 +158,7 @@ class OrderDetailScreen extends StatelessWidget {
                   onTap: () => cancelOrder(context),
                 ),
                 SizedBox(height: 12),
-              ],
+              ], // jika status pending tampilkan tombol batal
 
               if (status == "on-delivery") ...[
                 actionButton(
@@ -164,7 +166,7 @@ class OrderDetailScreen extends StatelessWidget {
                   color: Colors.green,
                   onTap: () => completeOrder(context),
                 ),
-              ],
+              ], // jika status on-delivery tampilkan tombol terima
 
               if (status == "process")
                 Center(
@@ -172,7 +174,7 @@ class OrderDetailScreen extends StatelessWidget {
                     "Pesanan sedang diproses...",
                     style: TextStyle(color: Colors.grey),
                   ),
-                ),
+                ), // jika status process tampilkan teks info
 
               SizedBox(height: 20),
 
@@ -236,6 +238,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk menampilkan baris ringkasan
   Widget summaryRow(
     String label,
     String value, {
@@ -260,6 +263,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
+  // gaya tombol action
   Widget actionButton({
     required String text,
     required Color color,
@@ -280,6 +284,7 @@ class OrderDetailScreen extends StatelessWidget {
   }
 
 
+  // fungsi batal pesanan
   void cancelOrder(BuildContext context) async {
     final confirm = await showDialog(
       context: context,
@@ -323,6 +328,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
+  // fungsi terima pesanan
   void completeOrder(BuildContext context) async {
     final confirm = await showDialog(
       context: context,
@@ -367,6 +373,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
+  // fungsi hubungi admin via WhatsApp
   void contactAdmin(BuildContext context, Map<String, dynamic> order) async {
     const adminNumber = "085710546602";
 
@@ -410,7 +417,7 @@ Mohon bantuannya ya 🙏
 
     final url = Uri.parse(
       "https://wa.me/$phone?text=${Uri.encodeComponent(message)}",
-    );
+    ); // URL WA dengan pesan
 
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       // WA tidak terbuka

@@ -33,10 +33,11 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
   // fungsi untuk melanjutkan ke langkah berikutnya atau menyimpan data hewan peliharaan
   void nextStep() async {
     if (currentStep < 4) {
-      setState(() => currentStep++);
-      return; // untuk 
+      setState(() => currentStep++); // lanjut ke langkah berikutnya
+      return; // keluar dari fungsi
     }
  
+    // validasi data formulir sebelum menyimpan
     final newPet = PetFirebaseModel(
       ownerId: uid,
       icon: formData["icon"],
@@ -50,7 +51,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
 
     try {
-      await PetFirebaseService.createPet(newPet);
+      await PetFirebaseService.createPet(newPet); // simpan data hewan peliharaan ke Firebase
 
       Fluttertoast.showToast(
         msg: "Hewan peliharaan berhasil ditambahkan 🎉",
@@ -61,7 +62,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
       Navigator.pop(context);
     } catch (e) {
       Fluttertoast.showToast(
-        msg: "Gagal menambahkan hewan: $e",
+        msg: "Gagal menambahkan hewan: $e", // tampilkan pesan kesalahan jika gagal
         backgroundColor: Colors.red,
         textColor: Colors.white,
       );
@@ -69,8 +70,8 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
   }
 
   void prevStep() {
-    if (currentStep > 1) setState(() => currentStep--);
-  }
+    if (currentStep > 1) setState(() => currentStep--); // kembali ke langkah sebelumnya
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -92,13 +93,12 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pop(context), // kembali ke halaman sebelumnya
                 ),
                 const Text(
                   "Tambah Hewan Peliharaan",
                   style: TextStyle(
                     color: Colors.white,
-                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w600,
                     fontSize: 20,
                   ),
@@ -107,15 +107,15 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
             ),
           ),
 
-          buildStepper(),
+          buildStepper(), // tampilkan stepper di bagian atas
 
           Expanded(
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400),
+              duration: const Duration(milliseconds: 400), 
               child: Padding(
                 key: ValueKey(currentStep),
                 padding: const EdgeInsets.all(20),
-                child: buildStepContent(),
+                child: buildStepContent(), // tampilkan konten langkah saat ini
               ),
             ),
           ),
@@ -124,10 +124,10 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             child: Row(
               children: [
-                if (currentStep > 1)
+                if (currentStep > 1) // tampilkan tombol "Kembali" jika bukan langkah pertama
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: prevStep,
+                      onPressed: prevStep, // kembali ke langkah sebelumnya
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Color(0xFFB76E79)),
                         foregroundColor: const Color(0xFFB76E79),
@@ -137,7 +137,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                       child: const Text("Kembali"),
                     ),
                   ),
-                if (currentStep > 1) const SizedBox(width: 10),
+                if (currentStep > 1) const SizedBox(width: 10), // tambahkan jarak antara tombol, jika ada tombol "Kembali"
 
                 Expanded(
                   child: ElevatedButton(
@@ -148,9 +148,8 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                           borderRadius: BorderRadius.circular(12)),
                     ),
                     child: Text(
-                      currentStep == 4 ? "Tambah Hewan" : "Lanjut",
+                      currentStep == 4 ? "Tambah Hewan" : "Lanjut", // ubah teks tombol berdasarkan langkah saat ini
                       style: const TextStyle(
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w600,
                         color: Colors.white,
                       ),
@@ -165,18 +164,19 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
+  // menampilkan konten berdasarkan langkah saat ini
   Widget buildStepContent() {
-    switch (currentStep) {
+    switch (currentStep) { // tentukan konten berdasarkan langkah saat ini
       case 1:
-        return buildIconStep();
+        return buildIconStep(); // langkah pemilihan ikon
       case 2:
-        return buildBasicInfoStep();
+        return buildBasicInfoStep(); // langkah informasi dasar
       case 3:
-        return buildPhysicalStep();
+        return buildPhysicalStep(); // langkah detail fisik
       case 4:
-        return buildSummaryStep();
+        return buildSummaryStep(); // langkah tinjau data
       default:
-        return const SizedBox();
+        return const SizedBox(); // jika langkah tidak valid, tampilkan kotak kosong
     }
   }
 
@@ -190,7 +190,6 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
           style: TextStyle(
             color: Color(0xFFB76E79),
             fontSize: 20,
-            fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -200,10 +199,10 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
             crossAxisCount: 4,
             mainAxisSpacing: 12,
             crossAxisSpacing: 12,
-            children: petIcons.map((icon) {
-              final selected = formData['icon'] == icon;
+            children: petIcons.map((icon) { // buat grid ikon hewan peliharaan
+              final selected = formData['icon'] == icon; // periksa apakah ikon saat ini dipilih
               return GestureDetector(
-                onTap: () => setState(() => formData['icon'] = icon),
+                onTap: () => setState(() => formData['icon'] = icon), // perbarui ikon yang dipilih saat diketuk
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
                   decoration: BoxDecoration(
@@ -211,7 +210,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                         ? const LinearGradient(
                             colors: [Color(0xFFB76E79), Color(0xFFD4A5B0)],
                           )
-                        : null,
+                        : null, // jika tidak dipilih, tidak ada gradien
                     color: selected ? null : const Color(0xFFFCE4EC),
                     borderRadius: BorderRadius.circular(16),
                     boxShadow:
@@ -222,7 +221,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                   ),
                 ),
               );
-            }).toList(),
+            }).toList(), // konversi daftar ikon menjadi widget
           ),
         ),
       ],
@@ -262,17 +261,16 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
           style: TextStyle(
             color: Color(0xFFB76E79),
             fontSize: 20,
-            fontFamily: 'Poppins',
             fontWeight: FontWeight.w600,
           ),
         ),
         const SizedBox(height: 16),
-        buildSummaryCard(),
+        buildSummaryCard(), // tampilkan kartu ringkasan data hewan peliharaan
       ],
     );
   }
 
-  // === FORM FIELD REUSABLE ===
+  // widget untuk membuat field teks
   Widget buildTextField(String label, String key,
       {String? hint, bool isRequired = false}) {
     return Padding(
@@ -280,15 +278,14 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("$label${isRequired ? ' *' : ''}",
+          Text("$label${isRequired ? ' *' : ''}", // tambahkan tanda bintang jika wajib diisi
               style: const TextStyle(
                 color: Color(0xFFB76E79),
-                fontFamily: 'Poppins',
                 fontWeight: FontWeight.w600,
               )),
           const SizedBox(height: 6),
           TextField(
-            controller: TextEditingController(text: formData[key]),
+            controller: TextEditingController(text: formData[key]), // atur nilai awal dari formData
             decoration: InputDecoration(
               hintText: hint,
               filled: true,
@@ -297,13 +294,14 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
             ),
-            onChanged: (v) => formData[key] = v,
+            onChanged: (v) => formData[key] = v, // perbarui formData saat teks berubah
           ),
         ],
       ),
     );
   }
 
+  // widget untuk membuat dropdown
   Widget buildDropdown(String label, String key, List<String> items) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
@@ -314,29 +312,29 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
             "$label *",
             style: const TextStyle(
               color: Color(0xFFB76E79),
-              fontFamily: 'Poppins',
               fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 6),
-          DropdownButtonFormField<String>(
-            value: formData[key].isEmpty ? null : formData[key],
+          DropdownButtonFormField<String>( // buat dropdown
+            value: formData[key].isEmpty ? null : formData[key], // atur nilai awal dari formData
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            items: items
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (v) => formData[key] = v,
+            items: items // buat item dropdown dari daftar yang diberikan
+                .map((e) => DropdownMenuItem(value: e, child: Text(e))) 
+                .toList(), // konversi daftar item menjadi widget
+            onChanged: (v) => formData[key] = v, // perbarui formData saat pilihan berubah
           ),
         ],
       ),
     );
   }
 
+  // widget untuk menampilkan kartu ringkasan data hewan peliharaan
   Widget buildSummaryCard() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -366,15 +364,16 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
     );
   }
 
+  // widget untuk menampilkan stepper di bagian atas layar
   Widget buildStepper() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: List.generate(4, (index) {
-          final step = index + 1;
-          final isDone = currentStep > step;
-          final isActive = currentStep == step;
+          final step = index + 1; // langkah saat ini (1-4)
+          final isDone = currentStep > step; // periksa apakah langkah sudah selesai
+          final isActive = currentStep == step; // periksa apakah langkah saat ini aktif
 
           return Expanded(
             child: Column(
@@ -384,11 +383,11 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: isDone || isActive
+                    color: isDone || isActive // jika langkah sudah selesai atau aktif
                         ? Colors.white
                         : Colors.white.withOpacity(0.3),
                     shape: BoxShape.circle,
-                    boxShadow: isActive
+                    boxShadow: isActive // jika langkah saat ini aktif
                         ? [
                             BoxShadow(
                                 color: Colors.black.withOpacity(0.2),
@@ -397,7 +396,7 @@ class _AddPetFirebaseScreenState extends State<AddPetFirebaseScreen> {
                         : [],
                   ),
                   child: Center(
-                    child: isDone
+                    child: isDone // jika langkah sudah selesai
                         ? const Icon(Icons.check_circle,
                             color: Color(0xFFB76E79))
                         : Text(

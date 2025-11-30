@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // menambahkan import untuk Firestore
 import 'package:flutter/material.dart';
 import 'package:furtopia/model/firebase/education_firebase_model.dart';
 import 'package:furtopia/style/app_colors.dart';
@@ -22,37 +22,45 @@ class EduFirebaseScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => BottomNavFirebase()),
+              MaterialPageRoute(builder: (_) => BottomNavFirebase()), // Kembali ke BottomNavFirebase
             );
           },
         ),
       ),
 
-      body: StreamBuilder<QuerySnapshot>(
+      body: 
+      //  menggunakan stream builder untuk mengambil data edukasi dari Firestore secara real-time
+      StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection("pet_educations")
             .orderBy("createdAt", descending: true)
             .snapshots(),
 
+        // membangun UI berdasarkan snapshot data dari Firestore
         builder: (context, snapshot) {
+
+          // menampilkan indikator loading saat menunggu data
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
 
+          // menampilkan pesan jika tidak ada data edukasi
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(child: Text("Belum ada artikel edukasi."));
           }
 
+          // menampilkan daftar edukasi hewan peliharaan
           final docs = snapshot.data!.docs;
 
+          // menggunakan ListView.builder untuk menampilkan daftar edukasi
           return ListView.builder(
             padding: const EdgeInsets.all(20),
-            itemCount: docs.length,
+            itemCount: docs.length, // jumlah item berdasarkan data dari Firestore
             itemBuilder: (context, index) {
-              final data = docs[index];
+              final data = docs[index]; // data edukasi pada indeks saat ini
               final model = PetEducationModel.fromMap(
-                data.data() as Map<String, dynamic>,
-                data.id,
+                data.data() as Map<String, dynamic>, // konversi data ke dalam model
+                data.id, // menggunakan ID dokumen sebagai id model
               );
 
               return GestureDetector(
@@ -60,11 +68,11 @@ class EduFirebaseScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => PetEduDetailScreen(education: model),
+                      builder: (_) => PetEduDetailScreen(education: model), // navigasi ke detail edukasi dengan mengirim data model
                     ),
                   );
                 },
-                child: _buildEduCard(model),
+                child: _buildEduCard(model), // membangun kartu edukasi
               );
             },
           );
@@ -73,6 +81,7 @@ class EduFirebaseScreen extends StatelessWidget {
     );
   }
 
+  // Widget untuk membangun kartu edukasi hewan peliharaan
   Widget _buildEduCard(PetEducationModel model) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
@@ -88,11 +97,11 @@ class EduFirebaseScreen extends StatelessWidget {
             child: Image.network(
               model.image != null && model.image!.isNotEmpty
                   ? model.image!.first
-                  : "",
+                  : "", // jika tidak ada gambar, tampilkan string kosong
               height: 100,
               width: 100,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stack) =>
+              fit: BoxFit.cover, // menyesuaikan gambar agar memenuhi area
+              errorBuilder: (context, error, stack) => // menampilkan ikon jika gambar gagal dimuat
                   const Icon(Icons.broken_image, size: 60, color: Colors.grey),
             ),
           ),
@@ -100,7 +109,7 @@ class EduFirebaseScreen extends StatelessWidget {
           Expanded(
             child: Text(
               model.title ?? "",
-              maxLines: 3,
+              maxLines: 3, // batasi hingga 3 baris
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontWeight: FontWeight.w600),
             ),

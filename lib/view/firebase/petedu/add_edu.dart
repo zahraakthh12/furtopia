@@ -2,7 +2,6 @@ import 'package:furtopia/model/firebase/education_firebase_model.dart';
 
 class AddEducationFirebase {
   static List<PetEducationModel> educationList = [
-    // 1. GROOMING PET
     PetEducationModel(
       id: "1",
       title:
@@ -39,7 +38,6 @@ Jika bulu hewan panjang, mudah kusut, atau menunjukkan ketidaknyamanan.
 """,
     ),
 
-    // 2. STERILISASI HEWAN
     PetEducationModel(
       id: "2",
       title:
@@ -68,7 +66,6 @@ Setelah Sterilisasi:
 """,
     ),
 
-    // 3. VAKSINASI HEWAN
     PetEducationModel(
       id: "3",
       title:

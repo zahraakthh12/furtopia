@@ -5,7 +5,6 @@ import 'package:furtopia/style/app_colors.dart';
 import 'package:furtopia/view/firebase/petshop/invoice_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:furtopia/preferences/preference_handler.dart';
-import 'package:furtopia/view/firebase/profil_user/ongoing_firebase_order.dart';
 
 class CheckoutFirebaseScreen extends StatefulWidget {
   const CheckoutFirebaseScreen({super.key});
@@ -15,7 +14,7 @@ class CheckoutFirebaseScreen extends StatefulWidget {
 }
 
 class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
-  final int adminFee = 5000;
+  final int adminFee = 5000; // biaya admin tetap
 
   String formatRupiah(int price) {
     return NumberFormat.currency(
@@ -23,8 +22,9 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
       symbol: 'Rp ',
       decimalDigits: 0,
     ).format(price);
-  }
+  } // format harga ke Rupiah
 
+  // menampilkan dialog konfirmasi pesanan
   Future<bool?> showConfirmDialog(BuildContext context) {
     return showDialog<bool>(
       context: context,
@@ -53,11 +53,11 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
   @override
   Widget build(BuildContext context) {
     int subtotal = cart.fold<int>(
-      0,
-      (sum, item) => sum + ((item["price"] as int) * (item["quantity"] as int)),
+      0, // menghitung subtotal dari keranjang
+      (sum, item) => sum + ((item["price"] as int) * (item["quantity"] as int)), // kalikan harga dengan jumlah item
     );
 
-    int totalBayar = subtotal + adminFee;
+    int totalBayar = subtotal + adminFee; // total bayar termasuk biaya admin
 
     return Scaffold(
       appBar: AppBar(
@@ -82,6 +82,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                 ),
                 const SizedBox(height: 10),
 
+                // menampilkan daftar item di keranjang
                 ...cart.map((item) {
                   return Container(
                     margin: const EdgeInsets.symmetric(
@@ -126,7 +127,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "${item["quantity"]} x ${formatRupiah(item["price"])}",
+                                "${item["quantity"]} x ${formatRupiah(item["price"])}", // menampilkan jumlah dan harga per item
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: Colors.grey[700],
@@ -137,7 +138,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                         ),
 
                         Text(
-                          formatRupiah(item["price"] * item["quantity"]),
+                          formatRupiah(item["price"] * item["quantity"]), // menampilkan subtotal per item
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -151,7 +152,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
 
                 const SizedBox(height: 20),
 
-                // RINGKASAN PEMBAYARAN
+                // ringkasan pembayaran
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
@@ -190,17 +191,18 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
             ),
             child: ElevatedButton(
               onPressed: () async {
-                bool? confirm = await showConfirmDialog(context);
+                bool? confirm = await showConfirmDialog(context); // tampilkan dialog konfirmasi
 
-                if (confirm == false || confirm == null) return;
-                String? userId = await PreferenceHandler.getToken();
-                if (userId == null) {
+                if (confirm == false || confirm == null) return; // jika batal, hentikan eksekusi
+                String? userId = await PreferenceHandler.getToken(); // ambil userId dari preferensi
+                if (userId == null) { // jika userId tidak ditemukan
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("User tidak ditemukan")),
                   );
-                  return;
+                  return; // hentikan eksekusi jika userId tidak ditemukan
                 }
 
+                // siapkan data produk untuk disimpan
                 List<Map<String, dynamic>> orderProducts = cart.map((item) {
                   return {
                     "product": item["product"],
@@ -211,6 +213,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   };
                 }).toList();
 
+                // simpan pesanan ke Firebase
                 final result = await FirebaseOrderService.saveOrder(
                   userId: userId,
                   products: orderProducts,
@@ -219,10 +222,11 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                   total: totalBayar,
                 );
 
+                // ambil data invoice dan orderId dari hasil penyimpanan
                 final createdInvoice = result["invoice"];
                 final orderId = result["orderId"];
 
-                cart.clear();
+                cart.clear(); // kosongkan keranjang setelah pesanan dibuat
 
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
@@ -241,7 +245,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
                       adminFee: adminFee,
                       total: totalBayar,
                       orderId: orderId,
-                    ),
+                    ), // navigasi ke layar invoice dengan mengirim data pesanan
                   ),
                 );
               },
@@ -267,6 +271,7 @@ class _CheckoutFirebaseScreenState extends State<CheckoutFirebaseScreen> {
     );
   }
 
+  // membuat baris ringkasan pembayaran
   Widget summaryRow(
     String label,
     String value, {
